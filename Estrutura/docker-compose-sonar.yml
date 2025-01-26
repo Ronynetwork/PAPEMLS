@@ -2,7 +2,7 @@
 services:
   sonarqube:
     container_name: sonarqube
-    image: sonarqube:lts-community
+    image: sonarqube:9.9.8-community
     deploy:
       resources:
         limits:
