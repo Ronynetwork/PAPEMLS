@@ -73,21 +73,6 @@ pipeline {
         }
     }
     post {
-        always {
-            echo "Executando notificação de erros do SonarQube via Script"
-
-            sh 'chmod +x ./Estrutura/notification/script_notification.py'
-            sh 'python3 ./Estrutura/notification/script_notification.py'
-
-            publishHTML(target: [
-                allowMissing: false,
-                alwaysLinkToLastBuild: true,
-                keepAll: true,
-                reportDir: 'Estrutura/notification',
-                reportFiles: 'sonarqube-notification.html',
-                reportName: 'SonarQube Notification'
-            ])
-        }
         success {
             echo "subindo container ngnix com o index.html"
             script {
