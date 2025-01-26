@@ -72,29 +72,29 @@ pipeline {
             }
         }
     }
-    post {
-        success {
-            echo "subindo container ngnix com o index.html"
-            script {
-                def ngnixContainerName = sh(script: 'docker ps --filter "name=ngnix-app" --format "{{.Names}}"', returnStdout: true)
-                if (ngnixContainerName) {
-                    echo "O serviço Nginx já está em execução, reiniciando o contêiner."
-                    sh "docker restart ngnix-app" // Reiniciar o contêiner se estiver em execução
-                } 
-                else {
-                    echo "Realizando build do Nginx"
-                    sh 'docker compose -f ./Estrutura/docker-compose-ngnix.yml up -d'
-                }                
-            }
-        }
-        failure {
-            script{
-                echo 'realizando a correcao de bugs...'
-                sh 'python3 Estrutura/source.py'
-                echo 'Realizando commit'
-                sh 'chmod +x ./Estrutura/git_branch.sh'
-                sh './Estrutura/git_branch.sh'
-            }
-        }
-    }   
+    // post {
+    //     success {
+    //         echo "subindo container ngnix com o index.html"
+    //         script {
+    //             def ngnixContainerName = sh(script: 'docker ps --filter "name=ngnix-app" --format "{{.Names}}"', returnStdout: true)
+    //             if (ngnixContainerName) {
+    //                 echo "O serviço Nginx já está em execução, reiniciando o contêiner."
+    //                 sh "docker restart ngnix-app" // Reiniciar o contêiner se estiver em execução
+    //             } 
+    //             else {
+    //                 echo "Realizando build do Nginx"
+    //                 sh 'docker compose -f ./Estrutura/docker-compose-ngnix.yml up -d'
+    //             }                
+    //         }
+    //     }
+    //     failure {
+    //         script{
+    //             echo 'realizando a correcao de bugs...'
+    //             sh 'python3 Estrutura/source.py'
+    //             echo 'Realizando commit'
+    //             sh 'chmod +x ./Estrutura/git_branch.sh'
+    //             sh './Estrutura/git_branch.sh'
+    //         }
+    //     }
+    // }   
 }
