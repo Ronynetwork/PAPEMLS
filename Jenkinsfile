@@ -40,7 +40,7 @@ pipeline {
             steps {
                 script {
                     echo 'Aguardando 35 segundos para a inicialização completa do SonarQube...'
-                    sleep time:35, unit: 'SECONDS'
+                    sleep time:34, unit: 'SECONDS'
                 }
             }
         }
