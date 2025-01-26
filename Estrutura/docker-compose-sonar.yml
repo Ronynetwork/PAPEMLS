@@ -1,0 +1,21 @@
+#Script do docker compose do serviço da imagem do sonarqube
+services:
+  sonarqube:
+    container_name: sonarqube
+    image: sonarqube:lts-community
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 1.5g
+    ports:
+      - "9000:9000"
+    volumes:
+      - sonarqube_data:/opt/sonarqube/data
+      - sonarqube_extensions:/opt/sonarqube/extensions
+      - sonarqube_logs:/opt/sonarqube/logs
+
+volumes:
+  sonarqube_data:
+  sonarqube_extensions:
+  sonarqube_logs:

@@ -1,0 +1,104 @@
+/* styles.css */
+body {
+    font-family: Arial, sans-serif;
+    background-color: white; /* Fundo branco */
+    color: black; /* Texto preto */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    
+}
+
+.notification {
+    background-color: #007bff; /* Fundo azul da notificação */
+    color: black; /* Texto preto */
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 3px 3px 15px rgba(0, 0, 0, 0.8);
+    text-align: center;
+    max-width: 600px;
+    width: 100%;
+}
+
+.notification p {
+    margin: 0;
+    font-weight: bold;
+}
+
+.notification strong {
+    color: #fff; /* Cor branca para o título */
+}
+
+.error {
+    margin-top: 10px;
+    border: 1px solid #000000; /* Borda preta */
+    border-radius: 5px;
+    background-color: #f9f9f9; /* Fundo claro para os erros */
+}
+
+.error-title {
+    cursor: pointer;
+    padding: 10px;
+    margin: 0;
+    background-color: #eee; /* Fundo claro para o título dos erros */
+    border-bottom: 1px solid #ddd;
+    transition: background-color 0.3s;
+    display: flex;
+    justify-content: space-between;
+    align-items: left;
+    border-radius: 5px 5px 0 0; /* Bordas arredondadas no topo */
+}
+
+.error-title:hover {
+    background-color: #ddd; /* Cor de fundo ao passar o mouse */
+}
+
+.toggle-icon {
+    display: inline-block;
+    background-color: #007bff; /* Azul para o ícone */
+    width: 16px;
+    height: 16px;
+    border: solid black;
+    border-width: 4px 2px 1px 1px;
+    transform: rotate(45deg);
+    transition: transform 0.3s;
+}
+
+.error-details {
+    display: none;
+    padding: 10px;
+    border-radius: 0 0 5px 5px; /* Bordas arredondadas na parte inferior */
+}
+
+.error-details.show {
+    display: block;
+}
+
+.error-title.active .toggle-icon {
+    transform: rotate(-135deg); /* Rotaciona a seta para cima quando os detalhes estão visíveis */
+}
+
+.toggle-all {
+    background-color: #1338b488; /* Azul escuro para o botão */
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+
+.toggle-all:hover {
+    background-color: #083e748a; /* Azul ainda mais escuro ao passar o mouse */
+}
+
+.notification h3 {
+    color: black; /* Texto preto para o título da notificação */
+    font-size: 1.2em;
+    font-weight: bold;
+    margin: 0; /* Remove margens para melhor alinhamento */
+    border-radius: 10px; /* Bordas arredondadas para o título da notificação */
+    padding: 10px; /* Padding para melhor aparência */
+}
