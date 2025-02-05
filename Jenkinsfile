@@ -7,7 +7,7 @@ pipeline {
                 script {
                     def destinationDir= 'AVSAC'
                     git credentialsId: 'log-token-git',
-                        url: 'https://github.com/Ronynetwork/AVSAC.git',
+                        url: 'https://github.com/Ronynetwork/PAPEMLS.git',
                         branch: 'main'
                         directory: destinationDir
                 }
