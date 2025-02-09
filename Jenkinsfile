@@ -74,24 +74,23 @@ pipeline {
     }
     post {
         failure {
-            steps{
-                script{
+            script{
 
-                    echo 'Realizando a correcao de bugs...'
-                    def output = sh(script:'python3 Estrutura/source.py', returnStdout= true).trim()
-                    env.ERROR_POINT=output
-                }
-                script{
-                    echo 'Realizando consulta com IA para autocorreção'
-                    sh 'pip install ollama'
-                    sh 'python3 Estrutura/ML.py'
-                }
-                script{
-                    echo 'Realizando commit'
-                    sh 'chmod +x ./Estrutura/git_branch.sh'
-                    sh './Estrutura/git_branch.sh'
-                }
+                echo 'Realizando a correcao de bugs...'
+                def output = sh(script:'python3 Estrutura/source.py', returnStdout= true).trim()
+                env.ERROR_POINT=output
             }
-        }
-    }   
+            script{
+                echo 'Realizando consulta com IA para autocorreção'
+                sh 'pip install ollama'
+                sh 'python3 Estrutura/ML.py'
+            }
+            script{
+                echo 'Realizando commit'
+                sh 'chmod +x ./Estrutura/git_branch.sh'
+                sh './Estrutura/git_branch.sh'
+            }
+        
+    }
+}   
 }
