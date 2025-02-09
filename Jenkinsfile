@@ -75,9 +75,8 @@ pipeline {
     post {
         failure {
             script{
-
                 echo 'Realizando a correcao de bugs...'
-                def output = sh(script:'python3 Estrutura/source.py', returnStdout= true).trim()
+                def output = sh(script: 'python3 Estrutura/source.py', returnStdout: true).trim()
                 env.ERROR_POINT=output
             }
             script{
