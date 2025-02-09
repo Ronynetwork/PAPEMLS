@@ -79,10 +79,14 @@ pipeline {
                 def output = sh(script: 'python3 Estrutura/source.py', returnStdout: true).trim()
                 env.ERROR_POINT=output
             }
-            script{
-                echo 'Realizando consulta com IA para autocorreção'
-                sh 'pip install ollama'
-                sh 'python3 Estrutura/ML.py'
+            script {
+                echo 'Criando ambiente virtual e instalando dependências...'
+                sh '''
+                python3 -m venv venv
+                source venv/bin/activate
+                pip install ollama
+                python3 Estrutura/ML.py
+                '''
             }
             script{
                 echo 'Realizando commit'
