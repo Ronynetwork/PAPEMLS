@@ -120,7 +120,7 @@ end_script = '''
 html_complete = head + option + script + type_erro + end_script + body
 
 
-with open('Estrutura/notification/erro.html', 'w') as arquivo:
+with open('notification/erro.html', 'w') as arquivo:
     arquivo.write(html_complete)
     arquivo.close()
 # or access fields directly from the response object
