@@ -1,23 +1,26 @@
-from ollama import chat
-from ollama import ChatResponse
-import os
+import requests, json, os
 
-dict_erros = os.getenv('ERROR_POINT')
-print(dict_erros)
-
+url = 'http://localhost:10012/api/generate'
 erro_sq = 'Specify an exception class to catch or reraise the exception'
-response: ChatResponse = chat(model='llama3.2', messages=[
-  {
-    'role': 'user',
-    'content': '''Erro: {}
+data = {
+    "model": "llama3.2:1b", 
+    "prompt": '''Erro: {}
     codigo: except:
-    me informe rapidamente qual sentido do aviso e uma sujestao de ajuste, divida em duas partes, ERRO: e EXPLICAÇÃO:.
-    cite apenas um exemplo. Na parte de erro, explique brevemente o erro. no cite code.
-  
-    '''.format(erro_sq),
-  },
-])
+    me informe rapidamente qual sentido do aviso e uma sujestao de ajuste, divida em duas partes, ERRO: e EXPLICAÇÃO:
+    cite apenas um exemplo na explicação. Na parte de erro, explique brevemente o erro mas nao cite exemplos.'''.format(erro_sq),
+    "stream": False
+}
+headers = {
+    "Content-Type": "application/json"
+}
 
+# Enviando conteudo para IA
+response = requests.post(url, json=data, headers=headers)
+text = ''
+
+response = response.json()
+text += f"{response.get('response')}"
+print(text)
 
 head = '''<!DOCTYPE html>
 <html lang="pt">
@@ -117,7 +120,8 @@ end_script = '''
 html_complete = head + option + script + type_erro + end_script + body
 
 
-with open('erro.html', 'w') as arquivo:
+with open('Estrutura/notification/erro.html', 'w') as arquivo:
     arquivo.write(html_complete)
+    arquivo.close()
 # or access fields directly from the response object
 # print(response.message.content)

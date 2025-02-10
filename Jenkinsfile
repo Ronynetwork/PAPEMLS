@@ -81,19 +81,22 @@ pipeline {
             }
             script {
                 echo 'Criando ambiente virtual e instalando dependências...'
-                sh '''
-                python3 -m venv venv
-                ./venv/bin/activate
-                pip install ollama
-                python3 Estrutura/ML.py
-                '''
+                sh 'docker compose -f Estrutura/docker-compose-ML.yaml && docker exec -dti ollama-ML ollama run llama3.2:1b '
             }
-            script{
-                echo 'Realizando commit'
-                sh 'chmod +x ./Estrutura/git_branch.sh'
-                sh './Estrutura/git_branch.sh'
-            }
-        
-    }
-}   
+
+            publishHTML(target: [
+                allowMissing: false,
+                alwaysLinkToLastBuild: true,
+                keepAll: true,
+                reportDir: 'Estrutura/notification',
+                reportFiles: 'erro.html',
+                reportName: 'ML Notification'
+            ])
+            // script{
+            //     echo 'Realizando commit'
+            //     sh 'chmod +x ./Estrutura/git_branch.sh'
+            //     sh './Estrutura/git_branch.sh'
+            // }
+        }
+    }   
 }

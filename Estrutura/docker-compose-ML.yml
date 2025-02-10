@@ -1,0 +1,12 @@
+#Script do docker compose do serviço da imagem do sonarqube
+services:
+  ollama-ml:
+    container_name: ollama-ML
+    image: ollama/ollama
+    deploy:
+      resources:
+        limits:
+          cpus: '4.0'
+          memory: 6g
+    ports:
+      - "10012:11434"
