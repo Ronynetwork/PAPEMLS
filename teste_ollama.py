@@ -8,11 +8,10 @@ data = {
     "model": "llama3.2:1b", 
     "prompt": '''Erro: {}
     codigo: 'except:'
-    me informe rapidamente descrição breve do motivo do e um exemplo.
-    cite apenas um exemplo na explicação. Na parte de erro, explique brevemente o erro mas nao cite exemplos.
+    me informe rapidamente descrição breve do motivo do e um único exemplo.
+    cite apenas um exemplo na explicação. Na parte de erro, explique brevemente o erro.
     '''.format(erro_sq),
-    "max_tokens": 50,
-    "stream": True
+    "stream": False # Retorna toda resposta em um token
 }
 
 headers = {
@@ -24,14 +23,17 @@ response = requests.post(url, json=data, headers=headers)
 # print("Conteúdo da resposta:", response.text)
 text = ''
 
-lines = response.text.strip().split("\n")  # Divide em linhas
-for line in lines:
-    json_data = json.loads(line) # Converte cada linha em JSON
-    text += json_data['response']
-    if json_data['response'] == 'Exemplo':
-        print('exemplo na linha', line)
-        exemplo_line = line
+data = response.json()['response'] # Retorna os dados em string
 
-exemplo = text[exemplo_line:]
+lines = data.splitlines()
 
-print(exemplo)
+ex_line = 0
+# Agora, 'lines' é uma lista com cada linha do texto como um item, percorrendo essa lista, buscando pela string especifica e salvando a linha
+for line in range(len(lines)):
+    if lines[line] == 'Exemplo:':
+        ex_line = line-1
+# Formatando para puxar do texto a linha expecifica que quero e dando split onde começa o codigo
+exemplo_aux = data[ex_line:].split('```')
+exemplo = exemplo_aux[1][6:]
+
+print(data)
