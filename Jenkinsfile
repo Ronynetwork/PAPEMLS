@@ -75,7 +75,7 @@ pipeline {
     post {
         failure {
             script{
-                echo 'Realizando a correcao de bugs...'
+                echo 'Realizando o GET de bugs...'
                 def output = sh(script: 'python3 Estrutura/source.py', returnStdout: true).trim()
                 env.ERROR_POINT=output
             }
@@ -84,6 +84,11 @@ pipeline {
                 sh 'docker compose -f Estrutura/docker-compose-ML.yml up -d&& docker exec -dti ollama-ML ollama run llama3.2:1b '
             }
 
+            script{
+                echo 'Executando arquivo de ML'
+                sh 'chmod +x Estrutura/ML.py'
+                sh 'python3 Estrutura/ML.py'
+            }
             publishHTML(target: [
                 allowMissing: false,
                 alwaysLinkToLastBuild: true,
