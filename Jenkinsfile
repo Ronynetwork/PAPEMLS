@@ -81,7 +81,7 @@ pipeline {
             }
             script {
                 echo 'Criando ambiente virtual e instalando dependências...'
-                sh 'docker compose -f Estrutura/docker-compose-ML.yaml && docker exec -dti ollama-ML ollama run llama3.2:1b '
+                sh 'docker compose -f Estrutura/docker-compose-ML.yaml up -d&& docker exec -dti ollama-ML ollama run llama3.2:1b '
             }
 
             publishHTML(target: [
