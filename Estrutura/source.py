@@ -17,10 +17,9 @@ def resolve_error(component, line, message):
         lines = file.readlines()
     # Seleciona a linha específica onde o erro foi identificado e a divide em palavras
     error_line = lines[line-1].split()
-    print('erro na linha', line, f': ({error_line[0]}) ', 'motivo de erro:', message)
-
     msg = dict()
     msg[message]=error_line[0]
+    print(msg)
 
 
 def code_request():
@@ -49,8 +48,6 @@ def code_request():
                 message = issue['message']  # Mensagem de erro do SonarQube
                 line = issue.get('line')  # Linha onde o problema foi identificado
                 component = issue['component']  # Componente (arquivo) onde o problema está localizado
-                #print(f"Problema: {message} - Severidade: {severity} - linha: {int(line-1)}")
-                print(component)
                 if component == f'{PROJECT_KEY}:teste_script/script_hosts.py':
                     resolve_error(component, line, message)
         else:
@@ -61,13 +58,3 @@ def code_request():
 
 # Chama a função para iniciar o processo de requisição e resolução de erros
 code_request()
-
-    # for palavra1 in error_line:
-    #     for palavra2 in erro_sq:
-    #     # Utiliza a biblioteca difflib para calcular a similaridade entre as palavras
-    #         similaridade = difflib.SequenceMatcher(None, palavra1, palavra2).ratio()
-    #         if similaridade > similaridade_minima:
-    #             # Se a similaridade for maior que o mínimo definido, substitui a palavra no código
-    #             print(f'Palavras similares encontradas: "{palavra1}" e "{palavra2}" com similaridade de {similaridade:.2f}')
-    #             # Substituição de palavras similares entre a linha de código e a mensagem de erro
-    #             lines[line-1] = lines[line-1].replace(palavra1, palavra2)

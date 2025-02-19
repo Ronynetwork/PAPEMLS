@@ -13,13 +13,13 @@ Erro: {}
 Exemplo:
 
 ```python
-[código de exemplo ilustrando o erro]
+[código de exemplo resolvendo de forma simples o erro]
 ```
 
-ao fim do arquivo, dê uma breve explicação do porque o erro "{}" acontece na linhga de código informada forma didática e simples. Sem adicionar erros desnecessários e que não são referentes a esse erro.
+ao fim do arquivo, dê uma breve explicação do porque o erro "{}" acontece na linha de código informada forma didática e simples. Sem adicionar erros desnecessários e que não são referentes a esse erro.
 
     '''.format(erro_sq, erro_sq),
-    "stream": False # Retorna toda resposta em um token
+    "stream": False  # Retorna toda resposta em um token
 }
 
 headers = {
