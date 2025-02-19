@@ -52,32 +52,7 @@ head = '''<!DOCTYPE html>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Página de Erros e Soluções</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            color: #333;
-            text-align: center;
-            padding: 20px;
-        }
-        .container {
-            background: white;
-            max-width: 600px;
-            margin: auto;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        select, button {
-            margin-top: 10px;
-            padding: 10px;
-            font-size: 16px;
-        }
-        pre {
-            background: #eee;
-            padding: 10px;
-            text-align: left;
-            border-radius: 5px;
-        }
+        <link rel="stylesheet" href="styles.css">
     </style>
 </head>
 <body>
@@ -101,9 +76,11 @@ option = '''
         <button onclick="showSolution()">Mostrar Solução</button>
 
         <div id="solution" style="margin-top: 20px;"></div>
-    </div>'''.format(erro_sq, erro_sq)
+    </div>
+    <script src="script.js"></script>'''.format(erro_sq, erro_sq)
+    
 
-script ='''<script>
+script ='''
         function showSolution() {
             const errorType = document.getElementById("errorSelect").value;
             const solutionDiv = document.getElementById("solution");
@@ -129,14 +106,49 @@ end_script = '''
 
             solutionDiv.innerHTML = solutionText;
         }
-    </script>
 '''
 
-html_complete = head + option + script + type_erro + end_script + body
+css_text = '''        
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            text-align: center;
+            padding: 20px;
+        }
+        .container {
+            background: white;
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        select, button {
+            margin-top: 10px;
+            padding: 10px;
+            font-size: 16px;
+        }
+        pre {
+            background: #eee;
+            padding: 10px;
+            text-align: left;
+            border-radius: 5px;
+        }'''
 
+
+
+html_complete = head + option + body
+script_complete = script + type_erro + end_script 
 
 # Cria o diretório se ele não existir
 os.makedirs("./Estrutura/notification", exist_ok=True)
+
+with open('./Estrutura/notification/style.css', 'w') as css:
+    css.write(css_text)
+
+with open('./Estrutura/notification/script.js', 'w') as java:
+    java.write(script_complete)
 
 with open('./Estrutura/notification/erro.html', 'w') as arquivo:
     arquivo.write(html_complete)
