@@ -93,7 +93,7 @@ pipeline {
                 echo "Subindo servidor externo com relatório"
                 sh 'docker compose -f Estrutura/docker-compose-ngnix.yml up -d'
                 
-                echo 'https://127.0.0.1:8083/'
+                echo 'http://127.0.0.1:8083/'
             }
             
             // script{
