@@ -5,7 +5,7 @@ services:
     #./index.html:/usr/share/nginx/html/index.html:ro mapeia o arquivo index.html do diretório atual para o local padrão de arquivos HTML do Nginx dentro do container.
     #O sufixo ro indica que deve ser um arquivo read only
     volumes:
-      - ../teste_scripts/Projeto/src/index.html:/usr/share/nginx/html/index.html:ro
+      - ./notification/erro.html:/usr/share/nginx/html/index.html:ro
     deploy:
       resources:
         limits:
