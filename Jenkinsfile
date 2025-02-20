@@ -89,14 +89,13 @@ pipeline {
                 sh 'chmod +x Estrutura/ML.py'
                 sh 'python3 Estrutura/ML.py'
             }
-            publishHTML(target: [
-                allowMissing: false,
-                alwaysLinkToLastBuild: true,
-                keepAll: true,
-                reportDir: 'Estrutura/notification',
-                reportFiles: 'erro.html',
-                reportName: 'ML Notification'
-            ])
+            script {
+                echo "Subindo servidor externo com relatório"
+                sh 'docker compose -f Estrutura/docker-compose-ngnix.yml up -d'
+                
+                echo 'https://127.0.0.1:8083/'
+            }
+            
             // script{
             //     echo 'Realizando commit'
             //     sh 'chmod +x ./Estrutura/git_branch.sh'
