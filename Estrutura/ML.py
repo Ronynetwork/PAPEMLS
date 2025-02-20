@@ -110,9 +110,8 @@ option = '''
         <button onclick="showSolution()">Mostrar Solução</button>
 
         <div id="solution" style="margin-top: 20px;"></div>
-    </div>'''
+    </div>'''.format(erro_sq,erro_sq)
     
-
 script ='''
     <script>
         function showSolution() {
