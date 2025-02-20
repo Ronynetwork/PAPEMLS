@@ -60,64 +60,7 @@ head = '''<!DOCTYPE html>
         object-src 'none';
         frame-src 'self';">
     <title>Página de Erros e Soluções</title>
-    <style>
-        <link rel="stylesheet" href="styles.css">
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h2>Selecione um erro para ver a solução</h2>
-        <select id="errorSelect">
-            <option value="">-- Escolha um erro --</option>
-'''
-
-body = '''
-</body>
-</html>
-    '''
-
-
-
-option = '''
-
-            <option value="{}">Erro: {} </option>
-        </select>
-        <button onclick="showSolution()">Mostrar Solução</button>
-
-        <div id="solution" style="margin-top: 20px;"></div>
-    </div>
-    <script src="script.js"></script>'''.format(erro_sq, erro_sq)
-    
-
-script ='''
-        function showSolution() {
-            const errorType = document.getElementById("errorSelect").value;
-            const solutionDiv = document.getElementById("solution");
-
-            let solutionText = "";'''
-    
-            
-type_erro = '''
-            if (errorType === "{}") {{
-                solutionText = `
-                    <h3> {} </h3>
-                    <p>Exemplo de Correção: </p>
-                    <pre>
-{}
-                    </pre>
-                `;
-'''.format(erro_sq, motivo_html, exemplo_parts)
-
-end_script = '''
-            } else {
-                solutionText = "<p>Selecione um erro para ver a solução.</p>";
-            }
-
-            solutionDiv.innerHTML = solutionText;
-        }
-'''
-
-css_text = '''        
+    <style>        
         body {
             font-family: Arial, sans-serif;
             background-color: #f4f4f4;
@@ -143,21 +86,69 @@ css_text = '''
             padding: 10px;
             text-align: left;
             border-radius: 5px;
-        }'''
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Selecione um erro para ver a solução</h2>
+        <select id="errorSelect">
+            <option value="">-- Escolha um erro --</option>
+'''
+
+body = '''
+</body>
+</html>
+    '''
 
 
 
-html_complete = head + option + body
-script_complete = script + type_erro + end_script 
+option = '''
+
+            <option value="{}">Erro: {} </option>
+        </select>
+        <button onclick="showSolution()">Mostrar Solução</button>
+
+        <div id="solution" style="margin-top: 20px;"></div>
+    </div>'''
+    
+
+script ='''
+    <script>
+        function showSolution() {
+            const errorType = document.getElementById("errorSelect").value;
+            const solutionDiv = document.getElementById("solution");
+
+            let solutionText = "";'''
+    
+            
+type_erro = '''
+            if (errorType === "{}") {{
+                solutionText = `
+                    <h3> {} </h3>
+                    <p>Exemplo de Correção: </p>
+                    <pre>
+{}
+                    </pre>
+                `;
+'''.format(erro_sq, motivo_html, exemplo_parts)
+
+end_script = '''
+            } else {
+                solutionText = "<p>Selecione um erro para ver a solução.</p>";
+            }
+
+            solutionDiv.innerHTML = solutionText;
+        }
+    </script>
+'''
+
+
+
+html_complete = head + option + script + type_erro + end_script + body
 
 # Cria o diretório se ele não existir
 os.makedirs("./Estrutura/notification", exist_ok=True)
-
-with open('./Estrutura/notification/style.css', 'w') as css:
-    css.write(css_text)
-
-with open('./Estrutura/notification/script.js', 'w') as java:
-    java.write(script_complete)
 
 with open('./Estrutura/notification/erro.html', 'w') as arquivo:
     arquivo.write(html_complete)
