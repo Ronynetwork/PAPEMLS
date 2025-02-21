@@ -92,7 +92,7 @@ pipeline {
             script{
                 echo 'Executando arquivo de ML'
                 sh '''
-                    source ./Estrutura/papemls/bin/activate
+                    ./Estrutura/papemls/bin/activate
                     chmod +x Estrutura/ML.py
                     python3 Estrutura/ML.py
                 '''
