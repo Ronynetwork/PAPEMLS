@@ -86,7 +86,7 @@ pipeline {
             }
             script {
                 echo 'Criando ambiente virtual e instalando dependências...'
-                sh 'docker compose -f Estrutura/docker-compose-ML.yml up -d&& docker exec -dti ollama-ML ollama run llama3.2:1b && sleep 20'
+                sh 'docker compose -f Estrutura/docker-compose-ML.yml --remove-orphans up -d&& docker exec -dti ollama-ML ollama run llama3.2:1b && sleep 20'
             }
 
             script{
