@@ -1,15 +1,21 @@
-import requests, json, os
+import requests, os, ast
 import pandas as pd
 
 url = 'http://localhost:10012/api/generate'
 erro_sq = os.getenv('ERROR_POINT')
 if erro_sq:
-    df = pd.DataFrame(list(erro_sq.items()), columns=['Erro', 'Código'])
-
-    for index, row in df.iterrows():
-        erro = row['Erro']   # Valor da coluna 'Erro'
-        code = row['Código']  # Valor da coluna 'Código'
-else:
+    try:
+        erro_dict = ast.literal_eval(erro_sq)  # Converte string para dicionário
+        if isinstance(erro_dict, dict):  # Garante que a conversão foi correta
+            df = pd.DataFrame(list(erro_dict.items()), columns=['Erro', 'Código'])
+            for index, row in df.iterrows():
+                erro = row['Erro']   # Valor da coluna 'Erro'
+                code = row['Código']  # Valor da coluna 'Código'
+        else:
+            print("ERROR_POINT não contém um dicionário válido")
+    except (SyntaxError, ValueError):
+        print("Formato inválido para conversão de ERROR_POINT")
+else:   
     print("Variável ERROR_POINT não encontrada ou vazia")
 
 data = {
