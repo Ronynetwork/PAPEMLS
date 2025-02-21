@@ -151,9 +151,9 @@ type_erro = '''
                     <pre>
 {}
                     </pre>
-                    <h2>Escolha uma ação:</h2>
-                    <button onclick="enviarAcao('corrigir')">Corrigir</button>
-                    <button onclick="enviarAcao('ignorar')">Ignorar</button>
+                <h2>Escolha uma ação:</h2>
+                <button onclick="enviarAcao('corrigir')">Corrigir</button>
+                <button onclick="enviarAcao('ignorar')">Ignorar</button>
                 `
 '''.format(erro, motivo_html, exemplo_parts)
 
