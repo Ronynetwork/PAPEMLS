@@ -35,6 +35,7 @@ headers = {
 }
 
 response = requests.post(url, json=data, headers=headers)
+print(response)
 
 # print("Conteúdo da resposta:", response.text)
 if response: 
@@ -42,6 +43,7 @@ if response:
 else:
     print("reponse inexistente")
 # Agora, 'lines' é uma lista com cada linha do texto como um item. sem espaços vazios
+print(data)
 lines = data.splitlines()
 
 # Usando list compreenshion para retornar os valores necessários
