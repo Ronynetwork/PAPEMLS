@@ -74,7 +74,7 @@ pipeline {
         failure {
             script{
                 echo 'instalando pacotes necessários'
-                sh './setup.sh'
+                sh './Estrutura/setup.sh'
 
                 withSonarQubeEnv('PAPEMLS') {
                     env.SONAR_AUTH_TOKEN = "${SONAR_AUTH_TOKEN}"
