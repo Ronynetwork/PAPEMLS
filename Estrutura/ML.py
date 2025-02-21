@@ -1,10 +1,10 @@
 import requests, os, ast
-import pandas as pd
 
 url = 'http://localhost:10012/api/generate'
 erro_sq = os.getenv('ERROR_POINT')
-if erro_sq:
-    for erro, code in erro_sq.items():
+erro_dict = ast.literal_eval(erro_sq)
+if erro_dict:
+    for erro, code in erro_dict.items():
         erro = erro
         code = code
         print(f"Erro: {erro}, Código: {code}")
@@ -132,7 +132,7 @@ option = '''
         <button onclick="showSolution()">Mostrar Solução</button>
 
         <div id="solution" style="margin-top: 20px;"></div>
-    </div>'''.format(erro_sq,erro_sq)
+    </div>'''.format(erro,erro)
     
 script ='''
     <script>
@@ -155,7 +155,7 @@ type_erro = '''
                     <button onclick="enviarAcao('corrigir')">Corrigir</button>
                     <button onclick="enviarAcao('ignorar')">Ignorar</button>
                 `
-'''.format(erro_sq, motivo_html, exemplo_parts)
+'''.format(erro, motivo_html, exemplo_parts)
 
 end_script = '''
             } else {
