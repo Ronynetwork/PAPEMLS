@@ -2,6 +2,7 @@ import requests, json, os, html
 
 url = 'http://localhost:10012/api/generate'
 erro_sq = os.getenv('ERROR_POINT')
+print(erro_sq)
 erro = list(erro_sq.keys())[0]  # Pegando a chave do dicionario retornado
 code = list(erro_sq.values())[0] # Pegando o valor da chave
 
