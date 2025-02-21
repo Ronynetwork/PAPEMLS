@@ -4,17 +4,10 @@ import pandas as pd
 url = 'http://localhost:10012/api/generate'
 erro_sq = os.getenv('ERROR_POINT')
 if erro_sq:
-    try:
-        erro_dict = ast.literal_eval(erro_sq)  # Converte string para dicionário
-        if isinstance(erro_dict, dict):  # Garante que a conversão foi correta
-            df = pd.DataFrame(list(erro_dict.items()), columns=['Erro', 'Código'])
-            for index, row in df.iterrows():
-                erro = row['Erro']   # Valor da coluna 'Erro'
-                code = row['Código']  # Valor da coluna 'Código'
-        else:
-            print("ERROR_POINT não contém um dicionário válido")
-    except (SyntaxError, ValueError):
-        print("Formato inválido para conversão de ERROR_POINT")
+    for erro, code in erro_sq.items():
+        erro = erro
+        code = code
+        print(f"Erro: {erro}, Código: {code}")
 else:   
     print("Variável ERROR_POINT não encontrada ou vazia")
 
@@ -158,9 +151,9 @@ type_erro = '''
                     <pre>
 {}
                     </pre>
-            <h2>Escolha uma ação:</h2>
-            <button onclick="enviarAcao('corrigir')">Corrigir</button>
-            <button onclick="enviarAcao('ignorar')">Ignorar</button>
+                    <h2>Escolha uma ação:</h2>
+                    <button onclick="enviarAcao('corrigir')">Corrigir</button>
+                    <button onclick="enviarAcao('ignorar')">Ignorar</button>
                 `
 '''.format(erro_sq, motivo_html, exemplo_parts)
 
