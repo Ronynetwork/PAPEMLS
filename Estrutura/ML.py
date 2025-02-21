@@ -4,10 +4,7 @@ import pandas as pd
 url = 'http://localhost:10012/api/generate'
 erro_sq = os.getenv('ERROR_POINT')
 if erro_sq:
-    erro_sq = json.loads(erro_sq)
-    # Criando um DataFrame a partir do dicionário
     df = pd.DataFrame(list(erro_sq.items()), columns=['Erro', 'Código'])
-    print(df)
 
     for index, row in df.iterrows():
         erro = row['Erro']   # Valor da coluna 'Erro'
