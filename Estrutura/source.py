@@ -1,9 +1,9 @@
 import requests, os
 
 # Configurações do SonarQube
-SONARQUBE_URL = os.getenv('SONAR_URL')
+SONARQUBE_URL = os.getenv('SONAR_HOST_URL')
 TOKEN = os.getenv('SONAR_AUTH_TOKEN')
-PROJECT_KEY = os.getenv('SONAR_PROJECT_KEY')
+PROJECT_KEY = os.getenv('SONAR_CONFIG_NAME')
 FILE_PATH = 'Estrutura/teste_script/script_hosts.py'
 
 # SONARQUBE_URL = 'http://localhost:9000'
