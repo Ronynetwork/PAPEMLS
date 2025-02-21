@@ -90,6 +90,20 @@ head = '''<!DOCTYPE html>
             border-radius: 5px;
         }
     </style>
+    <script>
+        function enviarAcao(acao) {
+            fetch("http://localhost:8080/", { 
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ mensagem: acao })
+            })
+            .then(response => response.json())
+            .then(data => alert("Resposta do servidor: " + JSON.stringify(data)))
+            .catch(error => alert("Erro ao enviar: " + error));
+        }
+    </script>
 </head>
 <body>
     <div class="container">
@@ -131,7 +145,10 @@ type_erro = '''
                     <pre>
 {}
                     </pre>
-                `;
+            <h2>Escolha uma ação:</h2>
+            <button onclick="enviarAcao('corrigir')">Corrigir</button>
+            <button onclick="enviarAcao('ignorar')">Ignorar</button>
+                `
 '''.format(erro_sq, motivo_html, exemplo_parts)
 
 end_script = '''
@@ -140,6 +157,18 @@ end_script = '''
             }
 
             solutionDiv.innerHTML = solutionText;
+        }
+        function enviarAcao(acao) {
+            fetch("http://localhost:8080/", {  // Substitua pela URL correta do backend
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ mensagem: acao })
+            })
+            .then(response => response.json())
+            .then(data => alert("Resposta do servidor: " + JSON.stringify(data)))
+            .catch(error => alert("Erro ao enviar: " + error));
         }
     </script>
 '''

@@ -97,7 +97,20 @@ pipeline {
                 
                 echo 'http://127.0.0.1:8083/'
             }
-            
+            script {
+                def resposta = ""
+                timeout(time: 5, unit: 'MINUTES') {  // Espera até 5 minutos pela resposta
+                    waitUntil {
+                        resposta = sh(script: "curl -s http://localhost:8083/", returnStdout: true).trim()
+                        return (resposta == "corrigir" || resposta == "continuar")
+                    }
+                }
+                if (resposta == "corrigir") {
+                        echo "Aplicando correção..."
+                    } else {
+                        echo "Continuando sem corrigir."
+                }
+            }
             // script{
             //     echo 'Realizando commit'
             //     sh 'chmod +x ./Estrutura/git_branch.sh'
