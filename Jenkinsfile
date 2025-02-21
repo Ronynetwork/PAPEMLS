@@ -52,7 +52,7 @@ pipeline {
                     // Obtendo as configurações do SonarQube definidas no Jenkins pelo SonarQube Servers
                     withSonarQubeEnv('PAPEMLS') {
                         env.SONAR_PROJECT_KEY = "${SONAR_CONFIG_NAME}"
-                        env.SONAR_URL = "${SONAR_HOST_URL}"1
+                        env.SONAR_URL = "${SONAR_HOST_URL}"
                         // Executando a análise do código
                         sh """
                         ${scannerHome}/bin/sonar-scanner \
