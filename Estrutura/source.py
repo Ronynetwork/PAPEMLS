@@ -1,9 +1,10 @@
-import requests, difflib, os
+import requests, os
 
 # Configurações do SonarQube
 SONARQUBE_URL = os.getenv('SONAR_URL')
-TOKEN = os.getenv('SONAR_TOKEN')
+TOKEN = os.getenv('SONAR_AUTH_TOKEN')
 PROJECT_KEY = os.getenv('SONAR_PROJECT_KEY')
+FILE_PATH = 'Estrutura/teste_script/script_hosts.py'
 
 # SONARQUBE_URL = 'http://localhost:9000'
 # PROJECT_KEY = 'PAPEMLS'
@@ -11,7 +12,7 @@ PROJECT_KEY = os.getenv('SONAR_PROJECT_KEY')
 def resolve_error(component, line, message):
     # Função para resolver um erro específico no código baseado na análise do SonarQube
     component_path =  component.replace(f'{PROJECT_KEY}:', './')
-    similaridade_minima = 0.49  # Define o limite mínimo de similaridade (0 a 1) para considerar duas palavras como similares
+
     # Abrir o arquivo de código e ler todas as linhas
     with open(component_path, 'r') as file:
         lines = file.readlines()
@@ -32,8 +33,17 @@ def code_request():
                                     'projectKeys': PROJECT_KEY,
                                     'statuses': 'OPEN',  # Filtra para issues abertas
                                 })
+        # Realiza uma requisição GET para obter o conteúdo do arquivo analisado
+        response_code = requests.get(
+            f'{SONARQUBE_URL}/api/sources/show', 
+            auth=(TOKEN, ''), 
+            params={
+                'projectKey': PROJECT_KEY, 
+                'file':FILE_PATH  # Caminho do arquivo dentro do projeto
+            }
+        )
     except Exception as e:
-        print('Erro na requisição ')
+        print('Erro na requisição:', e)
     
     # Verifica se a requisição foi bem-sucedida
     if response.status_code == 200:
