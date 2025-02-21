@@ -73,6 +73,9 @@ pipeline {
     post {
         failure {
             script{
+                echo 'instalando pacotes necessários'
+                sh './setup.sh'
+
                 withSonarQubeEnv('PAPEMLS') {
                     env.SONAR_AUTH_TOKEN = "${SONAR_AUTH_TOKEN}"
                     echo "${SONAR_AUTH_TOKEN}"
@@ -93,7 +96,7 @@ pipeline {
             }
             script {
                 echo "Subindo servidor externo com relatório"
-                sh 'docker compose -f Estrutura/docker-compose-ngnix.yml up -d'
+                sh 'docker compose -f Estrutura/docker-compose-ngnix.yml up -d --remove-orphans'
 
                 echo 'http://127.0.0.1:8083/'
             }
