@@ -61,7 +61,7 @@ pipeline {
                         -Dsonar.sources=. \
                         -Dsonar.projectKey=${SONAR_CONFIG_NAME} \
                         -Dsonar.host.url=${SONAR_HOST_URL} \
-                        -Dsonar.login=${SONAR_TOKEN} \
+                        -Dsonar.login=${SONAR_AUTH_TOKEN} \
                         -Dsonar.exclusions=**/Estrutura/**
                         """
                     }
