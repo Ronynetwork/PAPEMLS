@@ -75,7 +75,6 @@ pipeline {
             script{
                 withSonarQubeEnv('PAPEMLS') {
                     env.SONAR_AUTH_TOKEN = "${SONAR_AUTH_TOKEN}"
-                    sh 'export SONAR_AUTH_TOKEN=${env.SONAR_AUTH_TOKEN}'
                     echo "${SONAR_AUTH_TOKEN}"
                     def output = sh(script: 'python3 Estrutura/source.py', returnStdout: true).trim()
                     env.ERROR_POINT=output
