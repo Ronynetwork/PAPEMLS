@@ -1,10 +1,19 @@
-import requests, json, os, html
+import requests, json, os
+import pandas as pd
 
 url = 'http://localhost:10012/api/generate'
 erro_sq = os.getenv('ERROR_POINT')
-print(erro_sq)
-erro = list(erro_sq.keys())[0]  # Pegando a chave do dicionario retornado
-code = list(erro_sq.values())[0] # Pegando o valor da chave
+if erro_sq:
+    erro_sq = json.loads(erro_sq)
+    # Criando um DataFrame a partir do dicionário
+    df = pd.DataFrame(list(erro_sq.items()), columns=['Erro', 'Código'])
+    print(df)
+
+    for index, row in df.iterrows():
+        erro = row['Erro']   # Valor da coluna 'Erro'
+        code = row['Código']  # Valor da coluna 'Código'
+else:
+    print("Variável ERROR_POINT não encontrada ou vazia")
 
 data = {
     "model": "llama3.2:1b", 
