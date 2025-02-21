@@ -2,8 +2,6 @@ services:
   nginx:
     container_name: nginx-app
     image: nginx:alpine
-    #./index.html:/usr/share/nginx/html/index.html:ro mapeia o arquivo index.html do diretório atual para o local padrão de arquivos HTML do Nginx dentro do container.
-    #O sufixo ro indica que deve ser um arquivo read only
     volumes:
       - ./notification/erro.html:/usr/share/nginx/html/index.html:ro
     deploy:
@@ -13,9 +11,8 @@ services:
           memory: 1g
     networks:
       - nginx_network
+    ports:
+      - "8083:80"
 networks:
   nginx_network:
     driver: bridge
-    ports:
-      - "8083:80"
-    command: ["nginx", "-g", "daemon off;"]
