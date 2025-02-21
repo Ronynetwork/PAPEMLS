@@ -1,6 +1,6 @@
 pipeline {
     agent any
-    
+
     stages {
         stage('Realizando a autentiação no Git') {
             steps {
@@ -28,7 +28,7 @@ pipeline {
                     if (sonarContainerExists == 1) {
                         echo "O serviço SonarQube já está em execução, reiniciando o contêiner."
                         sh "docker restart sonarqube" // Reiniciar o contêiner se estiver em execução
-                    } 
+                    }
                     else {
                         echo "Realizando build do SonarQube"
                         sh 'docker compose -f Estrutura/docker-compose-sonar.yml up -d --remove-orphans'
@@ -61,11 +61,10 @@ pipeline {
                         -Dsonar.sources=. \
                         -Dsonar.projectKey=${SONAR_CONFIG_NAME} \
                         -Dsonar.host.url=${SONAR_HOST_URL} \
-                        -Dsonar.login=${SONAR_AUTH_TOKEN} \
                         -Dsonar.exclusions=**/Estrutura/**
                         """
                     }
-                }              
+                }
             }
         }
         stage('Quality Gate') {
@@ -95,7 +94,7 @@ pipeline {
             script {
                 echo "Subindo servidor externo com relatório"
                 sh 'docker compose -f Estrutura/docker-compose-ngnix.yml up -d'
-                
+
                 echo 'http://127.0.0.1:8083/'
             }
             script {
@@ -118,5 +117,5 @@ pipeline {
             //     sh './Estrutura/git_branch.sh'
             // }
         }
-    }   
+    }
 }
