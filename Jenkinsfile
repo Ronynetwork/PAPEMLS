@@ -58,7 +58,7 @@ pipeline {
                         ${scannerHome}/bin/sonar-scanner \
                         -Dsonar.sources=. \
                         -Dsonar.projectKey=${SONAR_PROJECT_KEY} \
-                        -Dsonar.exclusions=**/Estrutura/**
+                        -Dsonar.exclusions=**/Estrutura/**,**/papemls/**
                         """
                     }
                 }
