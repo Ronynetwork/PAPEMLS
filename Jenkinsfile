@@ -101,8 +101,8 @@ pipeline {
                 echo "Subindo servidor externo com relatório"
                 sh '''
                 docker rm -f nginx-app
-                docker-compose -f Estrutura/docker-compose-ngnix.yml down --volumes --remove-orphans
-                docker-compose -f Estrutura/docker-compose-ngnix.yml up -d --build --remove-orphans
+                docker compose -f Estrutura/docker-compose-ngnix.yml down --volumes --remove-orphans
+                docker compose -f Estrutura/docker-compose-ngnix.yml up -d --build --remove-orphans
                 '''
                 echo 'http://127.0.0.1:8083/'
             }
