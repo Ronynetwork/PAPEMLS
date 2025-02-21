@@ -53,13 +53,15 @@ pipeline {
                     withSonarQubeEnv('PAPEMLS') {
                         env.SONAR_PROJECT_KEY = "${SONAR_CONFIG_NAME}"
                         env.SONAR_URL = "${SONAR_HOST_URL}"
+                        env.SONAR_TOKEN = "${SONAR_AUTH_TOKEN}"
+
                         // Executando a análise do código sem especificar sonar.sources
                         sh """
                         ${scannerHome}/bin/sonar-scanner \
                         -Dsonar.sources=. \
                         -Dsonar.projectKey=${SONAR_CONFIG_NAME} \
                         -Dsonar.host.url=${SONAR_HOST_URL} \
-                        -Dsonar.login=${SONAR_AUTH_TOKEN} \
+                        -Dsonar.login=${SONAR_TOKEN} \
                         -Dsonar.exclusions=**/Estrutura/**
                         """
                     }
