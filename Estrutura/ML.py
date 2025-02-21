@@ -2,23 +2,25 @@ import requests, json, os, html
 
 url = 'http://localhost:10012/api/generate'
 erro_sq = os.getenv('ERROR_POINT')
+erro = list(erro_sq.keys())[0]  # Pegando a chave do dicionario retornado
+code = list(erro_sq.values())[0] # Pegando o valor da chave
 
 data = {
     "model": "llama3.2:1b", 
     "prompt": '''
-Codigo com erro: except   
+Codigo com erro: {}   
 Erro: {}
 "Explique brevemente o Motivo do erro e forneça um único exemplo, siga essa ordem, sempre começando com 'Exemplo:' e apenas UM exemplo.
 
 Exemplo:
 
-```python
+```
 [código de exemplo resolvendo de forma simples o erro]
 ```
 
 ao fim do arquivo, dê uma breve explicação do porque o erro "{}" acontece na linha de código informada forma didática e simples. Sem adicionar erros desnecessários e que não são referentes a esse erro.
 
-    '''.format(erro_sq, erro_sq),
+    '''.format(code, erro, erro),
     "stream": False  # Retorna toda resposta em um token
 }
 
