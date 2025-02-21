@@ -2,7 +2,7 @@ import requests, difflib, os
 
 # Configurações do SonarQube
 SONARQUBE_URL = os.getenv('SONAR_URL')
-TOKEN = os.getenv('SONAR_AUTH_TOKEN')
+TOKEN = os.getenv('SONAR_TOKEN')
 PROJECT_KEY = os.getenv('SONAR_PROJECT_KEY')
 
 # SONARQUBE_URL = 'http://localhost:9000'
