@@ -11,6 +11,11 @@ services:
         limits:
           cpus: '1.0'
           memory: 1g
+    networks:
+      - nginx_network
+networks:
+  nginx_network:
+    driver: bridge
     ports:
       - "8083:80"
     command: ["nginx", "-g", "daemon off;"]
