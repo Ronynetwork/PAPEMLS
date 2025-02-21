@@ -86,7 +86,7 @@ pipeline {
             }
             script {
                 echo 'Criando ambiente virtual e instalando dependências...'
-                sh 'docker compose -f Estrutura/docker-compose-ML.yml --remove-orphans up -d&& docker exec -dti ollama-ML ollama run llama3.2:1b && sleep 20'
+                sh 'docker compose -f Estrutura/docker-compose-ML.yml up -d&& docker exec -dti ollama-ML ollama run llama3.2:1b && sleep 20'
             }
 
             script{
@@ -99,8 +99,11 @@ pipeline {
             }
             script {
                 echo "Subindo servidor externo com relatório"
-                sh 'docker compose -f Estrutura/docker-compose-ngnix.yml up -d --remove-orphans'
-
+                sh '''
+                docker rm -f nginx-app
+                docker-compose -f Estrutura/docker-compose-ngnix.yml down --volumes --remove-orphans
+                docker-compose -f Estrutura/docker-compose-ngnix.yml up -d --build --remove-orphans
+                '''
                 echo 'http://127.0.0.1:8083/'
             }
             script {
