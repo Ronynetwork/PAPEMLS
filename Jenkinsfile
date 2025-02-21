@@ -5,7 +5,7 @@ pipeline {
         stage('Realizando a autentiação no Git') {
             steps {
                 script {
-                    def destinationDir= 'AVSAC'
+                    def destinationDir= 'PAPEMLS'
                     git credentialsId: 'log-token-git',
                         url: 'https://github.com/Ronynetwork/PAPEMLS.git',
                         branch: 'main'
@@ -74,6 +74,7 @@ pipeline {
         failure {
             script{
                 echo 'Realizando o GET de bugs...'
+                echo "Erro retornado ${SONAR_AUTH_TOKEN}"
                 def output = sh(script: 'python3 Estrutura/source.py', returnStdout: true).trim()
                 env.ERROR_POINT=output
                 echo "Erro retornado ${ERROR_POINT}"
