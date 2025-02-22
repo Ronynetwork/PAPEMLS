@@ -9,11 +9,5 @@ services:
         limits:
           cpus: '1.0'
           memory: 1g
-    networks:
-      - nginx_network
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
-
-networks:
-  nginx_network:
-    driver: bridge
+    ports:
+      - "8083:80"
