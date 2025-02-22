@@ -11,8 +11,9 @@ services:
           memory: 1g
     networks:
       - nginx_network
-    ports:
-      - "8083:80"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
 networks:
   nginx_network:
     driver: bridge

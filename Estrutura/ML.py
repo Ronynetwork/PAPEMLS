@@ -103,7 +103,7 @@ head = '''<!DOCTYPE html>
     </style>
     <script>
         function enviarAcao(acao) {
-            fetch("http://localhost:8080/", { 
+            fetch("http://host.docker.internal:8080", { 
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
