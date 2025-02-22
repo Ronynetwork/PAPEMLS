@@ -89,7 +89,7 @@ pipeline {
                 sh '''
                     docker compose -f Estrutura/docker-compose-ML.yml up -d
                     sleep 20
-                    docker exec ollama-ML ollama run llama3.2:1b
+                    docker exec ollama-ml ollama run llama3.2:1b
                 '''
             }
 
