@@ -119,8 +119,8 @@ pipeline {
                 // A partir da resposta, você pode tomar ações dentro da pipeline
                 if (resposta == "corrigir") {
                     env.ACTION=resposta
-                    def resposta = sh(script: 'python3 Estrutura/source.py ', returnStdout: true).trim()
-                    env.code=resposta
+                    def code_source = sh(script: 'python3 Estrutura/source.py ', returnStdout: true).trim()
+                    env.code=code_source
                     sh '''
                         chmod +x Estrutura/ML_autocorrigir.py Estrutura/git_branch.sh
                         python3 Estrutura/ML_autocorrigir.py
