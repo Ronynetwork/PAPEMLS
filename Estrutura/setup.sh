@@ -7,4 +7,4 @@ python3 -m venv papemls
 source papemls/bin/activate
 
 # Instala as dependências do arquivo requirements.txt
-pip install install flask requests os click setuptools Jinja2 colorama blinker
+pip install install flask requests os
