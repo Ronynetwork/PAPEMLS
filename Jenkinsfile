@@ -102,32 +102,29 @@ pipeline {
                 '''
             }
             script {
-                echo "Subindo app Flask com relatório"
+                echo 'Subindo flask em background'
                 sh '''
                     . papemls/bin/activate
-                    flask --app Estrutura/notification run --no-debug
+                    chmod +x Estrutura/notification/__init__.py
+                    python3 Estrutura/notification/__init__.py &
                 '''
-                echo 'http://127.0.0.1:5000/'
             }
             script {
-                def resposta = ""
-                timeout(time: 5, unit: 'MINUTES') {  // Espera até 5 minutos pela resposta
-                    waitUntil {
-                        resposta = sh(script: "curl -s http://localhost:8083/", returnStdout: true).trim()
-                        return (resposta == "corrigir" || resposta == "continuar")
-                    }
-                }
+                // Aguardar que o Flask capture a resposta do usuário
+                echo 'Aguardando resposta do usuário...'
+                // Aqui você pode fazer uma requisição para o Flask ou esperar até que ele termine
+                def resposta = sh(script: 'curl -X GET http://localhost:5000/capturar_resposta', returnStdout: true).trim()
+                echo "Resposta recebida: ${resposta}"
+                
+                // A partir da resposta, você pode tomar ações dentro da pipeline
                 if (resposta == "corrigir") {
-                        echo "Aplicando correção..."
-                    } else {
-                        echo "Continuando sem corrigir."
+                    echo "Ação de corrigir selecionada!"
+                    // Implementar lógica de correção
+                } else {
+                    echo "Ação de ignorar selecionada!"
+                    // Implementar lógica de ignorar
                 }
             }
-            // script{
-            //     echo 'Realizando commit'
-            //     sh 'chmod +x ./Estrutura/git_branch.sh'
-            //     sh './Estrutura/git_branch.sh'
-            // }
         }
     }
 }
