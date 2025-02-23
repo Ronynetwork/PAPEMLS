@@ -7,4 +7,4 @@ python3 -m venv papemls
 source papemls/bin/activate
 
 # Instala as dependências do arquivo requirements.txt
-pip install flask requests os
+pip install flask requests
