@@ -1,30 +1,35 @@
-import os
+import os, requests, threading
 
-from flask import Flask, render_template
+from flask import Flask, render_template, request, jsonify
+JENKINS_URL = "http://localhost:8080/job/PAPEMLS/buildWithParameters"
 
 
 def create_app(test_config=None):
-    # create and configure the app
-    app = Flask(__name__, instance_relative_config=True)
-    app.config.from_mapping(
-        SECRET_KEY='dev',
-    )
-
-    if test_config is None:
-        # load the instance config, if it exists, when not testing
-        app.config.from_pyfile('config.py', silent=True)
-    else:
-        # load the test config if passed in
-        app.config.from_mapping(test_config)
-
-    # ensure the instance folder exists
-    try:
-        os.makedirs(app.instance_path)
-    except OSError:
-        pass
-
-    # a simple page that says hello
+    app = Flask(__name__)
+    #rendeniza a pagina de erro na raiz
+    
     @app.route('/')
-    def erro():
-        return render_template("erro.html")
-    return app
+    def index():
+        """Retorna a página HTML que o usuário verá."""
+        return render_template('erro.html')
+
+    @app.route("/resposta/<acao>", methods=["GET"])
+    def processar_escolha(acao):
+        global resposta_usuario
+        resposta_usuario = acao
+        return jsonify({"message": f"Escolha registrada: {acao}"}), 200
+    
+    @app.route('/capturar_resposta', methods=['GET'])
+    def capturar_resposta_durante_pipeline():
+        global resposta_usuario
+        if resposta_usuario:
+            return jsonify({"resposta": resposta_usuario}), 200
+        return jsonify({"resposta": "Aguardando escolha..."}), 200
+
+    app.run(host="127.0.0.1", port=5000)
+
+
+if __name__ == '__main__':
+    # Rodar o Flask em uma thread separada para não bloquear o Jenkins
+    flask_thread = threading.Thread(target=create_app)
+    flask_thread.start()
