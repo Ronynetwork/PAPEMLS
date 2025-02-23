@@ -189,7 +189,7 @@ end_script = '''
 html_complete = head + option + script + type_erro + end_script + body
 
 # Cria o diretório se ele não existir
-os.makedirs("./Estrutura/notification", exist_ok=True)
+os.makedirs("./Estrutura/notification/templates", exist_ok=True)
 
-with open('./Estrutura/notification/erro.html', 'w') as arquivo:
+with open('./Estrutura/notification/templates/erro.html', 'w') as arquivo:
     arquivo.write(html_complete)

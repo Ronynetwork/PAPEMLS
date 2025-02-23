@@ -102,13 +102,12 @@ pipeline {
                 '''
             }
             script {
-                echo "Subindo servidor externo com relatório"
+                echo "Subindo app Flask com relatório"
                 sh '''
-                docker rm -f nginx-app
-                docker compose -f Estrutura/docker-compose-ngnix.yml down --volumes --remove-orphans
-                docker compose -f Estrutura/docker-compose-ngnix.yml up -d --build --remove-orphans
+                    . papemls/bin/activate
+                    flask --app Estrutura/notification
                 '''
-                echo 'http://127.0.0.1:8083/'
+                echo 'http://127.0.0.1:5000/'
             }
             script {
                 def resposta = ""
