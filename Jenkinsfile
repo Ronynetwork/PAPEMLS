@@ -105,7 +105,7 @@ pipeline {
                 echo "Subindo app Flask com relatório"
                 sh '''
                     . papemls/bin/activate
-                    flask --app Estrutura/notification --n-debug
+                    flask --app Estrutura/notification --no-debug
                 '''
                 echo 'http://127.0.0.1:5000/'
             }
