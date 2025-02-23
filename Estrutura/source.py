@@ -40,20 +40,16 @@ def code_source():
         print(code)  # Exibe o conteúdo do arquivo
     else:
         print(f"Erro {response.status_code}: {response.text}")
-        
 
-def code_request(acao_request):
+
+def code_request():
     # Função para fazer uma requisição à API do SonarQube e processar os problemas encontrados
     try:
-        if acao_request == 'corrigir':
-            code_source()
-        else:
-            # Realiza uma requisição GET à API do SonarQube para buscar problemas no código do projeto especificado
-            response = requests.get(f'{SONARQUBE_URL}/api/issues/search', auth=(TOKEN, ''),
-                                    params={
-                                        'projectKeys': PROJECT_KEY,
-                                        'statuses': 'OPEN',  # Filtra para issues abertas
-                                    })
+        response = requests.get(f'{SONARQUBE_URL}/api/issues/search', auth=(TOKEN, ''),
+                                params={
+                                    'projectKeys': PROJECT_KEY,
+                                    'statuses': 'OPEN',  # Filtra para issues abertas
+                                })
     except Exception as e:
         print('Erro na requisição:', e)
     
