@@ -118,11 +118,16 @@ pipeline {
                 
                 // A partir da resposta, você pode tomar ações dentro da pipeline
                 if (resposta == "corrigir") {
-                    echo "Ação de corrigir selecionada!"
-                    // Implementar lógica de correção
+                    env.ACTION=resposta
+                    def resposta = sh(script: 'python3 Estrutura/source.py ', returnStdout: true).trim()
+                    env.code=resposta
+                    sh '''
+                        chmod +x Estrutura/ML_autocorrigir.py Estrutura/git_branch.sh
+                        python3 Estrutura/ML_autocorrigir.py
+                        ./Estrutura/git_branch.sh
+                    '''
                 } else {
                     echo "Ação de ignorar selecionada!"
-                    // Implementar lógica de ignorar
                 }
             }
         }

@@ -23,25 +23,37 @@ def resolve_error(component, line, message):
     print(msg)
 
 
-def code_request():
+def code_source():    
+    # Requisição para pegar o código do arquivo
+    response = requests.get(
+        f'{SONARQUBE_URL}/api/sources/raw',  # Endpoint correto
+        auth=(TOKEN,''),
+        params={
+            'key': f'{PROJECT_KEY}:{FILE_PATH}'  # Aqui é necessário usar o 'key' com o formato correto
+        }
+    )
+
+    code = response.text
+
+    if response.status_code == 200:
+        # Se a resposta for bem-sucedida, imprime o conteúdo do arquivo
+        print(code)  # Exibe o conteúdo do arquivo
+    else:
+        print(f"Erro {response.status_code}: {response.text}")
+        
+
+def code_request(acao_request):
     # Função para fazer uma requisição à API do SonarQube e processar os problemas encontrados
-    
     try:
-        # Realiza uma requisição GET à API do SonarQube para buscar problemas no código do projeto especificado
-        response = requests.get(f'{SONARQUBE_URL}/api/issues/search', auth=(TOKEN, ''),
-                                params={
-                                    'projectKeys': PROJECT_KEY,
-                                    'statuses': 'OPEN',  # Filtra para issues abertas
-                                })
-        # Realiza uma requisição GET para obter o conteúdo do arquivo analisado
-        response_code = requests.get(
-            f'{SONARQUBE_URL}/api/sources/show', 
-            auth=(TOKEN, ''), 
-            params={
-                'projectKey': PROJECT_KEY, 
-                'file':FILE_PATH  # Caminho do arquivo dentro do projeto
-            }
-        )
+        if acao_request == 'corrigir':
+            code_source()
+        else:
+            # Realiza uma requisição GET à API do SonarQube para buscar problemas no código do projeto especificado
+            response = requests.get(f'{SONARQUBE_URL}/api/issues/search', auth=(TOKEN, ''),
+                                    params={
+                                        'projectKeys': PROJECT_KEY,
+                                        'statuses': 'OPEN',  # Filtra para issues abertas
+                                    })
     except Exception as e:
         print('Erro na requisição:', e)
     
@@ -66,5 +78,13 @@ def code_request():
         # Caso a requisição não seja bem-sucedida, exibe uma mensagem de erro
         print(f"Erro ao acessar o código-fonte: {response.status_code} - {response.text}")
 
+
+
 # Chama a função para iniciar o processo de requisição e resolução de erros
-code_request()
+
+acao = os.getenv("ACTION")
+
+if acao == 'Corrigir':
+    code_source()
+else:
+    code_request()
