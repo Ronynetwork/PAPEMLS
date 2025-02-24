@@ -113,8 +113,14 @@ pipeline {
                 // Aguardar que o Flask capture a resposta do usuário
                 echo 'Aguardando resposta do usuário...'
                 // Aqui você pode fazer uma requisição para o Flask ou esperar até que ele termine
-                def resposta = sh(script: 'curl -X GET http://localhost:5000/capturar_resposta', returnStdout: true).trim()
-                echo "Resposta recebida: ${resposta}"
+                    def startTime = System.currentTimeMillis()
+                    def duration = 5 * 60 * 1000  // 5 minutos em milissegundos
+
+                    while ((System.currentTimeMillis() - startTime) < duration) {
+                        def resposta = sh(script: 'curl -X GET http://localhost:5000/capturar_resposta', returnStdout: true).trim()
+                        echo "Resposta recebida: ${resposta}"
+                        
+                        sleep 5  // Espera 5 segundos antes da próxima requisição
                 
                 // A partir da resposta, você pode tomar ações dentro da pipeline
                 if (resposta == "corrigir") {
