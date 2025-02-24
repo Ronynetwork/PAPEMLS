@@ -118,15 +118,14 @@ pipeline {
 
                     while ((System.currentTimeMillis() - startTime) < duration) {
                         def resposta = sh(script: 'curl -X GET http://127.0.0.1:5000/capturar_resposta', returnStdout: true).trim()
-                        def acao = readJSON(text: resposta)
-                        echo "Resposta recebida: ${acao}"
+                        echo "Resposta recebida: ${resposta}"
 
                         
                         sleep 5  // Espera 5 segundos antes da próxima requisição
                     }
                 // A partir da resposta, você pode tomar ações dentro da pipeline
-                if (acao == "corrigir") {
-                    env.ACTION=acao
+                if (resposta == "corrigir") {
+                    env.ACTION=resposta
                     def code_source = sh(script: 'python3 Estrutura/source.py ', returnStdout: true).trim()
                     env.code=code_source
                     sh '''
