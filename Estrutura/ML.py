@@ -156,7 +156,7 @@ end_script = '''
 
             solutionDiv.innerHTML = solutionText;
         }
-        function enviarEscolha(acao) {
+        function enviarAcao(acao) {
             fetch("/capturar_resposta", {
                 method: "POST",
                 headers: {
