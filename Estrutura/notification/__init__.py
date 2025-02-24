@@ -30,7 +30,7 @@ def create_app(test_config=None):
     def capturar_resposta():
         global resposta_usuario
         if resposta_usuario:
-            return jsonify({"resposta": resposta_usuario}), 200
+            return resposta_usuario, 200
         return jsonify({"resposta": "Aguardando escolha..."}), 200
 
     # 🔹 Adicionando o cabeçalho CSP para permitir conexões com o Jenkins
