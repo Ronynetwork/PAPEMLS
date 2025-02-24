@@ -31,6 +31,8 @@ def create_app(test_config=None):
 
 
 if __name__ == '__main__':
-    # Rodar o Flask em uma thread separada para não bloquear o Jenkins
-    flask_thread = threading.Thread(target=create_app)
-    flask_thread.start()
+    create_app()
+
+    # # Rodar o Flask em uma thread separada para não bloquear o Jenkins
+    # flask_thread = threading.Thread(target=create_app)
+    # flask_thread.start()
