@@ -4,6 +4,8 @@ from flask import Flask, render_template, request, jsonify
 
 JENKINS_URL = "http://localhost:8080/job/PAPEMLS/buildWithParameters"
 
+resposta_usuario = None
+
 def create_app(test_config=None):
     app = Flask(__name__)
 
