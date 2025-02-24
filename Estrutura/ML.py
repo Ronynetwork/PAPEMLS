@@ -157,7 +157,7 @@ end_script = '''
             solutionDiv.innerHTML = solutionText;
         }
         function enviarAcao(acao) {
-            fetch("/capturar_resposta", {
+            fetch("/receber_escolha", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"

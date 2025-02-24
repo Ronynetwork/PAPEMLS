@@ -14,15 +14,20 @@ def create_app(test_config=None):
         """Retorna a página HTML que o usuário verá."""
         return render_template('erro.html')
 
-    @app.route("/resposta/<acao>", methods=["GET"])
-    def processar_escolha(acao):
+    #  Rota para receber a ação do botão (POST)
+    @app.route('/receber_escolha', methods=['POST'])
+    def receber_escolha():
         global resposta_usuario
-        resposta_usuario = acao
-        print(resposta_usuario)
-        return jsonify({"message": f"{acao}"}), 200
+        data = request.get_json()
+        if data and "resposta" in data:
+            resposta_usuario = data["resposta"]
+            print(f"Usuário escolheu: {resposta_usuario}")
+            return jsonify({"message": f"Escolha '{resposta_usuario}' salva com sucesso"}), 200
+        return jsonify({"error": "Nenhuma resposta enviada"}), 400
 
+    # Rota para o Jenkins verificar a escolha do usuário (GET)
     @app.route('/capturar_resposta', methods=['GET'])
-    def capturar_resposta_durante_pipeline():
+    def capturar_resposta():
         global resposta_usuario
         if resposta_usuario:
             return jsonify({"resposta": resposta_usuario}), 200
