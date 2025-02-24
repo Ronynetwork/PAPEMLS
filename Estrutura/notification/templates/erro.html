@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Security-Policy" content="
-        default-src 'none';
+        default-src 'self';
         script-src 'self' 'unsafe-inline' 'unsafe-eval';
         style-src 'self' 'unsafe-inline';
         img-src 'self';
@@ -41,34 +41,21 @@
             border-radius: 5px;
         }
     </style>
-    <script>
-        function enviarAcao(acao) {
-            fetch("http://localhost:8080/", { 
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({ mensagem: acao })
-            })
-            .then(response => response.json())
-            .then(data => alert("Resposta do servidor: " + JSON.stringify(data)))
-            .catch(error => alert("Erro ao enviar: " + error));
-        }
-    </script>
 </head>
 <body>
     <div class="container">
         <h2>Selecione um erro para ver a solução</h2>
         <select id="errorSelect">
             <option value="">-- Escolha um erro --</option>
-
-
-            <option value="Specify an exception class to catch or reraise the exception">Erro: Specify an exception class to catch or reraise the exception </option>
+            <option value="Specify an exception class to catch or reraise the exception">
+                Erro: Specify an exception class to catch or reraise the exception
+            </option>
         </select>
         <button onclick="showSolution()">Mostrar Solução</button>
 
         <div id="solution" style="margin-top: 20px;"></div>
     </div>
+
     <script>
         function showSolution() {
             const errorType = document.getElementById("errorSelect").value;
@@ -77,40 +64,37 @@
             let solutionText = "";
             if (errorType === "Specify an exception class to catch or reraise the exception") {
                 solutionText = `
-                    <h3> Nesse exemplo, a classe TypeError é especificada como classe de Exception para rerais. </h3>
-                    <p>Exemplo de Correção: </p>
+                    <h3>A mensagem ValueError ocorre quando o valor da string não é válido.</h3>
+                    <p>Exemplo de Correção:</p>
                     <pre>
-python
 try:
-    x = 1 / 0
-except ZeroDivisionError as e:
-    print(f"Erro de divisão: {e}")
-
+    # Acesse uma string sem validação do tipo
+    s = input("Insira um nome: ")
+except NameError as ex:
+    print(f"O erro {ex} aconteceu porque não especificou um tipo de exception class para caught ou reraised")
                     </pre>
-                <h2>Escolha uma ação:</h2>
-                <button onclick="enviarAcao('corrigir')">Corrigir</button>
-                <button onclick="enviarAcao('ignorar')">Ignorar</button>
-                `
-
+                    <h2>Escolha uma ação:</h2>
+                    <button onclick="enviarEscolha('corrigir')">Corrigir</button>
+                    <button onclick="enviarEscolha('ignorar')">Ignorar</button>
+                `;
             } else {
                 solutionText = "<p>Selecione um erro para ver a solução.</p>";
             }
 
             solutionDiv.innerHTML = solutionText;
         }
-        function enviarAcao(acao) {
-            fetch("http://localhost:8080/", {  // Substitua pela URL correta do backend
+        function enviarEscolha(acao) {
+            fetch("/receber_escolha", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify({ mensagem: acao })
+                body: JSON.stringify({ "resposta": acao })
             })
             .then(response => response.json())
-            .then(data => alert("Resposta do servidor: " + JSON.stringify(data)))
-            .catch(error => alert("Erro ao enviar: " + error));
+            .then(data => alert("resposta: " + acao))
+            .catch(error => console.error("Erro:", error));
         }
     </script>
-
 </body>
 </html>

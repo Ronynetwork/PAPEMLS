@@ -27,7 +27,7 @@ for ambiente in os.listdir(current_path):
                         if yaml in ['gateway-http.yaml', 'gateway-nlb.yaml', 'gateway.yaml']:
                             arq_path = os.path.join(branch_path, yaml)
                             open_arq(arq_path, ambiente)
-                except:
+                exception
                     arq_path = os.path.join(ambiente_path, f'hom\\gateway-http.yaml')
                     ambiente_list.append(ambiente_path)
                     open_arq(arq_path, ambiente)

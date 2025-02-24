@@ -22,7 +22,7 @@ Erro: {}
 
 ajuste a parte do código que se refere ao erro.
 
-    '''.format(erro),
+    '''.format(code, erro),
     "stream": False # Retorna toda resposta em um token
 }
 
