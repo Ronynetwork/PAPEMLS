@@ -17,6 +17,7 @@ def create_app(test_config=None):
     def processar_escolha(acao):
         global resposta_usuario
         resposta_usuario = acao
+        print(resposta_usuario)
         return jsonify({"message": f"Escolha registrada: {acao}"}), 200
     
     @app.route('/capturar_resposta', methods=['GET'])
@@ -26,7 +27,7 @@ def create_app(test_config=None):
             return jsonify({"resposta": resposta_usuario}), 200
         return jsonify({"resposta": "Aguardando escolha..."}), 200
 
-    app.run(host="127.0.0.1", port=5000)
+    app.run(host="0.0.0.0", port=5000, debug=True)
 
 
 if __name__ == '__main__':
