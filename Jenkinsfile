@@ -47,18 +47,18 @@ pipeline {
         stage('Análise do Código') {
             steps {
                 script {
-                    // Defina o caminho completo para o sonar-scanner
                     def scannerHome = tool 'sonar-scanner';
-                    // Obtendo as configurações do SonarQube definidas no Jenkins pelo SonarQube Servers
                     withSonarQubeEnv('PAPEMLS') {
                         env.SONAR_PROJECT_KEY = "${SONAR_CONFIG_NAME}"
                         env.SONAR_URL = "${SONAR_HOST_URL}"
-                        // Executando a análise do código
+                        
                         sh """
-                        ${scannerHome}/bin/sonar-scanner \
-                        -Dsonar.sources=. \
-                        -Dsonar.sources=teste_script \
-                        -Dsonar.exclusions=**/Estrutura/**,**/papemls/**
+                            ls -R
+                            ${scannerHome}/bin/sonar-scanner \
+                            -Dsonar.projectKey=${SONAR_PROJECT_KEY} \
+                            -Dsonar.sources=teste_script \
+                            -Dsonar.scm.exclusions.disabled=true \
+                            -Dsonar.host.url=${SONAR_URL}
                         """
                     }
                 }
