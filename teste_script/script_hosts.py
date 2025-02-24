@@ -32,5 +32,5 @@ for ambiente in os.listdir(current_path):
                     ambiente_list.append(ambiente_path)
                     open_arq(arq_path, ambiente)
                     continue
-    except NotADirectoryError:
+    except as e:
         continue
