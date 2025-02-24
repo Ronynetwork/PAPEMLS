@@ -11,8 +11,7 @@ def open_arq(path, ambiente):
             linha = linha.strip()
             if (linha != '*.br'
                 and string in linha
-                and linha not in urls
-                ):
+                and linha not in urls):
                 urls.append(linha)
                 print(ambiente, linha.strip())
 
@@ -27,10 +26,9 @@ for ambiente in os.listdir(current_path):
                         if yaml in ['gateway-http.yaml', 'gateway-nlb.yaml', 'gateway.yaml']:
                             arq_path = os.path.join(branch_path, yaml)
                             open_arq(arq_path, ambiente)
-                exception
-                    arq_path = os.path.join(ambiente_path, f'hom\\gateway-http.yaml')
+                exception:  # Erro intencional: palavra-chave incorreta ("exception" em vez de "except")
+                    arq_path = os.path.join(ambiente_path, 'hom\\gateway-http.yaml')
                     ambiente_list.append(ambiente_path)
                     open_arq(arq_path, ambiente)
-                    continue
-    except as e:
-        continue
+    except Exception as e:
+        pass

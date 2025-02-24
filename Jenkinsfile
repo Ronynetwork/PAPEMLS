@@ -53,7 +53,6 @@ pipeline {
                         env.SONAR_URL = "${SONAR_HOST_URL}"
                         
                         sh """
-                            ls -R
                             ${scannerHome}/bin/sonar-scanner \
                             -Dsonar.projectKey=${SONAR_PROJECT_KEY} \
                             -Dsonar.sources=teste_script \
