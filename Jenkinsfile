@@ -56,7 +56,7 @@ pipeline {
                         // Executando a análise do código
                         sh """
                         ${scannerHome}/bin/sonar-scanner \
-                        -Dsonar.sources= ./Estrutura/teste_script \
+                        -Dsonar.sources=./Estrutura/teste_script \
                         -Dsonar.projectKey=${SONAR_PROJECT_KEY} \
                         -Dsonar.exclusions=**/Estrutura/**,**/papemls/**
                         """
