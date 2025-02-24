@@ -19,7 +19,7 @@ def create_app(test_config=None):
         global resposta_usuario
         resposta_usuario = acao
         print(resposta_usuario)
-        return jsonify({"message": f"Escolha registrada: {acao}"}), 200
+        return jsonify({"message": f"{acao}"}), 200
 
     @app.route('/capturar_resposta', methods=['GET'])
     def capturar_resposta_durante_pipeline():
