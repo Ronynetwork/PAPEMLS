@@ -117,7 +117,7 @@ pipeline {
                     def duration = 5 * 60 * 1000  // 5 minutos em milissegundos
 
                     while ((System.currentTimeMillis() - startTime) < duration) {
-                        def resposta = sh(script: 'curl -X GET http://localhost:5000/capturar_resposta', returnStdout: true).trim()
+                        def resposta = sh(script: 'curl -X GET http://127.0.0.1:5000/capturar_resposta', returnStdout: true).trim()
                         echo "Resposta recebida: ${resposta}"
                         
                         sleep 5  // Espera 5 segundos antes da próxima requisição
