@@ -121,7 +121,7 @@ pipeline {
                         echo "Resposta recebida: ${resposta}"
                         
                         sleep 5  // Espera 5 segundos antes da próxima requisição
-                
+                    }
                 // A partir da resposta, você pode tomar ações dentro da pipeline
                 if (resposta == "corrigir") {
                     env.ACTION=resposta
