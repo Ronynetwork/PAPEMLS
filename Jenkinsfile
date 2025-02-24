@@ -116,26 +116,27 @@ pipeline {
                     def startTime = System.currentTimeMillis()
                     def duration = 5 * 60 * 1000  // 5 minutos em milissegundos
 
-                    while ((System.currentTimeMillis() - startTime) < duration) {
-                        def resposta = sh(script: 'curl -X GET http://127.0.0.1:5000/capturar_resposta', returnStdout: true).trim()
-                        echo "Resposta recebida: ${resposta}"
+                while ((System.currentTimeMillis() - startTime) < duration) {
+                    def resposta = sh(script: 'curl -X GET http://127.0.0.1:5000/capturar_resposta', returnStdout: true).trim()
+                    echo "Resposta recebida: ${resposta}"
 
+                    // A partir da resposta, você pode tomar ações dentro da pipeline
+                    if (resposta == "corrigir") {
+                        env.ACTION=resposta
+                        def code_source = sh(script: 'python3 Estrutura/source.py ', returnStdout: true).trim()
+                        env.code=code_source
+                        sh '''
+                            chmod +x Estrutura/ML_autocorrigir.py Estrutura/git_branch.sh
+                            python3 Estrutura/ML_autocorrigir.py
+                            ./Estrutura/git_branch.sh
+                        '''
+                    } else {
+                        echo "Ação de ignorar selecionada!"
+                    }
                         
                         sleep 5  // Espera 5 segundos antes da próxima requisição
-                    }
-                // A partir da resposta, você pode tomar ações dentro da pipeline
-                if (resposta == "corrigir") {
-                    env.ACTION=resposta
-                    def code_source = sh(script: 'python3 Estrutura/source.py ', returnStdout: true).trim()
-                    env.code=code_source
-                    sh '''
-                        chmod +x Estrutura/ML_autocorrigir.py Estrutura/git_branch.sh
-                        python3 Estrutura/ML_autocorrigir.py
-                        ./Estrutura/git_branch.sh
-                    '''
-                } else {
-                    echo "Ação de ignorar selecionada!"
                 }
+                
             }
         }
     }
