@@ -1,10 +1,14 @@
-import requests, os
+import requests, os, base64
 
 # Configurações do SonarQube
 SONARQUBE_URL = os.getenv('SONAR_URL')
 TOKEN = os.getenv('SONAR_AUTH_TOKEN')
 PROJECT_KEY = os.getenv('SONAR_PROJECT_KEY')
 FILE_PATH = 'Estrutura/teste_script/script_hosts.py'
+
+auth_header = base64.b64encode(f"{TOKEN}:".encode()).decode()
+headers = {"Authorization": f"Basic {auth_header}"}
+params = {"projectKey": PROJECT_KEY}
 
 def resolve_error(component, line, message):
     # Função para resolver um erro específico no código baseado na análise do SonarQube
@@ -42,11 +46,8 @@ def code_source():
 def code_request():
     # Função para fazer uma requisição à API do SonarQube e processar os problemas encontrados
     try:
-        response = requests.get(f'{SONARQUBE_URL}/api/issues/search', auth=(TOKEN, ''),
-                                params={
-                                    'projectKeys': PROJECT_KEY,
-                                    'statuses': 'OPEN',  # Filtra para issues abertas
-                                })
+        response = requests.get(f"{SONARQUBE_URL}/api/hotspots/search", params=params, headers=headers)
+
     except Exception as e:
         print('Erro na requisição:', e)
     
