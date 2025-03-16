@@ -6,9 +6,6 @@ TOKEN = os.getenv('SONAR_AUTH_TOKEN')
 PROJECT_KEY = os.getenv('SONAR_PROJECT_KEY')
 FILE_PATH = 'Estrutura/teste_script/script_hosts.py'
 
-# SONARQUBE_URL = 'http://localhost:9000'
-# PROJECT_KEY = 'PAPEMLS'
-
 def resolve_error(component, line, message):
     # Função para resolver um erro específico no código baseado na análise do SonarQube
     component_path =  component.replace(f'{PROJECT_KEY}:', './')
