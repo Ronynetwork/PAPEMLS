@@ -55,7 +55,7 @@ def code_request():
         # Processa a resposta da API como um JSON
         arq = response.json()
         # Filtra as issues para garantir que apenas as do projeto atual sejam processadas
-        filtred_issues = [issue for issue in arq.get('issues', []) if issue['project'] == PROJECT_KEY] 
+        filtred_issues = [issue for issue in arq.get('hotspots', []) if issue['project'] == PROJECT_KEY] 
         
         if filtred_issues:
             # Itera sobre as issues filtradas
