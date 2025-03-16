@@ -46,7 +46,7 @@ def code_source():
 def code_request():
     # Função para fazer uma requisição à API do SonarQube e processar os problemas encontrados
     try:
-        response = requests.get(f"{SONARQUBE_URL}/api/hotspots/search", params=params, headers=headers)
+        response = requests.get(f"{SONARQUBE_URL}/api/issues/search", params=params, headers=headers)
 
     except Exception as e:
         print('Erro na requisição:', e)
@@ -56,7 +56,7 @@ def code_request():
         # Processa a resposta da API como um JSON
         arq = response.json()
         # Filtra as issues para garantir que apenas as do projeto atual sejam processadas
-        filtred_issues = [issue for issue in arq.get('hotspots', []) if issue['project'] == PROJECT_KEY] 
+        filtred_issues = [issue for issue in arq.get('issues', []) if issue['project'] == PROJECT_KEY] 
         
         if filtred_issues:
             # Itera sobre as issues filtradas
