@@ -12,6 +12,7 @@
         connect-src 'self';
         object-src 'none';
         frame-src 'self';">
+
     <title>Página de Erros e Soluções</title>
     <style>        
         body {
@@ -41,49 +42,56 @@
             border-radius: 5px;
         }
     </style>
+
 </head>
 <body>
     <div class="container">
         <h2>Selecione um erro para ver a solução</h2>
         <select id="errorSelect">
             <option value="">-- Escolha um erro --</option>
-            <option value="Specify an exception class to catch or reraise the exception">
-                Erro: Specify an exception class to catch or reraise the exception
-            </option>
+
+
+            <option value="'password' detected here, review this potentially hard-coded credential.">Erro: "password" detected here, review this potentially hard-coded credential. </option>
         </select>
         <button onclick="showSolution()">Mostrar Solução</button>
 
         <div id="solution" style="margin-top: 20px;"></div>
     </div>
-
     <script>
         function showSolution() {
             const errorType = document.getElementById("errorSelect").value;
             const solutionDiv = document.getElementById("solution");
 
             let solutionText = "";
-            if (errorType === "Specify an exception class to catch or reraise the exception") {
+            if (errorType === "'password' detected here, review this potentially hard-coded credential.") {
                 solutionText = `
-                    <h3>A mensagem ValueError ocorre quando o valor da string não é válido.</h3>
-                    <p>Exemplo de Correção:</p>
+                    <h3> Agora, a senha pode ser armazenada de forma segura no campo db_password. </h3>
+                    <p>Exemplo de Correção: </p>
                     <pre>
-try:
-    # Acesse uma string sem validação do tipo
-    s = input("Insira um nome: ")
-except NameError as ex:
-    print(f"O erro {ex} aconteceu")
+sql
+CREATE TABLE usuarios (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(255) NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    password VARCHAR(255),
+    db_password VARCHAR(255)
+);
+
+INSERT INTO usuarios (nome, email) VALUES ('João', 'joao@example.com');
+
                     </pre>
-                    <h2>Escolha uma ação:</h2>
-                    <button onclick="enviarEscolha('corrigir')">Corrigir</button>
-                    <button onclick="enviarEscolha('ignorar')">Ignorar</button>
-                `;
+                <h2>Escolha uma ação:</h2>
+                <button onclick="enviarAcao('corrigir')">Corrigir</button>
+                <button onclick="enviarAcao('ignorar')">Ignorar</button>
+                `
+
             } else {
                 solutionText = "<p>Selecione um erro para ver a solução.</p>";
             }
 
             solutionDiv.innerHTML = solutionText;
         }
-        function enviarEscolha(acao) {
+        function enviarAcao(acao) {
             fetch("/receber_escolha", {
                 method: "POST",
                 headers: {
@@ -92,9 +100,10 @@ except NameError as ex:
                 body: JSON.stringify({ "resposta": acao })
             })
             .then(response => response.json())
-            .then(data => alert("resposta: " + acao))
+            .then(data => alert("Escolha enviada: " + acao))
             .catch(error => console.error("Erro:", error));
         }
     </script>
+
 </body>
 </html>

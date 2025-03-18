@@ -18,10 +18,10 @@ def resolve_error(component, line, message):
     with open(component_path, 'r') as file:
         lines = file.readlines()
     # Seleciona a linha específica onde o erro foi identificado e a divide em palavras
+    print(lines)
     error_line = lines[line-1].split()
     msg = dict()
     msg[message]=error_line[0]
-    print(msg)
 
 
 def code_source():    
