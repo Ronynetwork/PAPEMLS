@@ -8,7 +8,11 @@ FILE_PATH = 'Estrutura/teste_script/script_hosts.py'
 
 auth_header = base64.b64encode(f"{TOKEN}:".encode()).decode()
 headers = {"Authorization": f"Basic {auth_header}"}
-params = {"projectKey": PROJECT_KEY}
+params = params = {
+    "project": PROJECT_KEY,
+    "ps": 1,  # Retorna apenas 1 resultado (a última análise)
+    "sort": "date"  # Ordena pela data da análise mais recente
+}
 
 def resolve_error(component, line, message):
     # Função para resolver um erro específico no código baseado na análise do SonarQube
