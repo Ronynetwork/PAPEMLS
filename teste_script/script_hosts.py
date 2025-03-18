@@ -1,6 +1,7 @@
 def example_function():
-    divisor = 0  
-    result = 100 =+ divisor
+    x = 10
+    y = "20"
+    result = x + y  # Erro: soma entre inteiro e string
     print("Resultado:", result)
 
 example_function()
