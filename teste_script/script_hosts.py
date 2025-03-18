@@ -1,5 +1,6 @@
 def example_function():
-    unused_variable = 42  # Esta variável nunca é utilizada, o que gera uma issue de 'code smell'
-    print("Hello, World!")
+    divisor = 0  
+    result = 100 / divisor  # Erro crítico: divisão por zero
+    print("Resultado:", result)
 
 example_function()
