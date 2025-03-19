@@ -22,10 +22,15 @@ def resolve_error(component, line, message):
     with open(component_path, 'r') as file:
         lines = file.readlines()
     # Seleciona a linha específica onde o erro foi identificado e a divide em palavras
-    print(lines)
-    error_line = lines[line-1].split()
-    msg = dict()
-    msg[message]=error_line[0]
+    if line is not None:
+        try:
+            # Seleciona a linha específica onde o erro foi identificado e a divide em palavras
+            error_line = lines[line-1].strip()  # Use strip() sem argumentos
+            msg = {message: error_line}
+        except IndexError:
+            print(f"Linha {line} não encontrada no arquivo.")
+    else:
+        print("Número da linha não especificado.")
 
 
 def code_source():    
