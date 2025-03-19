@@ -40,6 +40,8 @@
             padding: 10px;
             text-align: left;
             border-radius: 5px;
+            overflow-x: auto; /* Garante rolagem horizontal caso necessário */
+            white-space: pre-wrap; /* Mantém a quebra de linha correta */   
         }
     </style>
 
@@ -51,7 +53,7 @@
             <option value="">-- Escolha um erro --</option>
 
 
-            <option value="'password' detected here, review this potentially hard-coded credential.">Erro: "password" detected here, review this potentially hard-coded credential. </option>
+            <option value="Fix this invalid '+' operation between incompatible types (int and str).">Erro: Fix this invalid "+" operation between incompatible types (int and str). </option>
         </select>
         <button onclick="showSolution()">Mostrar Solução</button>
 
@@ -63,27 +65,23 @@
             const solutionDiv = document.getElementById("solution");
 
             let solutionText = "";
-            if (errorType === "'password' detected here, review this potentially hard-coded credential.") {
+            if (errorType === "Fix this invalid '+' operation between incompatible types (int and str).") {
                 solutionText = `
-                    <h3> Agora, a senha pode ser armazenada de forma segura no campo db_password. </h3>
+                    <h3> Para resolver esse problema, devemos converter os valores da variável y para o tipo de x, ou seja, converter y para uma lista (para que as strings sejam concatenadas) ou para outro tipo. </h3>
                     <p>Exemplo de Correção: </p>
                     <pre>
-sql
-CREATE TABLE usuarios (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    nome VARCHAR(255) NOT NULL,
-    email VARCHAR(255) UNIQUE NOT NULL,
-    password VARCHAR(255),
-    db_password VARCHAR(255)
-);
 
-INSERT INTO usuarios (nome, email) VALUES ('João', 'joao@example.com');
+[código de exemplo resolvendo o erro] 
+x = 5
+y = "Banco"
+result = x + y
+print(result) # O erro ocorre aqui
 
                     </pre>
-                <h2>Escolha uma ação:</h2>
-                <button onclick="enviarAcao('corrigir')">Corrigir</button>
-                <button onclick="enviarAcao('ignorar')">Ignorar</button>
-                `
+                    <h2>Escolha uma ação:</h2>
+                    <button onclick="enviarAcao('corrigir')">Corrigir</button>
+                    <button onclick="enviarAcao('ignorar')">Ignorar</button>
+                `;
 
             } else {
                 solutionText = "<p>Selecione um erro para ver a solução.</p>";
