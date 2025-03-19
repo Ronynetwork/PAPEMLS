@@ -5,7 +5,7 @@ erro_sq = os.getenv('ERROR_POINT')
 erro_dict = ast.literal_eval(erro_sq)
 if erro_dict:
     for erro, code in erro_dict.items():
-        erro = erro
+        erro = erro.replace('"', '')
         code = code
         print(f"Erro: {erro}, Código: {code}")
 else:   
