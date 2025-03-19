@@ -11,7 +11,8 @@ headers = {"Authorization": f"Basic {auth_header}"}
 params = params = {
     "project": PROJECT_KEY,
     "ps": 1,  # Retorna apenas 1 resultado (a última análise)
-    "sort": "date"  # Ordena pela data da análise mais recente
+    "sort": "date",  # Ordena pela data da análise mais recente
+    "statuses": "OPEN"
 }
 
 def resolve_error(component, line, message):
