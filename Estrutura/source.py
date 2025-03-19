@@ -27,6 +27,7 @@ def resolve_error(component, line, message):
             # Seleciona a linha específica onde o erro foi identificado e a divide em palavras
             error_line = lines[line-1].strip()  # Use strip() sem argumentos
             msg = {message: error_line}
+            print(msg)
         except IndexError:
             print(f"Linha {line} não encontrada no arquivo.")
     else:
