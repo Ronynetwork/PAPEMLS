@@ -5,7 +5,7 @@ git checkout -b main || git checkout main
 git pull origin main
 
 # Adicionar apenas o arquivo desejado
-git add ./teste_scripts/teste.py
+git add ./teste_script/script_hosts.py
 git restore .
 # Fazer o commit com uma mensagem
 git commit -m "Correction commit"
