@@ -61,7 +61,7 @@ def code_source():
         print(f"Erro {response.status_code}: {response.text}")
 
 
-def code_request():
+def code_request(acao):
     # Função para fazer uma requisição à API do SonarQube e processar os problemas encontrados
     try:
         response = requests.get(f"{SONARQUBE_URL}/api/issues/search", params=params, headers=headers)
@@ -83,7 +83,7 @@ def code_request():
                 line = issue.get('line')  # Linha onde o problema foi identificado
                 component = issue['component']  # Componente (arquivo) onde o problema está localizado
                 if component == f'{PROJECT_KEY}:teste_script/script_hosts.py':
-                    resolve_error(component, line, message)
+                    resolve_error(component, line, message, acao)
         else:
             print(f'O projeto <{PROJECT_KEY}> não possui issues abertas!')
     else:
