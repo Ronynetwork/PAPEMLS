@@ -15,14 +15,15 @@ params = params = {
     "statuses": "OPEN"
 }
 
-def resolve_error(component, line, message):
+def resolve_error(component, line, message, acao):
     # Função para resolver um erro específico no código baseado na análise do SonarQube
     component_path =  component.replace(f'{PROJECT_KEY}:', './')
 
     # Abrir o arquivo de código e ler todas as linhas
     with open(component_path, 'r') as file:
         lines = file.readlines()
-    # Seleciona a linha específica onde o erro foi identificado e a divide em palavras
+
+    # Verifique se a linha foi definida corretamente
     if line is not None:
         try:
             # Seleciona a linha específica onde o erro foi identificado e a divide em palavras
@@ -31,6 +32,12 @@ def resolve_error(component, line, message):
             print(msg)
         except IndexError:
             print(f"Linha {line} não encontrada no arquivo.")
+
+    elif acao == "corrigir":
+        code = code_source()
+        msg = {message: code}
+        print(msg)
+
     else:
         print("Número da linha não especificado.")
 
@@ -39,17 +46,17 @@ def code_source():
     # Requisição para pegar o código do arquivo
     response = requests.get(
         f'{SONARQUBE_URL}/api/sources/raw',  # Endpoint correto
-        auth=(TOKEN,''),
         params={
             'key': f'{PROJECT_KEY}:{FILE_PATH}'  # Aqui é necessário usar o 'key' com o formato correto
-        }
+        },
+        headers=headers
     )
 
     code = response.text
 
     if response.status_code == 200:
         # Se a resposta for bem-sucedida, imprime o conteúdo do arquivo
-        print(code)  # Exibe o conteúdo do arquivo
+        return code# Exibe o conteúdo do arquivo
     else:
         print(f"Erro {response.status_code}: {response.text}")
 
