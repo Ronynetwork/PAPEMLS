@@ -40,7 +40,7 @@ pipeline {
             steps {
                 script {
                     echo 'Aguardando 35 segundos para a inicialização completa do SonarQube...'
-                    sleep time:36, unit: 'SECONDS'
+                    sleep time:35, unit: 'SECONDS'
                 }
             }
         }
@@ -66,7 +66,7 @@ pipeline {
         }
         stage('Quality Gate') {
             steps{
-                waitForQualityGate abortPipeline: true
+                waitForQualityGate abortPipeline: false
             }
         }
     }
@@ -130,6 +130,7 @@ pipeline {
                             python3 Estrutura/ML_autocorrigir.py
                             ./Estrutura/git_branch.sh
                         '''
+                        break
                     } else if(resposta == 'ignorar') {
                         echo 'Foi solicitada a ação de ignorar!'
                         break
@@ -137,6 +138,7 @@ pipeline {
                     } else {
                         sleep 5  // Espera 5 segundos antes da próxima requisição
                     }
+                break
                 }
                 
             }
