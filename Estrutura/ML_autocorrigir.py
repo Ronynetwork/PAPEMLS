@@ -43,6 +43,8 @@ exemplo = data.split('```')[1]
 if response: 
     data = response.json()['response'] # Retorna os dados em string
     exemplo = data.split('```')[1]
+    file_path = os.path.abspath("../teste_script/script_hosts.py")
+    print("Tentando acessar:", file_path)
     with open("../teste_script/script_hosts.py", "w") as f:
         f.write(exemplo)
 else:
