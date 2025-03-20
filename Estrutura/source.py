@@ -87,9 +87,9 @@ def code_request():
 
 # Chama a função para iniciar o processo de requisição e resolução de erros
 
-acao = os.getenv("ACTION")
+acao = os.getenv("ACTION").lower()
 
-if acao == 'Corrigir':
+if acao == 'corrigir':
     code_source()
 else:
     code_request()
