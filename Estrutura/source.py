@@ -19,6 +19,9 @@ def resolve_error(component, line, message, acao):
     # Função para resolver um erro específico no código baseado na análise do SonarQube
     component_path =  component.replace(f'{PROJECT_KEY}:', './')
 
+    if acao is not None:
+        acao = acao.lower()
+
     # Abrir o arquivo de código e ler todas as linhas
     with open(component_path, 'r') as file:
         lines = file.readlines()
@@ -94,9 +97,7 @@ def code_request():
 
 # Chama a função para iniciar o processo de requisição e resolução de erros
 
-acao = os.getenv("ACTION").lower()
+acao = os.getenv("ACTION")
 
-if acao == 'corrigir':
-    code_source()
-else:
-    code_request()
+if __name__ == "__main__":
+    code_request(acao)
