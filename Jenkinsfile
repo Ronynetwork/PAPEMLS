@@ -128,12 +128,15 @@ pipeline {
                         sh '''
                             chmod +x Estrutura/ML_autocorrigir.py Estrutura/git_branch.sh
                             python3 Estrutura/ML_autocorrigir.py
-                            ./Estrutura/git_branch.sh
                         '''
+                        withCredentials([usernamePassword(credentialsId: 'github-credential', usernameVariable: 'GIT_USER', passwordVariable: 'GIT_PASS')]) {
+                        sh './Estrutura/git_branch.sh'
+                        }
+                            
                     } else if(resposta == 'ignorar') {
                         echo 'Foi solicitada a ação de ignorar!'
                         break
-                        
+
                     } else {
                         sleep 5  // Espera 5 segundos antes da próxima requisição
                     }
