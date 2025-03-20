@@ -43,7 +43,7 @@ exemplo = data.split('```')[1]
 if response: 
     data = response.json()['response'] # Retorna os dados em string
     exemplo = data.split('```')[1]
-    with open("/teste_script/script_hosts.py", "w") as f:
+    with open("../teste_script/script_hosts.py", "w") as f:
         f.write(exemplo)
 else:
     print("response inexistente")
