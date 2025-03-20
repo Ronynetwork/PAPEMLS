@@ -1,8 +1,6 @@
 #!/bin/bash
 # Configurar o Git para usar o token
-git config --global user.email "ronyldooliveira16@gmail.com"
-git config --global user.name "Ronynetwork"
-git remote set-url origin https://$GIT_USER:$GIT_TOKEN@github.com/Ronynetwork/PAPEMLS.git
+git remote set-url origin git@github.com:Ronynetwork/PAPEMLS.git
 
 # Conferindo se a branch main existe, se não, cria
 git checkout -b main || git checkout main
