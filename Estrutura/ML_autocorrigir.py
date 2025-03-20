@@ -45,7 +45,7 @@ if response:
     exemplo = data.split('```')[1]
     file_path = os.path.abspath("Estrutura/teste_script/script_hosts.py")
     print("Tentando acessar:", file_path)
-    with open("../teste_script/script_hosts.py", "w") as f:
+    with open(file_path, "w") as f:
         f.write(exemplo)
 else:
     print("response inexistente")
