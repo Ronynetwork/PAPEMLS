@@ -1,2 +1,6 @@
-python
-result = str(x) + str(y)
+
+def remover_preenchimento():
+    # Código aqui
+    pass
+
+remover_preenchimento()
