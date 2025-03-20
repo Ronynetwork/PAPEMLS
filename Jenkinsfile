@@ -130,11 +130,13 @@ pipeline {
                             python3 Estrutura/ML_autocorrigir.py
                             ./Estrutura/git_branch.sh
                         '''
-                    } else {
-                        echo "Ação de ignorar selecionada!"
-                    }
+                    } else if(resposta == 'ignorar') {
+                        echo 'Foi solicitada a ação de ignorar!'
+                        break
                         
+                    } else {
                         sleep 5  // Espera 5 segundos antes da próxima requisição
+                    }
                 }
                 
             }
