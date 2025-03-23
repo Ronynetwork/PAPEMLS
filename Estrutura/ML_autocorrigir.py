@@ -12,7 +12,7 @@ else:
     print("Variável ERROR_POINT não encontrada ou vazia")
 
 data = {
-    "model": "llama3.2:1b", 
+    "model": "llama3.2", 
     "prompt": '''
 Codigo com erro: 
 
@@ -20,7 +20,7 @@ Codigo com erro:
            
 Erro: {}
 
-ajuste a parte do código que se refere ao erro.
+ajuste ao código para apenas uma versao corrigida e funcional, nao preciso de explicação, apenas do codigo corrigido e funcional, seja o  mais assertivo possível.
 
     '''.format(code, erro),
     "stream": False # Retorna toda resposta em um token
@@ -32,9 +32,9 @@ headers = {
 
 response = requests.post(url, json=data, headers=headers)
 
-print(response)
 # print("Conteúdo da resposta:", response.text)
 data = response.json()['response'] # Retorna os dados em string
+print(data)
 
 # Dando join pra cada dado que vinher a partir de cada linha especificada
 exemplo = data.split('```')[1]
@@ -42,10 +42,12 @@ exemplo = data.split('```')[1]
 # Divide o conteúdo nos delimitadores ``` e pega apenas o código dentro
 if response: 
     data = response.json()['response'] # Retorna os dados em string
-    exemplo = data.split('```')[1]
+    data_split = data.split('```')[1].split("\n")
+    data_join = [f'{data_split[x]}\n' for x in range(1, len(data_split))]
     file_path = os.path.abspath("teste_script/script_hosts.py")
     print("Tentando acessar:", file_path)
     with open(file_path, "w") as f:
-        f.write(exemplo)
+        for x in data_join:
+            f.write(x)
 else:
     print("response inexistente")
