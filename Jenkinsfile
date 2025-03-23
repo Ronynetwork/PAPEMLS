@@ -124,6 +124,8 @@ pipeline {
                         env.ACTION = resposta
                         def code_source = sh(script: 'python3 Estrutura/source.py ', returnStdout: true).trim()
                         env.code = code_source
+                        echo "${code_source}"
+
                         sh '''
                             chmod +x Estrutura/ML_autocorrigir.py Estrutura/git_branch.sh
                             python3 Estrutura/ML_autocorrigir.py
