@@ -1,9 +1,10 @@
-def main():
-    x = 10
-    soma = 0
-    
-    for i in range(x):
-        soma =+ i
+def somar_numeros():
+    num1 = float(input("Digite o primeiro número: "))
+    num2 = float(input("Digite o segundo número: "))
 
-if __name__ == "__main__":
-    main()
+    soma = num1 + num2
+    
+    print(f"A soma é: {soma}")
+
+somar_numeros()
+
