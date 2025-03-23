@@ -120,25 +120,22 @@ pipeline {
                     def resposta = sh(script: 'curl -X GET http://127.0.0.1:5000/capturar_resposta', returnStdout: true).trim()
                     echo "Resposta recebida: ${resposta}"
 
-                    // A partir da resposta, você pode tomar ações dentro da pipeline
                     if (resposta == "corrigir") {
-                        env.ACTION=resposta
+                        env.ACTION = resposta
                         def code_source = sh(script: 'python3 Estrutura/source.py ', returnStdout: true).trim()
-                        env.code=code_source
+                        env.code = code_source
                         sh '''
                             chmod +x Estrutura/ML_autocorrigir.py Estrutura/git_branch.sh
                             python3 Estrutura/ML_autocorrigir.py
                             ./Estrutura/git_branch.sh
                         '''
-                        break
-                    } else if(resposta == 'ignorar') {
+                        break  // Sai do loop ao corrigir
+                    } else if (resposta == 'ignorar') {
                         echo 'Foi solicitada a ação de ignorar!'
-                        break
-                        
+                        break  // Sai do loop se a ação for ignorar
                     } else {
                         sleep 5  // Espera 5 segundos antes da próxima requisição
                     }
-                break
                 }
                 
             }
