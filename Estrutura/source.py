@@ -92,7 +92,7 @@ def code_request(acao):
 
 # Chama a função para iniciar o processo de requisição e resolução de erros
 try:
-    acao = os.getenv('ACION').lower()
+    acao = os.getenv('ACTION').lower()
 except:
     acao = ''
 
