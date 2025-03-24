@@ -1,13 +1,9 @@
-n = int(input("Digite um número: "))
-
-soma = 0
-
-while n != 0:
-    soma += n
-    n = int(input("Digite outro número para somar (ou 0 para parar): "))
+def main():
+    x = 10
+    soma = 0
     
-if n == 0:
-    print("A soma é igual a", soma)
-else:
-    print("Não possível calcular a soma.")
+    for i in range(x):
+        soma =+ i
 
+if __name__ == "__main__":
+    main()
