@@ -23,6 +23,7 @@ def resolve_error(component, line, message, acao):
     with open(component_path, 'r') as file:
         lines = file.readlines()
 
+    print("AÇÃO:", acao)
     # Verifique se a linha foi definida corretamente
     try:
         # Seleciona a linha específica onde o erro foi identificado e a divide em palavras
@@ -58,15 +59,12 @@ def code_source():
     else:
         print(f"Erro {response.status_code}: {response.text}")
 
-
 def code_request(acao):
     # Função para fazer uma requisição à API do SonarQube e processar os problemas encontrados
     try:
         response = requests.get(f"{SONARQUBE_URL}/api/issues/search", params=params, headers=headers)
-
     except Exception as e:
         print('Erro na requisição:', e)
-    
     # Verifica se a requisição foi bem-sucedida
     if response.status_code == 200:
         # Processa a resposta da API como um JSON
