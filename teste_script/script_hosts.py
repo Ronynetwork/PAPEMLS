@@ -3,7 +3,7 @@ def main():
     soma = 0
     
     for i in range(x):
-        soma =+ i
+        soma += i
 
 if __name__ == "__main__":
     main()
