@@ -22,8 +22,7 @@ def resolve_error(component, line, message, acao):
     # Abrir o arquivo de código e ler todas as linhas
     with open(component_path, 'r') as file:
         lines = file.readlines()
-
-    print("AÇÃO:", acao)
+        
     # Verifique se a linha foi definida corretamente
     try:
         # Seleciona a linha específica onde o erro foi identificado e a divide em palavras
@@ -90,7 +89,7 @@ def code_request(acao):
 
 # Chama a função para iniciar o processo de requisição e resolução de erros
 try:
-    acao = os.getenv('ACTION').lower()
+    acao = os.getenv('ACTION')
 except:
     acao = ''
 
