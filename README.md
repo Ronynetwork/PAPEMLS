@@ -59,6 +59,11 @@ as tecnologias citadas acima necessitam ser instaladas antes da execução da pi
  - Passo 5: Execute a Pipeline e verifique os logs em caso de problemas
  - Passo 6: Verifique o localhost:5000 que será construído pelo Flask com os erros caso sejam detectados pelo SonarQube
 
+# Exemplo Funcional
+
+## YouTube: 
+ - Link: https://youtu.be/NRJnZRnU2C8
+
 # Conclusão
 
 O PAPEMLS se destaca principalmente pela possibilidade de realizar a autocorreção de erros de códigos prejudiciais, prevenindo uma possível falha de segurança apontada pelo SonarQube, tudo de forma optativa e selecionável. Essa utilização transforma o cenário atual de prevenção de erros em aplicações, auxiliando o time de desenvolvimento e segurança a identificar os problemas atuais e como futuramente poderia ser explorado por indivíduos maliciosos, além de demonstrar uma nova utilização para as ferramentas SAST.
