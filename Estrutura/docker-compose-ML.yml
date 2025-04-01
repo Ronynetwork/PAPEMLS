@@ -6,6 +6,6 @@ services:
       resources:
         limits:
           cpus: '4.0'
-          memory: 6g
+          memory: 4g
     ports:
       - "10012:11434"
