@@ -3,37 +3,77 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="
-        default-src 'self';
-        script-src 'self' 'unsafe-inline' 'unsafe-eval';
-        style-src 'self' 'unsafe-inline';
-        img-src 'self';
-        font-src 'self';
-        connect-src 'self';
-        object-src 'none';
-        frame-src 'self';">
 
     <title>Página de Erros e Soluções</title>
-    <style>        
-        body {
+    <style>
+        html, body {
+            height: 100%;
+            width: auto;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to bottom, rgb(196, 205, 247), rgb(168, 206, 255));
             font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            color: #333;
+            color: black;
+        }
+        div#div1 {
+            width: 100%;
+            top: 0px;
+        }
+        
+        div#div2 {
+            color: rgb(80, 133, 204);
+            height: 50px;
+            background: white;
             text-align: center;
-            padding: 20px;
+            align-content: center;
+            font-size: larger;
+            font-weight: 600;
+            box-shadow: 0px 4px 3px rgb(122, 154, 224);
+        } 
+        
+        div#div4{
+            padding: 0px 20px;
         }
         .container {
+            display: flex;
+            flex-direction: column;
             background: white;
-            max-width: 600px;
-            margin: auto;
-            padding: 20px;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            height:min-content;
+            width: 40%;
+            margin-top: 20px;
+            margin-left: 30%;
             border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border: 2px solid rgb(75, 121, 219);
+            box-shadow: -1px 10px 6px rgb(122, 154, 224);
+            padding-bottom: 10px;
         }
-        select, button {
+
+
+        select {
             margin-top: 10px;
             padding: 10px;
             font-size: 16px;
+            border-radius: 10px;
+        }
+
+        button {
+            border-radius: 10px;
+            border: blue;
+            color: white;
+            margin-top: 10px;
+            padding: 10px;
+            background: linear-gradient(to right, rgb(0, 110, 255), rgb(53, 103, 179));
+        }
+        button:hover {
+            background: linear-gradient(to right, rgb(1, 54, 124), rgb(22, 43, 75));
+        }
+
+        footer {
+            text-align: center;
+            padding-top: 20px;
         }
         pre {
             background: #eee;
@@ -47,18 +87,31 @@
 
 </head>
 <body>
-    <div class="container">
-        <h2>Selecione um erro para ver a solução</h2>
-        <select id="errorSelect">
-            <option value="">-- Escolha um erro --</option>
-
-
-            <option value="Fix this invalid '+' operation between incompatible types (int and str).">Erro: Fix this invalid "+" operation between incompatible types (int and str). </option>
-        </select>
-        <button onclick="showSolution()">Mostrar Solução</button>
-
-        <div id="solution" style="margin-top: 20px;"></div>
+    <div id="div1">
+        <nav>
+            <div id="div2">
+                PAPEMLS
+            </div>
+        </nav>
+        <div class="container">
+            <div id="div3">
+                <h2>Selecione um erro para ver a solução</h2>
+            </div>
+            <div id="div4">
+                <select id="errorSelect">
+                    <option value="">-- Escolha um erro --</option>
+        
+        
+                    <option value="Fix this invalid '+' operation between incompatible types (int and str).">Erro: Fix this invalid "+" operation between incompatible types (int and str). </option>
+                </select>
+                <button onclick="showSolution()">Mostrar Solução</button>
+        
+                <div id="solution" style="margin-top: 20px;"></div>
+            </div>
+            <footer>Todos os direitos &copy;Ronynetwork</footer>
+        </div>
     </div>
+    
     <script>
         function showSolution() {
             const errorType = document.getElementById("errorSelect").value;
