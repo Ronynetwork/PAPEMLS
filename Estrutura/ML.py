@@ -142,12 +142,13 @@ script  = script + type_erro + end_script
 
 template_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "Estrutura", "notification", "templates")
 static_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "Estrutura", "notification", "static")
+print(template_dir)
+
 
 # Cria o diretório se ele não existir
 try:
     os.makedirs(template_dir, exist_ok=True)
     os.makedirs(static_dir, exist_ok=True)
-
     #  Criando Arquivo Js com os erros como opções
     with open(os.path.join(static_dir, "script.js"), 'w') as static:
         static.write(script)
