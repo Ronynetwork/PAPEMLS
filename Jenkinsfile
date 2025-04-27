@@ -106,8 +106,8 @@ pipeline {
                     . papemls/bin/activate
                     pwd
                     tree Estrutura/notification
-                    chmod +x Estrutura/notification/__init__.py
-                    python3 Estrutura/notification/__init__.py &
+                    chmod +x Estrutura/notification/main.py
+                    python3 Estrutura/notification/main.py &
                 '''
             }
             script {
