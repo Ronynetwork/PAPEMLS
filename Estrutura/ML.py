@@ -92,48 +92,47 @@ option = '''
     
     
 script ='''
-    <script>
-        function showSolution() {
-            const errorType = document.getElementById("errorSelect").value;
-            const solutionDiv = document.getElementById("solution");
 
-            let solutionText = "";'''
+function showSolution() {
+    const errorType = document.getElementById("errorSelect").value;
+    const solutionDiv = document.getElementById("solution");
+
+    let solutionText = "";'''
     
             
 type_erro = '''
-            if (errorType === "{}") {{
-                solutionText = `
-                    <h3> {} </h3>
-                    <p>Exemplo de Correção: </p>
-                    <pre>
+    if (errorType === "{}") {{
+        solutionText = `
+            <h3> {} </h3>
+            <p>Exemplo de Correção: </p>
+            <pre>
 {}
-                    </pre>
-                <h2>Escolha uma ação:</h2>
-                <button onclick="enviarAcao('corrigir')">Corrigir</button>
-                <button onclick="enviarAcao('ignorar')">Ignorar</button>
-                `
+            </pre>
+        <h2>Escolha uma ação:</h2>
+        <button onclick="enviarAcao('corrigir')">Corrigir</button>
+        <button onclick="enviarAcao('ignorar')">Ignorar</button>
+        `
 '''.format(erro, motivo_html, exemplo_parts)
 
 end_script = '''
-            } else {
-                solutionText = "<p>Selecione um erro para ver a solução.</p>";
-            }
+    } else {
+        solutionText = "<p>Selecione um erro para ver a solução.</p>";
+    }
 
-            solutionDiv.innerHTML = solutionText;
-        }
-        function enviarAcao(acao) {
-            fetch("/receber_escolha", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({ "resposta": acao })
-            })
-            .then(response => response.json())
-            .then(data => alert("Escolha enviada: " + acao))
-            .catch(error => console.error("Erro:", error));
-        }
-    </script>
+    solutionDiv.innerHTML = solutionText;
+}
+function enviarAcao(acao) {
+    fetch("/receber_escolha", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ "resposta": acao })
+    })
+    .then(response => response.json())
+    .then(data => alert("Escolha enviada: " + acao))
+    .catch(error => console.error("Erro:", error));
+}
 '''
 
 
