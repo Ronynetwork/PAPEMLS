@@ -80,7 +80,6 @@ body = '''
 
 
 option = '''
-
             <option value="{}">Erro: {} </option>
         </select>
         <button onclick="showSolution()">Mostrar Solução</button>
@@ -99,7 +98,7 @@ function showSolution() {
 
     let solutionText = "";'''
     
-            
+
 type_erro = '''
     if (errorType === "{}") {{
         solutionText = `
@@ -113,6 +112,7 @@ type_erro = '''
         <button onclick="enviarAcao('ignorar')">Ignorar</button>
         `
 '''.format(erro, motivo_html, exemplo_parts)
+
 
 end_script = '''
     } else {
@@ -147,6 +147,7 @@ static_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "Estrutura
 try:
     os.makedirs(template_dir, exist_ok=True)
     os.makedirs(static_dir, exist_ok=True)
+
     #  Criando Arquivo Js com os erros como opções
     with open(os.path.join(static_dir, "script.js"), 'w') as arquivo:
         arquivo.write(script)
@@ -154,6 +155,7 @@ try:
     # Criando HTML
     with open(os.path.join(template_dir, "erro.html"), 'w') as arquivo:
         arquivo.write(html_complete)
+
 except Exception as e:
-    print(e)
+    print('Erro ao criar arquivos ', e)
     
