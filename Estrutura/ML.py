@@ -140,14 +140,17 @@ function enviarAcao(acao) {
 html_complete = head + option + body
 script  = script + type_erro + end_script
 
+template_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "Estrutura", "notification", "templates")
+static_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "Estrutura", "notification", "static")
+
 # Cria o diretório se ele não existir
-os.makedirs("./Estrutura/notification/templates", exist_ok=True)
-os.makedirs("./Estrutura/notification/static", exist_ok=True)
+os.makedirs(template_dir, exist_ok=True)
+os.makedirs(static_dir, exist_ok=True)
 
 #  Criando Arquivo Js com os erros como opções
-with open('./Estrutura/notification/static/script.js', 'w') as arquivo:
+with open(os.path.join(static_dir, "script.js"), 'w') as arquivo:
     arquivo.write(script)
 
 # Criando HTML
-with open('./Estrutura/notification/templates/erro.html', 'w') as arquivo:
+with open(os.path.join(template_dir, "erro.html"), 'w') as arquivo:
     arquivo.write(html_complete)
