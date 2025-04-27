@@ -144,14 +144,16 @@ template_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "Estrutu
 static_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "Estrutura", "notification", "static")
 
 # Cria o diretório se ele não existir
-os.makedirs(template_dir, exist_ok=True)
-os.makedirs(static_dir, exist_ok=True)
-print(template_dir)
-print(static_dir)
-#  Criando Arquivo Js com os erros como opções
-with open(os.path.join(static_dir, "script.js"), 'w') as arquivo:
-    arquivo.write(script)
+try:
+    os.makedirs(template_dir, exist_ok=True)
+    os.makedirs(static_dir, exist_ok=True)
+    #  Criando Arquivo Js com os erros como opções
+    with open(os.path.join(static_dir, "script.js"), 'w') as arquivo:
+        arquivo.write(script)
 
-# Criando HTML
-with open(os.path.join(template_dir, "erro.html"), 'w') as arquivo:
-    arquivo.write(html_complete)
+    # Criando HTML
+    with open(os.path.join(template_dir, "erro.html"), 'w') as arquivo:
+        arquivo.write(html_complete)
+except Exception as e:
+    print(e)
+    
