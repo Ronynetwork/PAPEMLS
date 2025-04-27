@@ -146,7 +146,8 @@ static_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "Estrutura
 # Cria o diretório se ele não existir
 os.makedirs(template_dir, exist_ok=True)
 os.makedirs(static_dir, exist_ok=True)
-
+print(template_dir)
+print(static_dir)
 #  Criando Arquivo Js com os erros como opções
 with open(os.path.join(static_dir, "script.js"), 'w') as arquivo:
     arquivo.write(script)
