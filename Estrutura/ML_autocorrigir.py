@@ -11,7 +11,7 @@ else:
     print("Variável ERROR_POINT não encontrada ou vazia")
 
 data = {
-    "model": "llama3.2", 
+    "model": "llama3.2:1b", 
     "prompt": '''
 Codigo com erro: 
 
