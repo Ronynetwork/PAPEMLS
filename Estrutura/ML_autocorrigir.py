@@ -31,12 +31,7 @@ headers = {
 
 response = requests.post(url, json=data, headers=headers)
 
-# print("Conteúdo da resposta:", response.text)
-data = response.json()['response'] # Retorna os dados em string
-print(data)
-
 # Dando join pra cada dado que vinher a partir de cada linha especificada
-exemplo = data.split('```')[1]
 
 # Divide o conteúdo nos delimitadores ``` e pega apenas o código dentro
 if response: 
