@@ -30,6 +30,8 @@ headers = {
 }
 
 response = requests.post(url, json=data, headers=headers)
+print(response.text)
+
 
 # Dando join pra cada dado que vinher a partir de cada linha especificada
 
