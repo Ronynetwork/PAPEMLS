@@ -104,6 +104,7 @@ pipeline {
                 echo 'Subindo flask em background'
                 sh '''
                     . papemls/bin/activate
+                    pwd
                     tree Estrutura/notification
                     chmod +x Estrutura/notification/__init__.py
                     python3 Estrutura/notification/__init__.py &
