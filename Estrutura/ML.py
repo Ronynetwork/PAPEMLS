@@ -71,37 +71,8 @@ head = '''<!DOCTYPE html>
         connect-src 'self';
         object-src 'none';
         frame-src 'self';">
-
+    <link rel="stylesheet" href="style.css">
     <title>Página de Erros e Soluções</title>
-    <style>        
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            color: #333;
-            text-align: center;
-            padding: 20px;
-        }
-        .container {
-            background: white;
-            max-width: 600px;
-            margin: auto;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        select, button {
-            margin-top: 10px;
-            padding: 10px;
-            font-size: 16px;
-        }
-        pre {
-            background: #eee;
-            padding: 10px;
-            text-align: left;
-            border-radius: 5px;
-        }
-    </style>
-
 </head>
 <body>
     <div class="container">
@@ -124,7 +95,10 @@ option = '''
         <button onclick="showSolution()">Mostrar Solução</button>
 
         <div id="solution" style="margin-top: 20px;"></div>
-    </div>'''.format(erro,erro)
+    </div>
+    <script src="script.js"></script>
+    '''.format(erro,erro)
+    
     
 script ='''
     <script>
@@ -173,10 +147,16 @@ end_script = '''
 
 
 
-html_complete = head + option + script + type_erro + end_script + body
+html_complete = head + option + body
+script  = script + type_erro + end_script
 
 # Cria o diretório se ele não existir
 os.makedirs("./Estrutura/notification/templates", exist_ok=True)
 
+#  Criando Arquivo Js com os erros como opções
+with open('./Estrutura/notification/templates/script.js', 'w') as arquivo:
+    arquivo.write(script)
+
+# Criando HTML
 with open('./Estrutura/notification/templates/erro.html', 'w') as arquivo:
     arquivo.write(html_complete)

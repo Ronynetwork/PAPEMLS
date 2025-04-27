@@ -15,4 +15,5 @@ def main():
 
 if __name__ == "__main__":
     resultado = main()
-    print(resultado)
+    verifica = resultado.verifica()
+    print(resultado)    
