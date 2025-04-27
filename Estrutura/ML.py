@@ -142,16 +142,15 @@ script  = script + type_erro + end_script
 
 # Cria o diretório se ele não existir
 try:
-    os.makedirs('./notification/templates', exist_ok=True)
-    os.makedirs('./notification/static', exist_ok=True)
-    #  Criando Arquivo Js com os erros como opções
+    os.makedirs('./Estrutura/notification/templates', exist_ok=True)
+    os.makedirs('./Estrutura/notification/static', exist_ok=True)
 
-    with open(os.path.join('./notification/static', "script.js"), 'w') as static:
+    with open(os.path.join('./Estrutura/notification/static', "script.js"), 'w') as static:
         static.write(script)
-    # Criando HTML
-    with open(os.path.join('./notification/templates', "erro.html"), 'w') as arquivo:
+
+    with open(os.path.join('./Estrutura/notification/templates', "erro.html"), 'w') as arquivo:
         arquivo.write(html_complete)
-    print('Arquivos criados')
+
 
 except Exception as e:
     print('Erro ao criar arquivos ', e)
