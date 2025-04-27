@@ -88,7 +88,6 @@ pipeline {
                 echo 'Criando ambiente virtual e instalando dependências...'
                 sh '''
                     docker compose -f Estrutura/docker-compose-ML.yml up -d
-                    sleep 20
                     docker exec ollama-ml ollama run llama3.2:1b
                 '''
             }
