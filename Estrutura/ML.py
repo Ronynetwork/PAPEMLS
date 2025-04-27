@@ -62,7 +62,7 @@ head = '''<!DOCTYPE html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <title>Página de Erros e Soluções</title>
 </head>
 <body>
@@ -87,7 +87,7 @@ option = '''
 
         <div id="solution" style="margin-top: 20px;"></div>
     </div>
-    <script src="script.js"></script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
     '''.format(erro,erro)
     
     
@@ -143,9 +143,10 @@ script  = script + type_erro + end_script
 
 # Cria o diretório se ele não existir
 os.makedirs("./Estrutura/notification/templates", exist_ok=True)
+os.makedirs("./Estrutura/notification/static", exist_ok=True)
 
 #  Criando Arquivo Js com os erros como opções
-with open('./Estrutura/notification/templates/script.js', 'w') as arquivo:
+with open('./Estrutura/notification/static/script.js', 'w') as arquivo:
     arquivo.write(script)
 
 # Criando HTML
