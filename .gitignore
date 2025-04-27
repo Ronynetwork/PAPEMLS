@@ -1,5 +1,6 @@
 token*
-*.py
 papemls
 __pycache__
 erro*
+static
+teste*.py

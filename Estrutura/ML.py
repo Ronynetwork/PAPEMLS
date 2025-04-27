@@ -81,13 +81,12 @@ body = '''
 
 option = '''
             <option value="{}">Erro: {} </option>
-        </select>
+        </select> '''.format(erro, erro) + '''
         <button onclick="showSolution()">Mostrar Solução</button>
-
         <div id="solution" style="margin-top: 20px;"></div>
     </div>
-    <script src="{{ url_for('static', filename='script.js') }}"></script>
-    '''.format(erro,erro)
+    <script src="{{url_for('static', filename='script.js')}}"></script>
+'''
     
     
 script ='''
