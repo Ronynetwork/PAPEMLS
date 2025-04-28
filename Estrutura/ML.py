@@ -2,6 +2,7 @@ import requests, os, ast
 
 url = 'http://localhost:10012/api/generate'
 erro_sq = os.getenv('ERROR_POINT')
+print(erro_sq)
 erro_dict = ast.literal_eval(erro_sq)
 if erro_dict:
     for erro, code in erro_dict.items():
@@ -52,9 +53,7 @@ lines_filte_len = len(lines_filtered)
 
 # Divide o conteúdo nos delimitadores ``` e pega apenas o código dentro
 exemplo_parts = data.split("```")[1]
-
 motivo_html = [lines_filtered[line] for line in range(lines_filte_len-1,lines_filte_len)][0].replace('`', '')
-
 print(exemplo_parts)
 
 head = '''<!DOCTYPE html>
@@ -77,8 +76,6 @@ body = '''
 </html>
     '''
 
-
-
 option = '''
             <option value="{}">Erro: {} </option>
         </select> '''.format(erro, erro) + '''
@@ -88,9 +85,7 @@ option = '''
     <script src="{{url_for('static', filename='script.js')}}"></script>
 '''
     
-    
 script ='''
-
 function showSolution() {
     const errorType = document.getElementById("errorSelect").value;
     const solutionDiv = document.getElementById("solution");
@@ -111,7 +106,6 @@ type_erro = '''
         <button onclick="enviarAcao('ignorar')">Ignorar</button>
         `
 '''.format(erro, motivo_html, exemplo_parts)
-
 
 end_script = '''
     } else {
@@ -134,8 +128,6 @@ function enviarAcao(acao) {
 }
 '''
 
-
-
 html_complete = head + option + body
 script  = script + type_erro + end_script
 
@@ -150,7 +142,5 @@ try:
     with open(os.path.join('./Estrutura/notification/templates', "erro.html"), 'w') as arquivo:
         arquivo.write(html_complete)
 
-
 except Exception as e:
     print('Erro ao criar arquivos ', e)
-    
