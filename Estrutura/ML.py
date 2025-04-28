@@ -1,16 +1,20 @@
 import requests, os, ast
 
 url = 'http://localhost:10012/api/generate'
-erro_sq = os.getenv('ERROR_POINT')
-print(erro_sq)
-erro_dict = ast.literal_eval(erro_sq)
-if erro_dict:
-    for erro, code in erro_dict.items():
-        erro = erro.replace('"', '')
-        code = code
-        print(f"Erro: {erro}, Código: {code}")
-else:   
-    print("Variável ERROR_POINT não encontrada ou vazia")
+
+try:        
+    erro_sq = os.getenv('ERROR_POINT')
+    erro_dict = ast.literal_eval(erro_sq)
+    if erro_dict:
+        for erro, code in erro_dict.items():
+            erro = erro.replace('"', '')
+            code = code
+            print(f"Erro: {erro}, Código: {code}")
+    else:   
+        print("Variável ERROR_POINT não encontrada ou vazia")
+except Exception as e:
+    print("Projeto nao possue issues abertas!")
+    exit(0)
 
 data = {
     "model": "llama3.2:1b", 
