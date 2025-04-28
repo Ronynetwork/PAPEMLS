@@ -2,13 +2,19 @@ import requests, os, ast
 url = 'http://localhost:10012/api/generate'
 code = os.getenv("code")
 erro_dict = ast.literal_eval(code)
-if erro_dict:
-    for erro, code in erro_dict.items():
-        erro = erro.replace('"', '')
-        code = code
-        print(f"Erro para ser corrigido: {erro}, Código: {code}")
-else:   
-    print("Variável ERROR_POINT não encontrada ou vazia")
+
+try:
+    if erro_dict:
+        for erro, code in erro_dict.items():
+            erro = erro.replace('"', '')
+            code = code
+            print(f"Erro para ser corrigido: {erro}, Código: {code}")
+    else:   
+        print("Variável ERROR_POINT não encontrada ou vazia")
+except Exception as e:
+    print("Projeto nao possue issues abertas!")
+    exit(0)
+
 
 data = {
     "model": "llama3.2:1b", 
