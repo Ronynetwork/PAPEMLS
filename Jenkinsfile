@@ -119,7 +119,7 @@ pipeline {
                     def duration = 5 * 60 * 1000  // 5 minutos em milissegundos
 
                 while ((System.currentTimeMillis() - startTime) < duration) {
-                    def resposta = sh(script: 'curl -X GET http://127.0.0.1:5000/capturar_resposta', returnStdout: true).trim()
+                    def resposta = sh(script: 'curl -X GET http://127.0.0.1:5000/capturar_resposta', returnStdout: false).trim()
                     echo "Resposta recebida: ${resposta}"
 
                     if (resposta == "corrigir") {
