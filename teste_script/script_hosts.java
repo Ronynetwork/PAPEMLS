@@ -1,4 +1,5 @@
-AtomicInteger aInt1 = new AtomicInteger(0);
-AtomicInteger aInt2 = new AtomicInteger(0);
-isEqual = aInt1.equals(aInt2); // Noncompliant
-
+double d = 1.1;
+float f = 2.2f;
+BigDecimal bd1 = new BigDecimal(d);    // 🚨 Noncompliant
+BigDecimal bd2 = new BigDecimal(1.1);  // 🚨 Noncompliant
+BigDecimal bd3 = new BigDecimal(f);    // 🚨 Noncompliant
