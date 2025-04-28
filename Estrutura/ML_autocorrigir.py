@@ -1,9 +1,8 @@
 import requests, os, ast
 url = 'http://localhost:10012/api/generate'
 code = os.getenv("code")
-erro_dict = ast.literal_eval(code)
-
 try:
+    erro_dict = ast.literal_eval(code)
     if erro_dict:
         for erro, code in erro_dict.items():
             erro = erro.replace('"', '')
