@@ -113,16 +113,16 @@ pipeline {
             }
             script {
                 // Aguardar que o Flask capture a resposta do usuário
-                echo 'Aguardando resposta do usuário...'
+                echo 'Aguardando resposta do usuário... visite http://127.0.0.1:5000/'
                 // Aqui você pode fazer uma requisição para o Flask ou esperar até que ele termine
                     def startTime = System.currentTimeMillis()
                     def duration = 5 * 60 * 1000  // 5 minutos em milissegundos
 
                 while ((System.currentTimeMillis() - startTime) < duration) {
-                    def resposta = sh(script: 'curl -X GET http://127.0.0.1:5000/capturar_resposta', returnStdout: false).trim()
-                    echo "Resposta recebida: ${resposta}"
-
+                    def resposta = sh(script: 'curl -X GET http://127.0.0.1:5000/capturar_resposta', returnStdout: true).trim()
+                    
                     if (resposta == "corrigir") {
+                        echo "Resposta recebida: ${resposta}"
                         env.ACTION = resposta
                         def code_source = sh(script: 'python3 Estrutura/source.py ', returnStdout: true).trim()
                         env.code = code_source
