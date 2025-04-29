@@ -22,25 +22,23 @@ def resolve_error(dict_error, acao):
     with open(component_path, 'r') as file:
         lines = file.readlines()
     messages = []
-    for x in dict_error.values():
-        message = x[1]
-        line = x[0]
-        print('message: ', message, 'Line: ', line)
-
-        # Verifique se a linha foi definida corretamente
-        try:
-            # Seleciona a linha específica onde o erro foi identificado e a divide em palavras
-            if acao == "corrigir":
-                code = code_source()
-                msg = {message: code}
-                messages.append(msg)
-            elif line == None:
-                messages.append({message:''})            
-            else:
-                error_line = lines[line-1].strip()  # Use strip() sem argumentos
-                messages.append({message: error_line})
-        except Exception as e:
-            print(f"Linha {line} não encontrada no arquivo.")
+    for erros in dict_error.values():
+        for line, message in erros:
+            print('message:', message, 'Line:', line)
+            # Verifique se a linha foi definida corretamente
+            try:
+                # Seleciona a linha específica onde o erro foi identificado e a divide em palavras
+                if acao == "corrigir":
+                    code = code_source()
+                    msg = {message: code}
+                    messages.append(msg)
+                elif line == None:
+                    messages.append({message:''})            
+                else:
+                    error_line = lines[line-1].strip()  # Use strip() sem argumentos
+                    messages.append({message: error_line})
+            except Exception as e:
+                print(f"Linha {line} não encontrada no arquivo.")
     print(messages)
 
 
