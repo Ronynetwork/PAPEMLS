@@ -5,6 +5,7 @@ url = 'http://localhost:10012/api/generate'
 try:        
     erro_sq = os.getenv('ERROR_POINT')
     erro_dict = ast.literal_eval(erro_sq)
+    print('Erro dict: ', erro_dict)
     for dic in erro_dict:
         print(dic)
         for erro, code in dic.items():
