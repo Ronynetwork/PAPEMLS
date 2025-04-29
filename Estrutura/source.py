@@ -21,7 +21,6 @@ def resolve_error(component, line, message, acao):
     # Abrir o arquivo de código e ler todas as linhas
     with open(component_path, 'r') as file:
         lines = file.readlines()
-        print(lines)
     # Verifique se a linha foi definida corretamente
     try:
         # Seleciona a linha específica onde o erro foi identificado e a divide em palavras
@@ -31,6 +30,7 @@ def resolve_error(component, line, message, acao):
             print(msg)
         
         else:
+            print(lines[line])
             error_line = lines[line-1].strip()  # Use strip() sem argumentos
             msg = {message: error_line}
             print(msg)
