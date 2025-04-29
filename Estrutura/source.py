@@ -24,8 +24,6 @@ def resolve_error(dict_error, acao):
     messages = []
     for erros in dict_error.values():
         for line, message in erros:
-            print('message:', message, 'Line:', line)
-            # Verifique se a linha foi definida corretamente
             try:
                 # Seleciona a linha específica onde o erro foi identificado e a divide em palavras
                 if acao == "corrigir":
