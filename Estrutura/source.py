@@ -87,7 +87,10 @@ def code_request(acao):
                 message = issue['message']  # Mensagem de erro do SonarQube
                 line = issue.get('line')  # Linha onde o problema foi identificado
                 component = issue['component']  # Componente (arquivo) onde o problema está localizado
+                if component not in dict_error:
+                    dict_error[component] = []
                 dict_error[component].append((line, message))
+
         if list(dict_error.keys())[0] == f'{PROJECT_KEY}:{FILE_PATH}': # Executando e enviando todo o dicionário de dados
             resolve_error(dict_error, acao)
         else:
