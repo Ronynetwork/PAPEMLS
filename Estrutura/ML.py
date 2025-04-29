@@ -5,11 +5,12 @@ url = 'http://localhost:10012/api/generate'
 try:        
     erro_sq = os.getenv('ERROR_POINT')
     erro_dict = ast.literal_eval(erro_sq)
-    for dicts in erro_dict:
-        for erro, code in dicts.items():
+    for dic in erro_dict:
+        print(dic)
+        for erro, code in dic.items():
+            print(f"Erro: {erro}, Código: {code}")
             erro = erro.replace('"', '')
             code = code
-            print(f"Erro: {erro}, Código: {code}")
     else:   
         print("Variável ERROR_POINT não encontrada ou vazia")
 except Exception as e:
