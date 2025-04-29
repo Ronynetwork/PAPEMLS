@@ -121,7 +121,6 @@ pipeline {
                     while ((System.currentTimeMillis() - startTime) < duration) {
                         def resposta = sh(script: 'curl -s -X GET http://127.0.0.1:5000/capturar_resposta', returnStdout: true).trim()
 
-                    
                     if (resposta == "corrigir") {
                         echo "Resposta recebida: ${resposta}"
                         env.ACTION = resposta

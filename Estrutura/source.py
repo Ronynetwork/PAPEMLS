@@ -7,7 +7,6 @@ PROJECT_KEY = os.getenv('SONAR_PROJECT_KEY')
 FILE_PATH = 'teste_script/script_hosts.java'
 
 auth_header = base64.b64encode(f"{TOKEN}:".encode()).decode()
-headers = {"Authorization": f"Basic {auth_header}"}
 params = params = {
     "project": PROJECT_KEY,
     "sort": "date",  # Ordena pela data da análise mais recente
@@ -47,7 +46,7 @@ def code_source():
         params={
             'key': f'{PROJECT_KEY}:{FILE_PATH}'  # Aqui é necessário usar o 'key' com o formato correto
         },
-        headers=headers
+        headers = {'Authorization': f'Basic {auth_header}'}
     )
 
     code = response.text
@@ -61,7 +60,11 @@ def code_source():
 def code_request(acao):
     # Função para fazer uma requisição à API do SonarQube e processar os problemas encontrados
     try:
-        response = requests.get(f"{SONARQUBE_URL}/api/issues/search", params=params, headers=headers)
+        response = requests.get(f"{SONARQUBE_URL}/api/issues/search", 
+                                params=params, 
+                                headers={
+                                     'Authorization': f'Basic {auth_header}'
+                                })
     except Exception as e:
         print('Erro na requisição:', e)
     # Verifica se a requisição foi bem-sucedida
@@ -77,7 +80,7 @@ def code_request(acao):
                 message = issue['message']  # Mensagem de erro do SonarQube
                 line = issue.get('line')  # Linha onde o problema foi identificado
                 component = issue['component']  # Componente (arquivo) onde o problema está localizado
-                if component == f'{PROJECT_KEY}:teste_script/script_hosts.py':
+                if component == f'{PROJECT_KEY}:teste_script/script_hosts.java':
                     resolve_error(component, line, message, acao)
         else:
             print(f'O projeto <{PROJECT_KEY}> não possui issues abertas!')
