@@ -14,29 +14,33 @@ params = params = {
     "resolved": 'false'
 }
 
-def resolve_error(component, line, message, acao):
+def resolve_error(dict_error, acao):
     # Função para resolver um erro específico no código baseado na análise do SonarQube
-    component_path =  component.replace(f'{PROJECT_KEY}:', './')
 
     # Abrir o arquivo de código e ler todas as linhas
+    component_path = list(dict_error.keys())[0]
     with open(component_path, 'r') as file:
         lines = file.readlines()
-    # Verifique se a linha foi definida corretamente
-    try:
-        # Seleciona a linha específica onde o erro foi identificado e a divide em palavras
-        if acao == "corrigir":
-            code = code_source()
-            msg = {message: code}
-            print(msg)
-        
-        else:
-            print(lines[line])
-            error_line = lines[line-1].strip()  # Use strip() sem argumentos
-            msg = {message: error_line}
-            print(msg)
+    messages = []
+    for x in dict_error.values():
+        message = x[1]
+        line = x[0]
 
-    except IndexError:
-        print(f"Linha {line} não encontrada no arquivo.")
+        # Verifique se a linha foi definida corretamente
+        try:
+            # Seleciona a linha específica onde o erro foi identificado e a divide em palavras
+            if acao == "corrigir":
+                code = code_source()
+                msg = {message: code}
+                messages.append(msg)
+            elif line == None:
+                messages.append({message:''})            
+            else:
+                error_line = lines[line-1].strip()  # Use strip() sem argumentos
+                messages.append({message: error_line})
+        except Exception as e:
+            print(f"Linha {line} não encontrada no arquivo.")
+    print(messages)
 
 
 def code_source():    
@@ -75,13 +79,15 @@ def code_request(acao):
         filtred_issues = [issue for issue in arq.get('issues', []) if issue['project'] == PROJECT_KEY] 
         
         if filtred_issues:
+            dict_error = {}
             # Itera sobre as issues filtradas
             for issue in filtred_issues:
                 message = issue['message']  # Mensagem de erro do SonarQube
                 line = issue.get('line')  # Linha onde o problema foi identificado
                 component = issue['component']  # Componente (arquivo) onde o problema está localizado
-                if component == f'{PROJECT_KEY}:teste_script/script_hosts.java':
-                    resolve_error(component, line, message, acao)
+                dict_error[component] = (line, message)
+        if list(dict_error.keys())[0] == f'{PROJECT_KEY}:{FILE_PATH}': # Executando e enviando todo o dicionário de dados
+            resolve_error(dict_error, acao)
         else:
             print(f'O projeto <{PROJECT_KEY}> não possui issues abertas!')
     else:
