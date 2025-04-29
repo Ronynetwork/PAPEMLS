@@ -25,6 +25,7 @@ def resolve_error(dict_error, acao):
     for x in dict_error.values():
         message = x[1]
         line = x[0]
+        print('message: ', message, 'Line: ', line)
 
         # Verifique se a linha foi definida corretamente
         try:

@@ -15,7 +15,6 @@ try:
         print("Variável ERROR_POINT não encontrada ou vazia")
 except Exception as e:
     print("Projeto nao possue issues abertas!")
-    exit(0)
 
 data = {
     "model": "llama3.2:1b", 
