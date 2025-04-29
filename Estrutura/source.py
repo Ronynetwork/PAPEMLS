@@ -79,7 +79,6 @@ def code_request(acao):
             dict_error = {}
             # Itera sobre as issues filtradas
             for issue in filtred_issues:
-                print(issue["message"])
                 message = issue['message']  # Mensagem de erro do SonarQube
                 line = issue.get('line')  # Linha onde o problema foi identificado
                 component = issue['component']  # Componente (arquivo) onde o problema está localizado
