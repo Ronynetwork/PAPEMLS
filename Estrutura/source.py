@@ -18,7 +18,7 @@ def resolve_error(dict_error, acao):
     # Função para resolver um erro específico no código baseado na análise do SonarQube
 
     # Abrir o arquivo de código e ler todas as linhas
-    component_path = list(dict_error.keys())[0]
+    component_path = list(dict_error.keys())[0].replace("PAPEMLS:", "./")
     with open(component_path, 'r') as file:
         lines = file.readlines()
     messages = []
