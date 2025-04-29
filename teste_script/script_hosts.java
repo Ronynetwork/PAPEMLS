@@ -8,9 +8,5 @@ public class TesteBigDecimalErro {
         BigDecimal bd1 = new BigDecimal(d);    // Noncompliant: Problema de precisão
         BigDecimal bd2 = new BigDecimal(1.1);  // Noncompliant: Problema de precisão
         BigDecimal bd3 = new BigDecimal(f);    // Noncompliant: Problema de precisão
-
-        System.out.println(bd1);
-        System.out.println(bd2);
-        System.out.println(bd3);
     }
 }
