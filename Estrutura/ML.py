@@ -4,6 +4,7 @@ url = 'http://localhost:10012/api/generate'
 
 try:        
     erro_sq = os.getenv('ERROR_POINT')
+    print(erro_sq)
     erro_dict = ast.literal_eval(erro_sq)
     if erro_dict:
         for erro, code in erro_dict.items():
