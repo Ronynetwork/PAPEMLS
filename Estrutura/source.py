@@ -10,9 +10,9 @@ auth_header = base64.b64encode(f"{TOKEN}:".encode()).decode()
 headers = {"Authorization": f"Basic {auth_header}"}
 params = params = {
     "project": PROJECT_KEY,
-    "ps": 1,  # Retorna apenas 1 resultado (a última análise)
     "sort": "date",  # Ordena pela data da análise mais recente
-    "statuses": "OPEN"
+    "statuses": "OPEN",
+    "resolved": 'false'
 }
 
 def resolve_error(component, line, message, acao):
