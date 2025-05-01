@@ -7,7 +7,7 @@ git checkout -b main || git checkout main
 git pull origin main
 
 # Adicionar apenas o arquivo desejado
-git add ./teste_script/script_hosts.py
+git add ./teste_script/
 git restore .
 
 # Fazer o commit com uma mensagem
