@@ -7,7 +7,7 @@ PROJECT_KEY = os.getenv('SONAR_PROJECT_KEY')
 FILE_PATH = 'teste_script/script_hosts.java'
 
 auth_header = base64.b64encode(f"{TOKEN}:".encode()).decode()
-params = params = {
+params = {
     "project": PROJECT_KEY,
     "sort": "date",  # Ordena pela data da análise mais recente
     "statuses": "OPEN",
