@@ -88,8 +88,11 @@ pipeline {
                 echo 'Criando ambiente virtual e instalando dependências...'
                 sh '''
                     docker compose -f Estrutura/docker-compose-ML.yml up -d
+                    while [ "$(docker inspect --format='{{.State.Health.Status}}' ollama-ml)" != "healthy" ]; do
+                        echo "Aguardando ollama-ml ficar pronto..."
+                        sleep 2
+                    done
                     docker exec ollama-ml ollama run llama3.2:1b
-                    sleep 15
                 '''
             }
 
