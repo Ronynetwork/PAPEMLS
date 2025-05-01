@@ -19,8 +19,7 @@ def option(erro) :
     option = '''
                 <option value="{}">Erro: {} </option>
             </select> '''.format(erro, erro) + '''
-            <button onclick="showSolution()">Mostrar Solução</button>
-            <div id="solution" style="margin-top: 20px;"></div>
+
     '''
     return option
 
@@ -103,6 +102,8 @@ head = '''<!DOCTYPE html>
 '''
 
 body = '''
+            <button onclick="showSolution()">Mostrar Solução</button>
+            <div id="solution" style="margin-top: 20px;"></div>
     </div>
     <script src="{{url_for('static', filename='script.js')}}"></script>
 </body>
