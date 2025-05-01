@@ -9,3 +9,8 @@ services:
           memory: 4g
     ports:
       - "10012:11434"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:10012/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
