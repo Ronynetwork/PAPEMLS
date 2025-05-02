@@ -2,33 +2,46 @@ import requests, os, ast
 
 url = 'http://localhost:10012/api/generate'
 
-def type_erro(erro, motivo_html, exemplo_parts):
-    type_erro = '''
-        if (errorType === "{}") {{
-            solutionText = `
-                <h3> {} </h3>
-                <p>Exemplo de Correção: </p>
-                <pre>
-    {}
-                </pre>
-            `
-    '''.format(erro, motivo_html, exemplo_parts)
+def type_erro(erro, motivo_html, exemplo_parts, cont):
+    if cont == 0:
+        type_erro = '''
+            if (errorType === "{}") {{
+                solutionText = `
+                    <h3> {} </h3>
+                    <p>Exemplo de Correção: </p>
+                    <pre>
+        {}
+                    </pre>
+                `
+            }}
+        '''.format(erro, motivo_html, exemplo_parts)
+    else:
+        type_erro = '''
+            else if (errorType === "{}") {{
+                solutionText = `
+                    <h3> {} </h3>
+                    <p>Exemplo de Correção: </p>
+                    <pre>
+        {}
+                    </pre>
+                `
+            }}
+        '''.format(erro, motivo_html, exemplo_parts)
     return type_erro
 
 def option(erro) :
     option = '''
                 <option value="{}">Erro: {} </option>
-            </select> '''.format(erro, erro) + '''
-
-    '''
+            '''.format(erro, erro)
     return option
 
 try:        
-    erro_sq = os.getenv('ERROR_POINT')
-    erro_dict = ast.literal_eval(erro_sq)
+    html = os.getenv("ACTION")
+    erro_dict = ast.literal_eval(html)
     print('Erro dict: ', erro_dict)
     options = ''
     types = ''
+    cont = 0
     for dic in erro_dict:
         for erro, code in dic.items():
             print(f"Erro: {erro}, Código: {code}")
@@ -77,9 +90,9 @@ try:
             exemplo_parts = data.split("```")[1]
             motivo_html = [lines_filtered[line] for line in range(lines_filte_len-1,lines_filte_len)][0].replace('`', '')
             print(exemplo_parts)
-
             options += option(erro)
-            types += type_erro(erro, motivo_html, exemplo_parts)
+            types += type_erro(erro, motivo_html, exemplo_parts, cont)
+            cont += 1
     else:   
         print("Variável ERROR_POINT não encontrada ou vazia")
 except Exception as e:
@@ -102,6 +115,7 @@ head = '''<!DOCTYPE html>
 '''
 
 body = '''
+            </select> 
             <button onclick="showSolution()">Mostrar Solução</button>
             <div id="solution" style="margin-top: 20px;"></div>
     </div>
@@ -120,15 +134,16 @@ function showSolution() {
     
 
 end_script = '''
-        <h2>Escolha uma ação:</h2>
-        <button onclick="enviarAcao('corrigir')">Corrigir</button>
-        <button onclick="enviarAcao('ignorar')">Ignorar</button>
-    } else {
+    else {
         solutionText = "<p>Selecione um erro para ver a solução.</p>";
     }
+    h2 = `
+        <h2>Escolha uma ação:</h2>
+        <button onclick="enviarAcao('corrigir')">Corrigir</button>
+        <button onclick="enviarAcao('ignorar')">Ignorar</button>`
+    
+    solutionDiv.innerHTML = solutionText + h2;
 
-    solutionDiv.innerHTML = solutionText;
-}
 function enviarAcao(acao) {
     fetch("/receber_escolha", {
         method: "POST",
@@ -140,8 +155,10 @@ function enviarAcao(acao) {
     .then(response => response.json())
     .then(data => alert("Escolha enviada: " + acao))
     .catch(error => console.error("Erro:", error));
+    }
 }
 '''
+
 
 html_complete = head + options + body
 script  = script + types + end_script
