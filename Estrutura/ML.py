@@ -145,6 +145,7 @@ end_script = '''
     
     solutionDiv.innerHTML = solutionText + h2;
     errors.push(errorType);
+}
 
 function enviarAcao(acao) {
     fetch("/receber_escolha", {
@@ -157,7 +158,6 @@ function enviarAcao(acao) {
     .then(response => response.json())
     .then(data => alert("Escolha enviada: " + acao))
     .catch(error => console.error("Erro:", error));
-    }
 }
 '''
 
