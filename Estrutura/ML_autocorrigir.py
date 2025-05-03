@@ -8,10 +8,12 @@ try:
     if erro_dict:
         print(erro_dict)
         print(erros_escolhidos)
-        for erro, code in erro_dict.items():
-            erro = erro.replace('"', '')
-            code = code
-            print(f"Erro para ser corrigido: {erro}, Código: {code}")
+        for erro in erros_escolhidos:
+            erro_limpo = erro.replace('"', '')
+            for err in erro_dict:
+                if erro_limpo in err:
+                    code = err[erro_limpo]
+                    print(f"Erro para ser corrigido: {erro}, Código: {code}")
     else:   
         print("Variável ERROR_POINT não encontrada ou vazia")
 except Exception as e:
