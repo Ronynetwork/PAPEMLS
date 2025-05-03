@@ -17,21 +17,19 @@ def create_app(test_config=None):
     #  Rota para receber a ação do botão (POST)
     @app.route('/receber_escolha', methods=['POST'])
     def receber_escolha():
-        global resposta_usuario
+        global resposta_usuario, erros_usuario
         data = request.get_json()
-        if data and "resposta" in data:
-            resposta_usuario = data["resposta"]
-            print(f"Usuário escolheu: {resposta_usuario}")
-            return jsonify({"message": f"Escolha '{resposta_usuario}' salva com sucesso"}), 200
-        return jsonify({"error": "Nenhuma resposta enviada"}), 400
-
-    # Rota para o Jenkins verificar a escolha do usuário (GET)
+        resposta_usuario = data.get("resposta")
+        erros_usuario = data.get("erros", [])
+        return jsonify({"message": "Escolha recebida"}), 200
+    
+    # Verificando escolha feita
     @app.route('/capturar_resposta', methods=['GET'])
     def capturar_resposta():
-        global resposta_usuario
+        global resposta_usuario, erros_usuario
         if resposta_usuario:
-            return resposta_usuario, 200
-        return jsonify({"resposta": "Aguardando escolha..."}), 200
+            return jsonify({"resposta": resposta_usuario, "erros": erros_usuario}), 200
+        return jsonify({"resposta": "Aguardando escolha...", "erros": []}), 200
 
     # 🔹 Adicionando o cabeçalho CSP para permitir conexões com o Jenkins
     @app.after_request
