@@ -126,6 +126,7 @@ body = '''
 
     
 script ='''
+let errors = []
 function showSolution() {
     const errorType = document.getElementById("errorSelect").value;
     const solutionDiv = document.getElementById("solution");
