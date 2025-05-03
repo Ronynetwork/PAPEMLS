@@ -14,7 +14,7 @@ params = {
     "resolved": 'false'
 }
 
-def resolve_error(dict_error, acao):
+def resolve_error(dict_error):
     # Função para resolver um erro específico no código baseado na análise do SonarQube
 
     # Abrir o arquivo de código e ler todas as linhas
@@ -22,22 +22,18 @@ def resolve_error(dict_error, acao):
     with open(component_path, 'r') as file:
         lines = file.readlines()
     messages = []
-    for erros in dict_error.values():
+    for erros in dict_error.values(): # Verifica os dicionarios presente no valor do dicionário principal
         for line, message in erros:
             try:
                 # Seleciona a linha específica onde o erro foi identificado e a divide em palavras
-                if acao == "corrigir":
-                    code = code_source()
-                    msg = {message: code}
-                    messages.append(msg)
-                elif line == None:
+                if line == None:
                     messages.append({message:''})            
                 else:
                     error_line = lines[line-1].strip()  # Use strip() sem argumentos
                     messages.append({message: error_line})
             except Exception as e:
                 print(f"Linha {line} não encontrada no arquivo.")
-    print(messages)
+    return messages
 
 
 def code_source():    
@@ -56,9 +52,9 @@ def code_source():
         # Se a resposta for bem-sucedida, imprime o conteúdo do arquivo
         return code# Exibe o conteúdo do arquivo
     else:
-        print(f"Erro {response.status_code}: {response.text}")
+        return f"Erro {response.status_code}: {response.text}"
 
-def code_request(acao):
+def code_request():
     # Função para fazer uma requisição à API do SonarQube e processar os problemas encontrados
     try:
         response = requests.get(f"{SONARQUBE_URL}/api/issues/search", 
@@ -87,20 +83,23 @@ def code_request(acao):
                 dict_error[component].append((line, message))
 
         if list(dict_error.keys())[0] == f'{PROJECT_KEY}:{FILE_PATH}': # Executando e enviando todo o dicionário de dados
-            resolve_error(dict_error, acao)
+            msg = resolve_error(dict_error)
         else:
-            print(f'O projeto <{PROJECT_KEY}> não possui issues abertas!')
+            msg = f'O projeto <{PROJECT_KEY}> não possui issues abertas!'
+        return msg
     else:
         # Caso a requisição não seja bem-sucedida, exibe uma mensagem de erro
-        print(f"Erro ao acessar o código-fonte: {response.status_code} - {response.text}")
+        return f"Erro ao acessar o código-fonte: {response.status_code} - {response.text}"
 
 
 
 # Chama a função para iniciar o processo de requisição e resolução de erros
 try:
-    acao = os.getenv('ACTION')
+    acao = os.getenv('ACTION') # Recebendo a acao guardada na env da Pipeline
 except:
-    acao = ''
+    acao = None # Caso nao encontre, seta como None
 
-if __name__ == "__main__":
-    code_request(acao)
+if acao is not None:
+    print(code_source())
+else:
+    print(code_request())

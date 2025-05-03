@@ -117,25 +117,22 @@ pipeline {
                 echo 'Aguardando resposta do usuário... visite http://127.0.0.1:5000/'
                 // Aqui você pode fazer uma requisição para o Flask ou esperar até que ele termine
                     def startTime = System.currentTimeMillis()
-                    def duration = 5 * 60 * 1000  // 5 minutos em milissegundos
+                    def duration = 300000  // 5 minutos em milissegundos
 
                     while ((System.currentTimeMillis() - startTime) < duration) {
                         def resposta = sh(script: 'curl -s -X GET http://127.0.0.1:5000/capturar_resposta', returnStdout: true).trim()
+                        def json = readJSON text: resposta
 
-                    if (resposta == "corrigir") {
+                    if (json.resposta == "corrigir") {
                         echo "Resposta recebida: ${resposta}"
-                        env.ACTION = resposta
-                        def code_source = sh(script: 'python3 Estrutura/source.py ', returnStdout: true).trim()
-                        env.code = code_source
-                        echo "${code_source}"
-
+                        env.ERROS = json.erros
                         sh '''
                             chmod +x Estrutura/ML_autocorrigir.py Estrutura/git_branch.sh
                             python3 Estrutura/ML_autocorrigir.py
                             ./Estrutura/git_branch.sh
                         '''
                         break  // Sai do loop ao corrigir
-                    } else if (resposta == 'ignorar') {
+                    } else if (json.resposta == 'ignorar') {
                         echo 'Foi solicitada a ação de ignorar!'
                         break  // Sai do loop se a ação for ignorar
                     } else {

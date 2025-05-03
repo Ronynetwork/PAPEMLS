@@ -1,8 +1,10 @@
 import requests, os, ast
+
 url = 'http://localhost:10012/api/generate'
-code = os.getenv("code")
+
 try:
-    erro_dict = ast.literal_eval(code)
+    erro_dict = ast.literal_eval(os.getenv("ERROR_POINT"))
+    erros_escolhidos = ast.literal_eval(os.getenv("ERROS"))
     if erro_dict:
         for erro, code in erro_dict.items():
             erro = erro.replace('"', '')
@@ -44,7 +46,8 @@ if response:
     data = response.json()['response'] # Retorna os dados em string
     data_split = data.split('```')[1].split("\n")
     data_join = [f'{data_split[x]}\n' for x in range(1, len(data_split))]
-    file_path = os.path.abspath("teste_script/script_hosts.py")
+
+    file_path = os.path.abspath("teste_script/script_hosts.java")
     print("Tentando acessar:", file_path)
     with open(file_path, "w") as f:
         for x in data_join:

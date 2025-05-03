@@ -36,7 +36,7 @@ def option(erro) :
     return option
 
 try:        
-    html = os.getenv("ACTION")
+    html = os.getenv("ERROR_POINT")
     erro_dict = ast.literal_eval(html)
     print('Erro dict: ', erro_dict)
     options = ''
@@ -143,6 +143,7 @@ end_script = '''
         <button onclick="enviarAcao('ignorar')">Ignorar</button>`
     
     solutionDiv.innerHTML = solutionText + h2;
+    errors.push(errorType);
 
 function enviarAcao(acao) {
     fetch("/receber_escolha", {
@@ -150,7 +151,7 @@ function enviarAcao(acao) {
         headers: {
             "Content-Type": "application/json"
         },
-        body: JSON.stringify({ "resposta": acao })
+        body: JSON.stringify({ "resposta": acao, "erros": errors })
     })
     .then(response => response.json())
     .then(data => alert("Escolha enviada: " + acao))
