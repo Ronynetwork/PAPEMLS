@@ -125,7 +125,7 @@ pipeline {
 
                     if (json.resposta == "corrigir") {
                         echo "Resposta recebida: ${resposta}"
-                        env.ERROS = json.erros
+                        env.ERROS = json.erros  
                         sh '''
                             chmod +x Estrutura/ML_autocorrigir.py Estrutura/git_branch.sh
                             python3 Estrutura/ML_autocorrigir.py

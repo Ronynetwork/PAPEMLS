@@ -6,6 +6,8 @@ try:
     erro_dict = ast.literal_eval(os.getenv("ERROR_POINT"))
     erros_escolhidos = ast.literal_eval(os.getenv("ERROS"))
     if erro_dict:
+        print(erro_dict)
+        print(erros_escolhidos)
         for erro, code in erro_dict.items():
             erro = erro.replace('"', '')
             code = code
