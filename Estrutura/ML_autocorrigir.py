@@ -11,6 +11,8 @@ try:
         for erro in erros_escolhidos:
             erro_limpo = erro.replace('"', '')
             for err in erro_dict:
+                print(err)
+                print(erro_limpo)
                 if erro_limpo in err:
                     code = err[erro_limpo]
                     print(f"Erro para ser corrigido: {erro}, Código: {code}")
