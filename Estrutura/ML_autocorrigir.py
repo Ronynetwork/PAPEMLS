@@ -14,11 +14,12 @@ try:
             for chave in err.keys():
                 chave_limpa = chave.replace('"', '').strip()
                 if erro_limpo == chave_limpa:
+                    code_error = err[chave]
                     print(f"Erro para ser corrigido: {erro}, Código: {code}")
 
                     data = {
                         "model": "llama3.2:1b",
-                        "prompt": 'Corrija o seguinte código para que funcione sem erros:\n{}\nErro: {}'.format(code, erro),
+                        "prompt": 'Corrija o seguinte código para que funcione sem erros:\n{}\nErro: {}\nLinha: {}'.format(code, erro, code_error),
                         "temperature": 0.1,
                         "num_predict": 100,
                         "stream": False
