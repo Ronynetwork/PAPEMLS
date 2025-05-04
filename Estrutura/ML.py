@@ -50,10 +50,10 @@ try:
             data = {
                 "model": "llama3.2:1b", 
                 "prompt": '''
-                Codigo com erro: {}\nErro: {}\nExplique o motivo do erro e dê UM exemplo corrigido. Comece com 'Exemplo:' e finalize explicando por que o erro '{}' ocorre.
-                '''.format(code, erro, erro),
+                Codigo com erro: {}\nErro: {}\nExplique o motivo do erro e dê UM exemplo corrigido. explicando por que o erro '{}' ocorre.
+                '''.format(code, erro),
                 "temperature": 0.2,
-                "num_predict": 100,
+                "num_predict": 50,
                 "stream": False
             }
 
@@ -62,7 +62,6 @@ try:
             }
 
             response = requests.post(url, json=data, headers=headers)
-            print(response)
 
             # print("Conteúdo da resposta:", response.text)
             if response: 
@@ -70,7 +69,6 @@ try:
             else:
                 print("reponse inexistente")
             # Agora, 'lines' é uma lista com cada linha do texto como um item. sem espaços vazios
-            print(data)
             lines = data.splitlines()
 
             # Usando list compreenshion para retornar os valores necessários
@@ -80,7 +78,6 @@ try:
             # Divide o conteúdo nos delimitadores ``` e pega apenas o código dentro
             exemplo_parts = data.split("```")[1]
             motivo_html = [lines_filtered[line] for line in range(lines_filte_len-1,lines_filte_len)][0].replace('`', '')
-            print(exemplo_parts)
             options += option(erro)
             types += type_erro(erro, motivo_html, exemplo_parts, cont)
             cont += 1
