@@ -78,6 +78,7 @@ try:
             # Divide o conteúdo nos delimitadores ``` e pega apenas o código dentro
             exemplo_parts = data.split("```")[1]
             motivo_html = [lines_filtered[line] for line in range(lines_filte_len-1,lines_filte_len)][0].replace('`', '')
+            print(erro, motivo_html)
             options += option(erro)
             types += type_erro(erro, motivo_html, exemplo_parts, cont)
             cont += 1
