@@ -18,19 +18,15 @@ try:
                     print(f"Erro para ser corrigido: {erro}, Código: {code}")
 
                     data = {
-                            "model": "codellama:7b", 
-                            "prompt": f"""
-                        Codigo com erro: 
+                        "model": "codellama:7b",
+                        "prompt": f"""
+                    Fix the following Java code with this error {erro}. Return ONLY the fixed code. No explanations, no comments.
 
-                        {code}
-                                
-                        Erro: {erro}
+                    {code}
+                    """,
+                        "stream": False
+                    }
 
-                        Corrija apenas o código abaixo, entregando **somente o código corrigido**, sem comentários, sem explicações.
-
-                        """,
-                            "stream": False
-                        }
 
                     headers = {
                         "Content-Type": "application/json"
