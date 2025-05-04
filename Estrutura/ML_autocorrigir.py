@@ -17,18 +17,11 @@ try:
                     print(f"Erro para ser corrigido: {erro}, Código: {code}")
 
                     data = {
-                        "model": "llama3.2:1b", 
-                        "prompt": '''
-                    Codigo com erro: 
-
-                    {}
-                            
-                    Erro: {}
-
-                    ajuste ao código para apenas uma versao corrigida e funcional, nao preciso de explicação, apenas do codigo corrigido e funcional, seja o  mais assertivo possível.
-
-                        '''.format(code, erro),
-                        "stream": False # Retorna toda resposta em um token
+                        "model": "llama3.2:1b",
+                        "prompt": 'Corrija o seguinte código para que funcione sem erros:\n{}\nErro: {}'.format(code, erro),
+                        "temperature": 0.1,
+                        "num_predict": 100,
+                        "stream": False
                     }
 
                     headers = {
