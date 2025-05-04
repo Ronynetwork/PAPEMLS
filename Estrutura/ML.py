@@ -50,20 +50,11 @@ try:
             data = {
                 "model": "llama3.2:1b", 
                 "prompt": '''
-            Codigo com erro: {}   
-            Erro: {}
-            "Explique brevemente o Motivo do erro e forneça um único exemplo, siga essa ordem, sempre começando com 'Exemplo:' e apenas UM exemplo.
-
-            Exemplo:
-
-            ```
-            [código de exemplo resolvendo de forma simples o erro]
-            ```
-
-            ao fim do arquivo, dê uma breve explicação do porque o erro "{}" acontece na linha de código informada forma didática e simples. Sem adicionar erros desnecessários e que não são referentes a esse erro.
-
+                Codigo com erro: {}\nErro: {}\nExplique o motivo do erro e dê UM exemplo corrigido. Comece com 'Exemplo:' e finalize explicando por que o erro '{}' ocorre.
                 '''.format(code, erro, erro),
-                "stream": False  # Retorna toda resposta em um token
+                "temperature": 0.2,
+                "num_predict": 200,
+                "stream": False
             }
 
             headers = {
