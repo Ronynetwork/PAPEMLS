@@ -53,7 +53,7 @@ try:
                 Codigo com erro: {}\nErro: {}\nExplique o motivo do erro e dê UM exemplo corrigido. Comece com 'Exemplo:' e finalize explicando por que o erro '{}' ocorre.
                 '''.format(code, erro, erro),
                 "temperature": 0.2,
-                "num_predict": 200,
+                "num_predict": 100,
                 "stream": False
             }
 
