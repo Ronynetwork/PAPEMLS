@@ -47,12 +47,11 @@ try:
             print(f"Erro: {erro}, Código: {code}")
             erro = erro.replace('"', '')
             code = code
-            print(1)
             data = {
                 "model": "llama3.2:1b", 
                 "prompt": '''
                 Codigo com erro: {}\nErro: {}\nExplique o motivo do erro e dê UM exemplo corrigido. explicando por que o erro '{}' ocorre.
-                '''.format(code, erro),
+                '''.format(code, erro, erro),
                 "temperature": 0.2,
                 "num_predict": 50,
                 "stream": False
@@ -70,9 +69,7 @@ try:
             else:
                 print("reponse inexistente")
             # Agora, 'lines' é uma lista com cada linha do texto como um item. sem espaços vazios
-            print(2)
             lines = data.splitlines()
-            print(3)
             # Usando list compreenshion para retornar os valores necessários
             lines_filtered = [line for line in lines if line]
             lines_filte_len = len(lines_filtered)
