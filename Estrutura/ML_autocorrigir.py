@@ -9,12 +9,11 @@ try:
         print(erro_dict)
         print(erros_escolhidos)
         for erro in erros_escolhidos:
-            erro_limpo = erro.replace('"', '')
             for err in erro_dict:
                 print(err)
-                print(erro_limpo)
-                if erro_limpo in err.keys():
-                    code = err[erro_limpo]
+                print(erro)
+                if erro in err:
+                    code = err[erro]
                     print(f"Erro para ser corrigido: {erro}, Código: {code}")
 
                     data = {
