@@ -18,7 +18,7 @@ try:
                     print(f"Erro para ser corrigido: {erro}, Código: {code}")
 
                     data = {
-                        "model": "codellama:7b-code",
+                        "model": "llama3.2:1b",
                         "prompt": f"""
                     Fix the following code. 
 
