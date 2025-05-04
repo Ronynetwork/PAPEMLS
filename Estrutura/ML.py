@@ -47,6 +47,7 @@ try:
             print(f"Erro: {erro}, Código: {code}")
             erro = erro.replace('"', '')
             code = code
+            print(1)
             data = {
                 "model": "llama3.2:1b", 
                 "prompt": '''
@@ -61,7 +62,6 @@ try:
                 "Content-Type": "application/json"
             }
 
-            print(1)
             response = requests.post(url, json=data, headers=headers)
 
             # print("Conteúdo da resposta:", response.text)
