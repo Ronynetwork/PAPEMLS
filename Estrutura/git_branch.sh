@@ -3,7 +3,7 @@
 git remote set-url origin git@github.com:Ronynetwork/PAPEMLS.git
 
 # Conferindo se a branch main existe, se não, cria
-git checkout -b main || git checkout main
+git checkout main
 git pull origin main
 
 # Adicionar apenas o arquivo desejado
