@@ -20,10 +20,15 @@ try:
                     data = {
                         "model": "starcoder:1b",
                         "prompt": f"""
-                        Fix the following Java code with this error {erro} IN this line {code_error}. Return ONLY the fixed code. No explanations, no comments.
+                    Fix the following code. 
 
-                        {code}
-                        """,
+                    Error: {erro}
+                    Line: {code_error}
+
+                    Provide ONLY the fixed code. Do NOT include explanations, comments, or any additional text.
+
+                    {code}
+                    """,
                         "stream": False
                     }
 
