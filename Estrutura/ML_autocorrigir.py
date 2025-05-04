@@ -18,12 +18,19 @@ try:
                     print(f"Erro para ser corrigido: {erro}, Código: {code}")
 
                     data = {
-                        "model": "llama3.2:1b",
-                        "prompt": 'Corrija o seguinte código para que funcione sem erros:\n{}\nErro: {}\nLinha: {}'.format(code, erro, code_error),
-                        "temperature": 0.1,
-                        "num_predict": 100,
-                        "stream": False
-                    }
+                            "model": "codellama:7b", 
+                            "prompt": f"""
+                        Codigo com erro: 
+
+                        {code}
+                                
+                        Erro: {erro}
+
+                        Corrija apenas o código abaixo, entregando **somente o código corrigido**, sem comentários, sem explicações.
+
+                        """,
+                            "stream": False
+                        }
 
                     headers = {
                         "Content-Type": "application/json"
