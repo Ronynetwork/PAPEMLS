@@ -13,7 +13,7 @@ try:
             for err in erro_dict:
                 print(err)
                 print(erro_limpo)
-                if erro_limpo in err:
+                if erro_limpo in err.keys():
                     code = err[erro_limpo]
                     print(f"Erro para ser corrigido: {erro}, Código: {code}")
 
