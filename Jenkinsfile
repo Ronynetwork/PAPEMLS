@@ -90,7 +90,7 @@ pipeline {
                     docker compose -f Estrutura/docker-compose-ML.yml up -d
                     echo "Aguardando ollama-ml ficar pronto..."
                     if [ "$(curl -s -o /dev/null -w "%{http_code}" http://localhost:10012/)" = "200" ]; then echo "ok"; else  sleep 2; fi
-                    docker exec ollama-ml ollama run starcoder:1b
+                    docker exec ollama-ml ollama pull codellama:7b-q4_K_M
                 '''
             }
 
