@@ -18,7 +18,7 @@ try:
                     print(f"Erro para ser corrigido: {erro}, Código: {code}")
 
                     data = {
-                        "model": "codellama:7b",
+                        "model": "starcoder:1b",
                         "prompt": f"""
                         Fix the following Java code with this error {erro} IN this line {code_error}. Return ONLY the fixed code. No explanations, no comments.
 

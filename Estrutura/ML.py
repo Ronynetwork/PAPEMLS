@@ -48,7 +48,7 @@ try:
             erro = erro.replace('"', '')
             code = code
             data = {
-                "model": "codellama:7b", 
+                "model": "starcoder:1b", 
                 "prompt": '''
                 Codigo com erro: {}\nErro: {}\nExplique o motivo do erro e dê UM exemplo corrigido. explicando por que o erro '{}' ocorre.
                 '''.format(code, erro, erro),
