@@ -1,11 +1,13 @@
-import java.util.concurrent.atomic.AtomicInteger;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.DocumentBuilder;
+import org.w3c.dom.Document;
+import java.io.ByteArrayInputStream;
 
-public class AtomicExample {
-    public static void main(String[] args) {
-        AtomicInteger a1 = new AtomicInteger(5);
-        AtomicInteger a2 = new AtomicInteger(5);
-
-        boolean equal = a1.equals(a2);  // Noncompliant - Sonar Rule 2204
-        System.out.println("Equal? " + equal);
+public class XXEVuln {
+    public static void main(String[] args) throws Exception {
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        DocumentBuilder db = dbf.newDocumentBuilder();
+        String xml = "<!DOCTYPE foo [ <!ELEMENT foo ANY > <!ENTITY xxe SYSTEM \"file:///etc/passwd\" >]><foo>&xxe;</foo>";
+        Document doc = db.parse(new ByteArrayInputStream(xml.getBytes()));  // Ativa a regra S2755
     }
 }
