@@ -1,8 +1,11 @@
-import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
-public class Example {
+public class AtomicExample {
     public static void main(String[] args) {
-        List list = Collections.EMPTY_LIST;
-        list.add("John");  // Lança UnsupportedOperationException
+        AtomicInteger a1 = new AtomicInteger(5);
+        AtomicInteger a2 = new AtomicInteger(5);
+
+        boolean equal = a1.equals(a2);  // Noncompliant - Sonar Rule 2204
+        System.out.println("Equal? " + equal);
     }
 }
