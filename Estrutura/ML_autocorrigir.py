@@ -1,6 +1,7 @@
-import requests, os, ast
+import requests, os, ast # Biblioteca para fazer requisições HTTP
+from openai import OpenAI
 
-url = 'http://localhost:10012/api/generate'
+API-KEY = os.getenv("API-KEY")
 
 try:
     file_path = os.path.abspath("teste_script/script_hosts.java")
