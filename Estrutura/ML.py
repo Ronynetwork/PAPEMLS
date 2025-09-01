@@ -1,6 +1,5 @@
-import requests, os, ast
-
-url = 'http://localhost:10012/api/generate'
+from openai import OpenAI
+import os, ast
 
 def type_erro(erro, motivo_html, exemplo_parts, cont):
     if cont == 0:
@@ -37,6 +36,11 @@ def option(erro) :
 
 try:        
     html = os.getenv("ERROR_POINT")
+
+    # Buscando a API key do OpenRouter via Jenkins
+    API_KEY = os.getenv("API-KEY")
+    print('API_KEY: ', API_KEY)
+    
     erro_dict = ast.literal_eval(html)
     print('Erro dict: ', erro_dict)
     options = ''
@@ -47,22 +51,43 @@ try:
             print(f"Erro: {erro}, Código: {code}")
             erro = erro.replace('"', '')
             code = code
-            data = {
-                "model": "llama3.2:1b", 
-                "prompt": '''
-                Codigo com erro: {}\nErro: {}\nExplique o motivo do erro e dê UM exemplo corrigido. explicando por que o erro '{}' ocorre.
-                '''.format(code, erro, erro),
-                "temperature": 0.2,
-                "num_predict": 50,
-                "stream": False
-            }
+            API_KEY = os.getenv("API-KEY")
+            print(API_KEY)
 
-            headers = {
-                "Content-Type": "application/json"
-            }
+            client = OpenAI(
+            base_url="https://openrouter.ai/api/v1",
+            api_key=API_KEY,
+            )
 
-            response = requests.post(url, json=data, headers=headers)
+            completion = client.chat.completions.create(
+                #   extra_headers={
+                #     "HTTP-Referer": "<YOUR_SITE_URL>", # Optional. Site URL for rankings on openrouter.ai.
+                #     "X-Title": "<YOUR_SITE_NAME>", # Optional. Site title for rankings on openrouter.ai.
+                #   },
+                model="meta-llama/llama-3.3-8b-instruct:free",
+                messages=[
+                    {
+                    "role": "user",
+                    "content":  f"""
+                                    Fix the following code. 
 
+                                    Error: {erro}
+                                    Line: {code}
+
+                                    Provide ONLY the following tópics:
+                                    code: The fixed code.
+                                    Explication: A short explanation of the changes made. Do NOT include any additional text.
+
+                                    code:
+                                    {code}
+                                    """
+                                    
+                    }
+                ]
+            )
+            
+            response = completion.choices[0].message.content # Retorna os dados em string
+            print('Response: ', response)
             # print("Conteúdo da resposta:", response.text)
             if response: 
                 data = response.json()['response'] # Retorna os dados em string

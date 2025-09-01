@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    enviroment {
+        API-KEY = credentials('API-KEY') // ID da credencial
+    }
+
     stages {
         stage('Realizando a autentiação no Git') {
             steps {
