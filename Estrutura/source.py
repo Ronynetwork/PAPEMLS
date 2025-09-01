@@ -71,8 +71,8 @@ def code_request():
         # Filtra as issues para garantir que apenas as do projeto atual sejam processadas
         filtred_issues = [issue for issue in arq.get('issues', []) if issue['project'] == PROJECT_KEY] 
         
+        dict_error = {}
         if filtred_issues:
-            dict_error = {}
             # Itera sobre as issues filtradas
             for issue in filtred_issues:
                 message = issue['message']  # Mensagem de erro do SonarQube
