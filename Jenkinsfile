@@ -1,7 +1,7 @@
 pipeline {
     agent any
 
-    enviroment {
+    environment {
         API_KEY = credentials('API-KEY') // ID da credencial
     }
 
