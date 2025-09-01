@@ -24,7 +24,7 @@ pipeline {
         stage('Configuração do SonarQube') {
             steps {
                 script {
-                    def sonarContainerExists = sh(script: 'docker ps --filter "names=sonarqube" --format "{{.Names}}"', returnStatus: true)
+                    def sonarContainerExists = sh(script: 'docker ps --filter "names=sonarqube"', returnStatus: true)
                     if (sonarContainerExists == 1) {
                         echo "O serviço SonarQube já está em execução, reiniciando o contêiner."
                         sh "docker restart sonarqube" // Reiniciar o contêiner se estiver em execução
@@ -57,7 +57,8 @@ pipeline {
                             -Dsonar.projectKey=${SONAR_PROJECT_KEY} \
                             -Dsonar.sources=teste_script \
                             -Dsonar.scm.exclusions.disabled=true \
-                            -Dsonar.host.url=${SONAR_URL}
+                            -Dsonar.host.url=${SONAR_URL} \
+                            -Dsonar.login=${SONAR_AUTH_TOKEN}
                         """
                     }
                 }
