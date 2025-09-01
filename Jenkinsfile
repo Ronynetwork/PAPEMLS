@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     enviroment {
-        API-KEY = credentials('API-KEY') // ID da credencial
+        API_KEY = credentials('API-KEY') // ID da credencial
     }
 
     stages {

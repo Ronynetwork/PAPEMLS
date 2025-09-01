@@ -38,9 +38,9 @@ try:
     html = os.getenv("ERROR_POINT")
 
     # Buscando a API key do OpenRouter via Jenkins
-    API_KEY = os.getenv("API-KEY")
+    API_KEY = os.getenv("API_KEY")
     print('API_KEY: ', API_KEY)
-    
+
     erro_dict = ast.literal_eval(html)
     print('Erro dict: ', erro_dict)
     options = ''
