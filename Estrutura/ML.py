@@ -55,7 +55,7 @@ try:
             print(f"Erro: {erro}, Código: {code}")
             erro = erro.replace('"', '')
             code = code
-
+            print(10*'-')
             try:
                 client = OpenAI(
                 base_url="https://openrouter.ai/api/v1",
