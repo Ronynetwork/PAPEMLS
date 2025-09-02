@@ -36,89 +36,89 @@ def option(erro) :
 
 try:        
     html = os.getenv("ERROR_POINT")
+    if html:
+        # Buscando a API key do OpenRouter via Jenkins
+        API_KEY = os.getenv("API_KEY")
+        print('API_KEY: ', API_KEY)
 
-    # Buscando a API key do OpenRouter via Jenkins
-    API_KEY = os.getenv("API_KEY")
-    print('API_KEY: ', API_KEY)
+        erro_dict = ast.literal_eval(html)
+        print('Erro dict: ', erro_dict)
+        options = ''
+        types = ''
+        cont = 0
+        print(10*'-')
+        API_KEY = os.getenv("API_KEY")
+        print(API_KEY)
+        for dic in erro_dict:
+            for erro, code in dic.items():
+                print(f"Erro: {erro}, Código: {code}")
+                erro = erro.replace('"', '')
+                code = code
+                try:
+                    client = OpenAI(
+                    base_url="https://openrouter.ai/api/v1",
+                    api_key=API_KEY,
+                    )
 
-    erro_dict = ast.literal_eval(html)
-    print('Erro dict: ', erro_dict)
-    options = ''
-    types = ''
-    cont = 0
-    print(10*'-')
-    API_KEY = os.getenv("API_KEY")
-    print(API_KEY)
-    for dic in erro_dict:
-        if API_KEY:
-            print("🔐 API_KEY foi carregada com sucesso!")
-        for erro, code in dic.items():
-            print(f"Erro: {erro}, Código: {code}")
-            erro = erro.replace('"', '')
-            code = code
-            try:
-                client = OpenAI(
-                base_url="https://openrouter.ai/api/v1",
-                api_key=API_KEY,
-                )
+                    completion = client.chat.completions.create(
+                        #   extra_headers={
+                        #     "HTTP-Referer": "<YOUR_SITE_URL>", # Optional. Site URL for rankings on openrouter.ai.
+                        #     "X-Title": "<YOUR_SITE_NAME>", # Optional. Site title for rankings on openrouter.ai.
+                        #   },
+                        model="meta-llama/llama-3.3-8b-instruct:free",
+                        messages=[
+                            {
+                            "role": "user",
+                            "content":  f"""
+                                            Fix the following code. 
 
-                completion = client.chat.completions.create(
-                    #   extra_headers={
-                    #     "HTTP-Referer": "<YOUR_SITE_URL>", # Optional. Site URL for rankings on openrouter.ai.
-                    #     "X-Title": "<YOUR_SITE_NAME>", # Optional. Site title for rankings on openrouter.ai.
-                    #   },
-                    model="meta-llama/llama-3.3-8b-instruct:free",
-                    messages=[
-                        {
-                        "role": "user",
-                        "content":  f"""
-                                        Fix the following code. 
+                                            Error: {erro}
+                                            Line: {code}
 
-                                        Error: {erro}
-                                        Line: {code}
+                                            Provide ONLY the following tópics:
+                                            code: The fixed code.
+                                            Explication: A short explanation of the changes made. Do NOT include any additional text.
 
-                                        Provide ONLY the following tópics:
-                                        code: The fixed code.
-                                        Explication: A short explanation of the changes made. Do NOT include any additional text.
+                                            code:
+                                            {code}
+                                            """
+                                            
+                            }
+                        ]
+                    )
+                except Exception as e:
+                    print("Erro ao chamar a API do OpenAI: ", e)
+                    continue
+                
+                response = completion.choices[0].message.content # Retorna os dados em string
+                print('Response: \n', response)
+                # print("Conteúdo da resposta:", response.text)
+                if response: 
+                    data = response
+                else:
+                    print("reponse inexistente")
+                # Agora, 'lines' é uma lista com cada linha do texto como um item. sem espaços vazios
+                lines = data.splitlines()
+                # Usando list compreenshion para retornar os valores necessários
+                lines_filtered = [line for line in lines if line]
+                lines_filte_len = len(lines_filtered)
+                if '```' in data:
+                    exemplo_parts = data.split("```")[1]
+                else:
+                    exemplo_parts = ''
 
-                                        code:
-                                        {code}
-                                        """
-                                        
-                        }
-                    ]
-                )
-            except Exception as e:
-                print("Erro ao chamar a API do OpenAI: ", e)
-                continue
-            
-            response = completion.choices[0].message.content # Retorna os dados em string
-            print('Response: ', response)
-            # print("Conteúdo da resposta:", response.text)
-            if response: 
-                data = response
-            else:
-                print("reponse inexistente")
-            # Agora, 'lines' é uma lista com cada linha do texto como um item. sem espaços vazios
-            lines = data.splitlines()
-            # Usando list compreenshion para retornar os valores necessários
-            lines_filtered = [line for line in lines if line]
-            lines_filte_len = len(lines_filtered)
-            if '```' in data:
-                exemplo_parts = data.split("```")[1]
-            else:
-                exemplo_parts = ''
+                # Para a explicação final:
+                motivo_html = ''
+                for line in reversed(lines_filtered):
+                    if 'exemplo' not in line.lower() and line.strip():
+                        motivo_html = line.replace('`', '')
+                        break
 
-            # Para a explicação final:
-            motivo_html = ''
-            for line in reversed(lines_filtered):
-                if 'exemplo' not in line.lower() and line.strip():
-                    motivo_html = line.replace('`', '')
-                    break
-
-            options += option(erro)
-            types += type_erro(erro, motivo_html, exemplo_parts, cont)
-            cont += 1
+                options += option(erro)
+                types += type_erro(erro, motivo_html, exemplo_parts, cont)
+                cont += 1
+        else:
+            print("Nenhum erro encontrado no dicionário.")
     else:   
         print("Variável ERROR_POINT não encontrada ou vazia")
 except Exception as e:
