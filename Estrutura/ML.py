@@ -49,6 +49,8 @@ try:
     for dic in erro_dict:
         API_KEY = os.getenv("API_KEY")
         print(API_KEY)
+        if API_KEY:
+            print("🔐 API_KEY foi carregada com sucesso!")
         for erro, code in dic.items():
             print(f"Erro: {erro}, Código: {code}")
             erro = erro.replace('"', '')
