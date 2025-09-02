@@ -92,6 +92,8 @@ pipeline {
             script{
                 withCredentials([string(credentialsId: 'API-KEY', variable: 'API_KEY')]) {
                     echo 'Executando arquivo de ML'
+                    env.API_KEY = "${API_KEY}"
+                    echo "${API_KEY}"
                     sh '''
                         . papemls/bin/activate
                         chmod +x Estrutura/ML.py
