@@ -68,21 +68,30 @@ try:
                         model="meta-llama/llama-3.3-8b-instruct:free",
                         messages=[
                             {
-                            "role": "user",
-                            "content":  f"""
-                                            Fix the following code. 
+                                "role": "user",
+                                "content": f"""
+                                Você é um agente de correção de código.  
+                                Corrija o trecho abaixo conforme o erro informado.
 
-                                            Error: {erro}
-                                            Line: {code}
+                                Erro: {erro}
+                                Código: {code}
 
-                                            Provide ONLY the following tópics:
-                                            code: The fixed code.
-                                            Explication: A short explanation of the changes made. Do NOT include any additional text.
+                                Responda SEMPRE usando o seguinte formato, sem textos extras:
 
-                                            Correction:
-                                            {code}
-                                            """
-                                            
+                                Explication: (Explique brevemente a correção realizada, em uma linha)
+                                Correction:
+                                <coloque aqui o código corrigido>
+
+                                Exemplo:
+                                Explication: O construtor BigDecimal(double) foi substituído por BigDecimal.valueOf(double) para evitar imprecisão.
+                                Correction:
+                                BigDecimal bd1 = BigDecimal.valueOf(d);
+
+                                Agora, gere sua resposta:
+                                Erro: {erro}
+                                Código: {code}
+                                """
+                                # ...existing code...
                             }
                         ]
                     )
