@@ -46,16 +46,16 @@ try:
     options = ''
     types = ''
     cont = 0
+    print(10*'-')
+    API_KEY = os.getenv("API_KEY")
+    print(API_KEY)
     for dic in erro_dict:
-        API_KEY = os.getenv("API_KEY")
-        print(API_KEY)
         if API_KEY:
             print("🔐 API_KEY foi carregada com sucesso!")
         for erro, code in dic.items():
             print(f"Erro: {erro}, Código: {code}")
             erro = erro.replace('"', '')
             code = code
-            print(10*'-')
             try:
                 client = OpenAI(
                 base_url="https://openrouter.ai/api/v1",
