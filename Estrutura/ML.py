@@ -122,7 +122,7 @@ try:
     else:   
         print("Variável ERROR_POINT não encontrada ou vazia")
 except Exception as e:
-    print("Projeto nao possue issues abertas!")
+    print("Errp indicado: ", e)
 
 
 head = '''<!DOCTYPE html>
