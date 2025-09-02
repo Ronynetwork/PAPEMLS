@@ -113,12 +113,14 @@ try:
                 lines_filte_len = len(lines_filtered)
                 if 'Correction:' in data:
                     exemplo_parts = data.split("Correction")[1]
+                    print('Exemplo parts: ', exemplo_parts)
                 else:
                     exemplo_parts = ''
 
                 # Para a explicação final:
                 if 'Explication:' in data:
                     motivo_html = data.split("Explication:")[1].strip()
+                    print('Motivo html: ', motivo_html)
 
                 options += option(erro)
                 types += type_erro(erro, motivo_html, exemplo_parts, cont)
