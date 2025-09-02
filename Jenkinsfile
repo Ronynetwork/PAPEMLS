@@ -90,12 +90,14 @@ pipeline {
                 }
             }
             script{
-                echo 'Executando arquivo de ML'
-                sh '''
-                    . papemls/bin/activate
-                    chmod +x Estrutura/ML.py
-                    python3 Estrutura/ML.py
-                '''
+                withCredentials([string(credentialsId: 'API-KEY', variable: 'API_KEY')]) {
+                    echo 'Executando arquivo de ML'
+                    sh '''
+                        . papemls/bin/activate
+                        chmod +x Estrutura/ML.py
+                        python3 Estrutura/ML.py
+                    '''
+                }
             }
             script {
                 echo 'Subindo flask em background'
