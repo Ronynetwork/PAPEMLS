@@ -96,7 +96,7 @@ try:
             print('Response: ', response)
             # print("Conteúdo da resposta:", response.text)
             if response: 
-                data = response.json()['response'] # Retorna os dados em string
+                data = response
             else:
                 print("reponse inexistente")
             # Agora, 'lines' é uma lista com cada linha do texto como um item. sem espaços vazios
