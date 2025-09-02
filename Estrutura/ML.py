@@ -119,7 +119,8 @@ try:
 
                 # Para a explicação final:
                 if 'Explication:' in data:
-                    motivo_html = data.split("Explication:")[1].strip()
+                    explicationBrute= data.split("Explication:")[1].strip()
+                    motivo_html = explicationBrute.split("Correction:")[0].strip()
                     print('Motivo html: ', motivo_html)
 
                 options += option(erro)
