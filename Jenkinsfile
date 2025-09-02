@@ -12,7 +12,7 @@ pipeline {
                     def destinationDir= 'PAPEMLS'
                     git credentialsId: 'log-token-git',
                         url: 'https://github.com/Ronynetwork/PAPEMLS.git',
-                        branch: 'main'
+                        branch: 'dev'
                         directory: destinationDir
                 }
             }
