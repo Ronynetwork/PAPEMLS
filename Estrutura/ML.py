@@ -111,17 +111,14 @@ try:
                 # Usando list compreenshion para retornar os valores necessários
                 lines_filtered = [line for line in lines if line]
                 lines_filte_len = len(lines_filtered)
-                if '```' in data:
-                    exemplo_parts = data.split("```")[1]
+                if 'Correction:' in data:
+                    exemplo_parts = data.split("Correction")[1]
                 else:
                     exemplo_parts = ''
 
                 # Para a explicação final:
-                motivo_html = ''
-                for line in reversed(lines_filtered):
-                    if 'exemplo' not in line.lower() and line.strip():
-                        motivo_html = line.replace('`', '')
-                        break
+                if 'Explication:' in data:
+                    motivo_html = data.split("Explication:")[1].strip()
 
                 options += option(erro)
                 types += type_erro(erro, motivo_html, exemplo_parts, cont)
