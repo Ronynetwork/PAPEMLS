@@ -47,12 +47,12 @@ try:
     types = ''
     cont = 0
     for dic in erro_dict:
+        API_KEY = os.getenv("API_KEY")
+        print(API_KEY)
         for erro, code in dic.items():
             print(f"Erro: {erro}, Código: {code}")
             erro = erro.replace('"', '')
             code = code
-            API_KEY = os.getenv("API_KEY")
-            print(API_KEY)
 
             try:
                 client = OpenAI(
