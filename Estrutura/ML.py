@@ -51,40 +51,44 @@ try:
             print(f"Erro: {erro}, Código: {code}")
             erro = erro.replace('"', '')
             code = code
-            API_KEY = os.getenv("API-KEY")
+            API_KEY = os.getenv("API_KEY")
             print(API_KEY)
 
-            client = OpenAI(
-            base_url="https://openrouter.ai/api/v1",
-            api_key=API_KEY,
-            )
+            try:
+                client = OpenAI(
+                base_url="https://openrouter.ai/api/v1",
+                api_key=API_KEY,
+                )
 
-            completion = client.chat.completions.create(
-                #   extra_headers={
-                #     "HTTP-Referer": "<YOUR_SITE_URL>", # Optional. Site URL for rankings on openrouter.ai.
-                #     "X-Title": "<YOUR_SITE_NAME>", # Optional. Site title for rankings on openrouter.ai.
-                #   },
-                model="meta-llama/llama-3.3-8b-instruct:free",
-                messages=[
-                    {
-                    "role": "user",
-                    "content":  f"""
-                                    Fix the following code. 
+                completion = client.chat.completions.create(
+                    #   extra_headers={
+                    #     "HTTP-Referer": "<YOUR_SITE_URL>", # Optional. Site URL for rankings on openrouter.ai.
+                    #     "X-Title": "<YOUR_SITE_NAME>", # Optional. Site title for rankings on openrouter.ai.
+                    #   },
+                    model="meta-llama/llama-3.3-8b-instruct:free",
+                    messages=[
+                        {
+                        "role": "user",
+                        "content":  f"""
+                                        Fix the following code. 
 
-                                    Error: {erro}
-                                    Line: {code}
+                                        Error: {erro}
+                                        Line: {code}
 
-                                    Provide ONLY the following tópics:
-                                    code: The fixed code.
-                                    Explication: A short explanation of the changes made. Do NOT include any additional text.
+                                        Provide ONLY the following tópics:
+                                        code: The fixed code.
+                                        Explication: A short explanation of the changes made. Do NOT include any additional text.
 
-                                    code:
-                                    {code}
-                                    """
-                                    
-                    }
-                ]
-            )
+                                        code:
+                                        {code}
+                                        """
+                                        
+                        }
+                    ]
+                )
+            except Exception as e:
+                print("Erro ao chamar a API do OpenAI: ", e)
+                continue
             
             response = completion.choices[0].message.content # Retorna os dados em string
             print('Response: ', response)
