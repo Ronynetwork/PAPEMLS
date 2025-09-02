@@ -79,7 +79,7 @@ try:
                                             code: The fixed code.
                                             Explication: A short explanation of the changes made. Do NOT include any additional text.
 
-                                            code:
+                                            Correction:
                                             {code}
                                             """
                                             
