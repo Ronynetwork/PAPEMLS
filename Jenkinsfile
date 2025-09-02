@@ -89,16 +89,6 @@ pipeline {
                     echo "Erro retornado ${ERROR_POINT}"
                 }
             }
-            script {
-                echo 'Criando ambiente virtual e instalando dependências...'
-                sh '''
-                    docker compose -f Estrutura/docker-compose-ML.yml up -d
-                    echo "Aguardando ollama-ml ficar pronto..."
-                    if [ "$(curl -s -o /dev/null -w "%{http_code}" http://localhost:10012/)" = "200" ]; then echo "ok"; else  sleep 2; fi
-                    docker exec ollama-ml ollama run llama3.2:1b
-                '''
-            }
-
             script{
                 echo 'Executando arquivo de ML'
                 sh '''
