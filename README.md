@@ -47,6 +47,10 @@ O Plugin visa a implementação de uma ferramenta que identifique, analise, atue
 <h3>Ngrok (para testes localhost)</h3>
 <p><a href="https://ngrok.com/downloads/linux">Baixar Ngrok</a></p>
 
+<h3>Jenkins Plugins</h3>
+<p>Pipeline Utility Steps Plugin</p>
+<p>SonarQube Instalations</p>
+<p>Sonar Quality Gates</p>
 
 as tecnologias citadas acima necessitam ser instaladas antes da execução da pipeline.
 
