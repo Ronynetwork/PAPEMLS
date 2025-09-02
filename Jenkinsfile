@@ -104,7 +104,7 @@ pipeline {
                 sh '''
                     . papemls/bin/activate
                     pwd
-                    tree Estrutura/notification
+                    ls Estrutura/notification
                     chmod +x Estrutura/notification/main.py
                     python3 Estrutura/notification/main.py &
                     sleep 5
