@@ -113,7 +113,6 @@ try:
                 lines_filte_len = len(lines_filtered)
                 if 'Correction:' in data:
                     exemplo_parts = data.split("Correction:")[1]
-                    print('Exemplo parts: ', exemplo_parts)
                 else:
                     exemplo_parts = ''
 
@@ -121,11 +120,12 @@ try:
                 if 'Explication:' in data:
                     explicationBrute= data.split("Explication:")[1].strip()
                     motivo_html = explicationBrute.split("Correction:")[0].strip()
-                    print('Motivo html: ', motivo_html)
 
+                print('='*20, 'Motivo HTML: ', motivo_html, '\nExemplo parts: ', exemplo_parts, '='*20)
                 options += option(erro)
                 types += type_erro(erro, motivo_html, exemplo_parts, cont)
                 cont += 1
+
         else:
             print("Nenhum erro encontrado no dicionário.")
     else:   
