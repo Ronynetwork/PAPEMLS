@@ -131,6 +131,8 @@ pipeline {
                         '''
                         break  // Sai do loop ao corrigir
                     } else if (json.resposta == 'ignorar') {
+                        echo "SONAR_HOST_URL: ${SONAR_HOST_URL}"
+                        echo "SONAR_URL: ${SONAR_URL}"
                         echo 'Foi solicitada a ação de ignorar!'
                         break  // Sai do loop se a ação for ignorar
                     } else {
