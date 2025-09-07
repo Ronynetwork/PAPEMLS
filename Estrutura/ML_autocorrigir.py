@@ -27,6 +27,7 @@ try:
                     Line: {code_error}
 
                     Provide ONLY the fixed code. Do NOT include explanations, comments, or any additional text.
+                    NEVER use (``) to delimit code and citations.
 
                     {code}
                     """,

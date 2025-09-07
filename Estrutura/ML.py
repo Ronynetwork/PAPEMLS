@@ -77,6 +77,8 @@ try:
                                 Código: {code}
 
                                 Responda SEMPRE usando o seguinte formato, sem textos extras:
+                                Provide ONLY the fixed code. Do NOT include explanations, comments, or any additional text.
+                                NEVER use (``) to delimit code and citations.
 
                                 Explication: (Explique brevemente a correção realizada, em uma linha)
                                 Correction:
