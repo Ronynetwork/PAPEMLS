@@ -111,36 +111,45 @@ pipeline {
                 '''
             }
             script {
-                // Aguardar que o Flask capture a resposta do usuário
                 echo 'Aguardando resposta do usuário... visite http://127.0.0.1:5000/'
-                // Aqui você pode fazer uma requisição para o Flask ou esperar até que ele termine
+
                 def startTime = System.currentTimeMillis()
-                def duration = 300000  // 5 minutos em milissegundos
+                def duration = 300000  // 5 minutos
 
                 while ((System.currentTimeMillis() - startTime) < duration) {
-                    def resposta = sh(script: 'curl -s -X GET http://127.0.0.1:5000/capturar_resposta', returnStdout: true).trim()
-                    def resjson = readJSON text: resposta
-                    echo "Resposta recebida do Flask: ${resjson.resposta}"
-                    echo "Erros recebidos do Flask: ${resjson.erros}"
-                    echo "Resposta completa: ${resposta}"
+                    try {
+                        def resposta = sh(script: 'curl -s -X GET http://127.0.0.1:5000/capturar_resposta', returnStdout: true).trim()
 
-                if (resjson.resposta == "corrigir") {
-                    echo "Resposta recebida: ${resposta}"
-                    env.ERROS = resjson.erros  
-                    sh '''
-                        chmod +x Estrutura/ML_autocorrigir.py Estrutura/git_branch.sh
-                        python3 Estrutura/ML_autocorrigir.py
-                        ./Estrutura/git_branch.sh
-                    '''
-                    break  // Sai do loop ao corrigir
-                } else if (resjson.resposta == 'ignorar') {
-                    echo 'Foi solicitada a ação de ignorar!'
-                    break  // Sai do loop se a ação for ignorar
-                } else {
-                    sleep 5  // Espera 5 segundos antes da próxima requisição
-                }}
-                
+                        if (resposta) {
+                            def resjson = readJSON text: resposta
+
+                            echo "Resposta recebida do Flask: ${resjson.resposta}"
+                            echo "Erros recebidos do Flask: ${resjson.erros}"
+
+                            if (resjson.resposta == "corrigir") {
+                                env.ERROS = resjson.erros  
+                                sh '''
+                                    chmod +x Estrutura/ML_autocorrigir.py Estrutura/git_branch.sh
+                                    python3 Estrutura/ML_autocorrigir.py
+                                    ./Estrutura/git_branch.sh
+                                '''
+                                break
+                            } else if (resjson.resposta == 'ignorar') {
+                                echo 'Foi solicitada a ação de ignorar!'
+                                break
+                            }
+                        } else {
+                            echo "Resposta vazia do servidor Flask. Tentando novamente..."
+                        }
+
+                    } catch (err) {
+                        echo "Erro ao tentar capturar ou processar resposta: ${err}"
+                    }
+
+                    sleep 5
+                }
             }
+
         }
     }
 }

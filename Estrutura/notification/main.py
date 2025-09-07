@@ -1,5 +1,3 @@
-import os
-import requests
 from flask import Flask, render_template, request, jsonify
 
 JENKINS_URL = "http://localhost:8080/job/PAPEMLS/buildWithParameters"
