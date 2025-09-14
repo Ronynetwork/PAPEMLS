@@ -61,88 +61,89 @@ try:
             # --------------------------------------------------------------------------------------------------------------------------            
             
 
-            line, erro, code = dados
-            print(f"Erro: {erro}, Código: {code}, linha: {line}")
-            try:
-                client = OpenAI(
-                base_url="https://openrouter.ai/api/v1",
-                api_key=API_KEY,
-                )
+            for line, erro, code in dados:
 
-                completion = client.chat.completions.create(
-                    #   extra_headers={
-                    #     "HTTP-Referer": "<YOUR_SITE_URL>", # Optional. Site URL for rankings on openrouter.ai.
-                    #     "X-Title": "<YOUR_SITE_NAME>", # Optional. Site title for rankings on openrouter.ai.
-                    #   },
-                    model="meta-llama/llama-3.3-8b-instruct:free",
-                    messages=[
-                        {
-                            "role": "user",
-                            "content": f"""
-                            Você é um agente de correção de código.  
-                            Corrija o trecho abaixo conforme o erro informado.
+                print(f"Erro: {erro}, Código: {code}, linha: {line}")
+                try:
+                    client = OpenAI(
+                    base_url="https://openrouter.ai/api/v1",
+                    api_key=API_KEY,
+                    )
 
-                            Erro: {erro}
-                            Código: {code}
+                    completion = client.chat.completions.create(
+                        #   extra_headers={
+                        #     "HTTP-Referer": "<YOUR_SITE_URL>", # Optional. Site URL for rankings on openrouter.ai.
+                        #     "X-Title": "<YOUR_SITE_NAME>", # Optional. Site title for rankings on openrouter.ai.
+                        #   },
+                        model="meta-llama/llama-3.3-8b-instruct:free",
+                        messages=[
+                            {
+                                "role": "user",
+                                "content": f"""
+                                Você é um agente de correção de código.  
+                                Corrija o trecho abaixo conforme o erro informado.
 
-                            Responda SEMPRE usando o seguinte formato, sem textos extras:
-                            Provide ONLY the fixed code. Do NOT include explanations, comments, or any additional text.
-                            NEVER use (``) to delimit code and citations.
-                            PRESERVE THE ORIGINAL CODE STRUCTURE AND FORMATTING.
+                                Erro: {erro}
+                                Código: {code}
 
-                            Explication: (Explique brevemente a correção realizada, em uma linha)
-                            Correction:
-                            <coloque aqui o código corrigido>
+                                Responda SEMPRE usando o seguinte formato, sem textos extras:
+                                Provide ONLY the fixed code. Do NOT include explanations, comments, or any additional text.
+                                NEVER use (``) to delimit code and citations.
+                                PRESERVE THE ORIGINAL CODE STRUCTURE AND FORMATTING.
 
-                            Exemplo:
-                            Explication: O construtor BigDecimal(double) foi substituído por BigDecimal.valueOf(double) para evitar imprecisão.
-                            Correction:
-                            BigDecimal bd1 = BigDecimal.valueOf(d);
+                                Explication: (Explique brevemente a correção realizada, em uma linha)
+                                Correction:
+                                <coloque aqui o código corrigido>
 
-                            Agora, gere sua resposta:
-                            Erro: {erro}
-                            Código: {code}
-                            """
-                            # ...existing code...
-                        }
-                    ]
-                )
-            except Exception as e:
-                print("Erro ao chamar a API do OpenAI: ", e)
-                continue
-            
-            response = completion.choices[0].message.content # Retorna os dados em string
-            print('Response: \n', response)
-            # print("Conteúdo da resposta:", response.text)
-            if response: 
-                data = response
-            else:
-                print("reponse inexistente")
-            # Agora, 'lines' é uma lista com cada linha do texto como um item. sem espaços vazios
-            lines = data.splitlines()
-            # Usando list compreenshion para retornar os valores necessários
-            lines_filtered = [line for line in lines if line]
-            lines_filte_len = len(lines_filtered)
-            if 'Correction:' in data:
-                exemplo_parts = data.split("Correction:")[1].replace('```', '').strip() # Pega tudo que vem depois de Correction:
-            else:
-                exemplo_parts = ''
+                                Exemplo:
+                                Explication: O construtor BigDecimal(double) foi substituído por BigDecimal.valueOf(double) para evitar imprecisão.
+                                Correction:
+                                BigDecimal bd1 = BigDecimal.valueOf(d);
 
-            # Para a explicação final:
-            if 'Explication:' in data:
-                explicationBrute= data.split("Explication:")[1].strip()
-                motivo = explicationBrute.split("Correction:")[0].strip()
+                                Agora, gere sua resposta:
+                                Erro: {erro}
+                                Código: {code}
+                                """
+                                # ...existing code...
+                            }
+                        ]
+                    )
+                except Exception as e:
+                    print("Erro ao chamar a API do OpenAI: ", e)
+                    continue
+                
+                response = completion.choices[0].message.content # Retorna os dados em string
+                print('Response: \n', response)
+                # print("Conteúdo da resposta:", response.text)
+                if response: 
+                    data = response
+                else:
+                    print("reponse inexistente")
+                # Agora, 'lines' é uma lista com cada linha do texto como um item. sem espaços vazios
+                lines = data.splitlines()
+                # Usando list compreenshion para retornar os valores necessários
+                lines_filtered = [line for line in lines if line]
+                lines_filte_len = len(lines_filtered)
+                if 'Correction:' in data:
+                    exemplo_parts = data.split("Correction:")[1].replace('```', '').strip() # Pega tudo que vem depois de Correction:
+                else:
+                    exemplo_parts = ''
 
-            print('='*20, 'Motivo: ', motivo, '\nExemplo parts: ', exemplo_parts, '='*20)
-            options += option(erro) # Adicionando os erros à variável do html
-            types += type_erro(erro, motivo, exemplo_parts) # Adicionando os erros à variável do JS
-            
-            # Formando div que informa o arquivo e erros
-            div_erros += div_erro(arq_name_split,options)
-            # --------------------------------------------
-        buttons += '''
-    </div>
-'''
+                # Para a explicação final:
+                if 'Explication:' in data:
+                    explicationBrute= data.split("Explication:")[1].strip()
+                    motivo = explicationBrute.split("Correction:")[0].strip()
+
+                print('='*20, 'Motivo: ', motivo, '\nExemplo parts: ', exemplo_parts, '='*20)
+                options += option(erro) # Adicionando os erros à variável do html
+                types += type_erro(erro, motivo, exemplo_parts) # Adicionando os erros à variável do JS
+                
+                # Formando div que informa o arquivo e erros
+                div_erros += div_erro(arq_name_split,options)
+                # --------------------------------------------
+            buttons += '''
+        </div>
+    '''
     else:
         print("Nenhum erro encontrado no dicionário.")
 except Exception as e:
