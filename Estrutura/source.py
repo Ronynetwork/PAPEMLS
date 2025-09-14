@@ -35,7 +35,6 @@ def code_source(line):
         line_with_error = None
     if response.status_code == 200:
         # Se a resposta for bem-sucedida, imprime o conteúdo do arquivo
-        print("Acesso ao código-fonte bem-sucedido.")
         return line_with_error# Exibe o conteúdo do arquivo
     else:
         return f"Erro {response.status_code}: {response.text}"
@@ -48,8 +47,6 @@ def code_request():
                                 headers={
                                      'Authorization': f'Basic {auth_header}'
                                 })
-        
-        print('Requisição da análise realizada com sucesso! ', response)
     except Exception as e:
         print('Erro na requisição:', e)
 
@@ -60,7 +57,6 @@ def code_request():
         # Filtra as issues para garantir que apenas as do projeto atual sejam processadas
         try:
             filtred_issues = [issue for issue in arq.get('issues', []) if issue['project'] == PROJECT_KEY]
-            print("Filtred_issues: ", filtred_issues)
         except Exception as e:
             print("Erro no filtro de issues", e)
         dict_error = {}
@@ -79,9 +75,7 @@ def code_request():
                     dict_error[component] = []
                 else:
                     dict_error[component].append((line, message, linha_com_erro))
-        print('Filtro de problemas realizado com sucesso!')
 
-        print('A seguir, enviando dados do dicionário de issues')
         if list(dict_error.keys())[0] == f'{PROJECT_KEY}:{FILE_PATH}': # Executando e enviando todo o dicionário de dados
             msg = dict_error
         else:
@@ -95,9 +89,8 @@ def code_request():
 
 # Chama a função para iniciar o processo de requisição e resolução de erros
 try:
-    print("Iniciando a requisição ao SonarQube...")
     erros = code_request()
-    print("Erros sendo enviados ao flask:", erros)
+    print(erros)
     print("Requisição concluída.")
 except Exception as e:
     print("Erro ao buscar informações da análise:", e)
