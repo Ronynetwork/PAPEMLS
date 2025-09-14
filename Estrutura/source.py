@@ -58,6 +58,7 @@ def code_request():
         # Filtra as issues para garantir que apenas as do projeto atual sejam processadas
         try:
             filtred_issues = [issue for issue in arq.get('issues', []) if issue['project'] == PROJECT_KEY]
+            print("Filtred_issues: ", filtred_issues)
         except Exception as e:
             print("Erro no filtro de issues", e)
         dict_error = {}
