@@ -9,7 +9,7 @@ def type_erro(erro, motivo, exemplo_parts):
                 <h3>{}</h3>
                 <pre>
                     {}
-                </pre>
+                </pre> `
     '''.format(erro, erro, exemplo_parts)
     return type_erro
 
