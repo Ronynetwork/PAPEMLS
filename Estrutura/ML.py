@@ -139,7 +139,7 @@ try:
             # Formando div que informa o arquivo e erros
             div_erros += div_erro(arq_name_split,options)
             # --------------------------------------------
-        buttons = buttons + '''
+        buttons += '''
     </div>
 '''
     else:
