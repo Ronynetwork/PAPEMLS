@@ -68,7 +68,7 @@ def code_request():
             for issue in filtred_issues:
                 # print(issue)
                 message = issue['message']  # Mensagem de erro do SonarQube
-                line = issue['line'] # Linha onde o problema foi identificado
+                line = issue.get('line') # Linha onde o problema foi identificado
                 component = issue['component']  # Componente (arquivo) onde o problema está localizado
                 print('Linha a ser buscada', line)
                 linha_com_erro = code_source(line)
