@@ -87,8 +87,6 @@ def code_request():
 
 # Chama a função para iniciar o processo de requisição e resolução de erros
 try:
-    erros = code_request()
-    print(erros)
-    print("Requisição concluída.")
+    print(code_request())
 except Exception as e:
     print("Erro ao buscar informações da análise:", e)
