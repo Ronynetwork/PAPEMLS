@@ -68,9 +68,7 @@ def code_request():
                 message = issue['message']  # Mensagem de erro do SonarQube
                 line = issue.get('line') # Linha onde o problema foi identificado
                 component = issue['component']  # Componente (arquivo) onde o problema está localizado
-                print('Linha a ser buscada', line)
                 linha_com_erro = code_source(line)
-                print("Retorno do codesource: ", linha_com_erro)
                 if component not in dict_error:
                     dict_error[component] = []
                 else:
