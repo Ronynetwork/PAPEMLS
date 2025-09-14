@@ -8,6 +8,7 @@ PROJECT_KEY = os.getenv('SONAR_PROJECT_KEY')
 FILE_PATH = 'teste_script/script_hosts.java'
 
 auth_header = base64.b64encode(f"{TOKEN}:".encode()).decode()
+auth_header_code = base64.b64encode(f"{TOKEN_CODE}:".encode()).decode()
 params = {
     "project": PROJECT_KEY,
     "sort": "date",  # Ordena pela data da análise mais recente
@@ -22,7 +23,7 @@ def code_source(line):
         params={
             'key': f'{PROJECT_KEY}:{FILE_PATH}'  # Aqui é necessário usar o 'key' com o formato correto
         },
-        headers = {'Authorization': f'Basic {auth_header}'}
+        headers = {'Authorization': f'Basic {auth_header_code}'}
     )
 
     code = response.text
