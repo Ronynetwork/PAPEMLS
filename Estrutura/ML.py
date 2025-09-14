@@ -49,8 +49,8 @@ try:
         for arquivo, dados in erros.items():
     
             # Dados do nome do arquivo e formatação de botão de seleção
-            print(f'Analisando o arquivo: {arq_path}')
             arq_path = arquivo.replace(f'{os.getenv("PROJECT_KEY")}:','')
+            print(f'Analisando o arquivo: {arq_path}')
             arq_name_brute = arq_path.split('/')[1]
             arq_name_split = arq_name_brute.split('.')[0]
             button = f'''
