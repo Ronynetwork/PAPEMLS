@@ -46,10 +46,6 @@ try:
         types = ''
         buttons = ''
         div_erros = ''
-
-        print(10*'-')
-        API_KEY = os.getenv("API_KEY")
-        print(API_KEY)
         for arquivo, dados in erros.items():
     
             # Dados do nome do arquivo e formatação de botão de seleção
@@ -143,6 +139,9 @@ try:
             # Formando div que informa o arquivo e erros
             div_erros += div_erro(arq_name_split,options)
             # --------------------------------------------
+        buttons = buttons + '''
+    </div>
+'''
     else:
         print("Nenhum erro encontrado no dicionário.")
 except Exception as e:
@@ -247,10 +246,6 @@ function enviarAcao(acao) {
     .then(data => alert("Escolha enviada: " + acao))
     .catch(error => console.error("Erro:", error));
 }
-'''
-
-buttons += '''
-    </div>
 '''
 
 html_complete = head + buttons + div_erros + body #Formatando o html completo
