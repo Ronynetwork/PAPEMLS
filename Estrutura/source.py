@@ -46,16 +46,19 @@ def code_request():
                                 headers={
                                      'Authorization': f'Basic {auth_header}'
                                 })
+        
+        print('Requisição da análise realizada com sucesso!')
     except Exception as e:
         print('Erro na requisição:', e)
+
     # Verifica se a requisição foi bem-sucedida
     if response.status_code == 200:
         # Processa a resposta da API como um JSON
         arq = response.json()
         # Filtra as issues para garantir que apenas as do projeto atual sejam processadas
         filtred_issues = [issue for issue in arq.get('issues', []) if issue['project'] == PROJECT_KEY]
-        
         dict_error = {}
+
         if filtred_issues:
             # Itera sobre as issues filtradas
             for issue in filtred_issues:
@@ -70,7 +73,9 @@ def code_request():
                     dict_error[component] = []
                 else:
                     dict_error[component].append((line, message, linha_com_erro))
+        print('Filtro de problemas realizado com sucesso!')
 
+        print('A seguir, enviando dados do dicionário de issues')
         if list(dict_error.keys())[0] == f'{PROJECT_KEY}:{FILE_PATH}': # Executando e enviando todo o dicionário de dados
             msg = dict_error
         else:
@@ -89,4 +94,4 @@ try:
     print("Erros sendo enviados ao flask:", erros)
     print("Requisição concluída.")
 except Exception as e:
-    print("Erro ao acessar a variável de ambiente 'ACTION':", e)
+    print("Erro ao buscar informações da análise:", e)
