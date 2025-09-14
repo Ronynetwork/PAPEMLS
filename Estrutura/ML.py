@@ -4,12 +4,14 @@ import os, ast
 def type_erro(erro, motivo, exemplo_parts):
     type_erro = '''
         case "{}":
-        return `
-            <div class="solution-block">
-                <h3>{}</h3>
-                <pre>
-                    {}
-                </pre> `
+            return `
+                <div class="solution-block">
+                    <h3>{}</h3>
+                    <pre>
+                        {}
+                    </pre> 
+                </div>
+            `
     '''.format(erro, erro, exemplo_parts)
     return type_erro
 
@@ -33,7 +35,7 @@ def div_erro(arq_name_split, options):
         </div>
         '''
 
-    return div_erros 
+    return div_erros
 
 try:        
     ERROR_POINT = os.getenv("ERROR_POINT")
