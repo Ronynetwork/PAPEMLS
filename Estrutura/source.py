@@ -14,29 +14,7 @@ params = {
     "resolved": 'false'
 }
 
-def resolve_error(dict_error):
-    # Função para resolver um erro específico no código baseado na análise do SonarQube
-
-    # Abrir o arquivo de código e ler todas as linhas
-    component_path = list(dict_error.keys())[0].replace("PAPEMLS:", "./")
-    with open(component_path, 'r') as file:
-        lines = file.readlines()
-    messages = []
-    for erros in dict_error.values(): # Verifica os dicionarios presente no valor do dicionário principal
-        for line, message in erros:
-            try:
-                # Seleciona a linha específica onde o erro foi identificado e a divide em palavras
-                if line == None:
-                    messages.append({message:''})            
-                else:
-                    error_line = lines[line-1].strip()  # Use strip() sem argumentos
-                    messages.append({message: error_line})
-            except Exception as e:
-                print(f"Linha {line} não encontrada no arquivo.")
-    return messages
-
-
-def code_source():    
+def code_source(line):    
     # Requisição para pegar o código do arquivo
     response = requests.get(
         f'{SONARQUBE_URL}/api/sources/raw',  # Endpoint correto
@@ -48,9 +26,15 @@ def code_source():
 
     code = response.text
 
+    code_lines = code.splitlines()
+    if line:
+        line_with_error = code_lines[line-1]
+    else:
+        line_with_error = None
     if response.status_code == 200:
         # Se a resposta for bem-sucedida, imprime o conteúdo do arquivo
-        return code# Exibe o conteúdo do arquivo
+        print("Acesso ao código-fonte bem-sucedido.")
+        return line_with_error# Exibe o conteúdo do arquivo
     else:
         return f"Erro {response.status_code}: {response.text}"
 
@@ -69,21 +53,26 @@ def code_request():
         # Processa a resposta da API como um JSON
         arq = response.json()
         # Filtra as issues para garantir que apenas as do projeto atual sejam processadas
-        filtred_issues = [issue for issue in arq.get('issues', []) if issue['project'] == PROJECT_KEY] 
+        filtred_issues = [issue for issue in arq.get('issues', []) if issue['project'] == PROJECT_KEY]
         
         dict_error = {}
         if filtred_issues:
             # Itera sobre as issues filtradas
             for issue in filtred_issues:
+                # print(issue)
                 message = issue['message']  # Mensagem de erro do SonarQube
                 line = issue.get('line')  # Linha onde o problema foi identificado
                 component = issue['component']  # Componente (arquivo) onde o problema está localizado
+                
+                linha_com_erro = code_source(line)
+                
                 if component not in dict_error:
                     dict_error[component] = []
-                dict_error[component].append((line, message))
+                else:
+                    dict_error[component].append((line, message, linha_com_erro))
 
         if list(dict_error.keys())[0] == f'{PROJECT_KEY}:{FILE_PATH}': # Executando e enviando todo o dicionário de dados
-            msg = resolve_error(dict_error)
+            msg = dict_error
         else:
             msg = f'O projeto <{PROJECT_KEY}> não possui issues abertas!'
         return msg
@@ -95,11 +84,9 @@ def code_request():
 
 # Chama a função para iniciar o processo de requisição e resolução de erros
 try:
-    acao = os.getenv('ACTION') # Recebendo a acao guardada na env da Pipeline
-except:
-    acao = None # Caso nao encontre, seta como None
-
-if acao is not None:
-    print(code_source())
-else:
-    print(code_request())
+    print("Iniciando a requisição ao SonarQube...")
+    erros = code_request()
+    print("Erros sendo enviados ao flask:", erros)
+    print("Requisição concluída.")
+except Exception as e:
+    print("Erro ao acessar a variável de ambiente 'ACTION':", e)
