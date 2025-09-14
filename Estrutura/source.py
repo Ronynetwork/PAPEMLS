@@ -47,7 +47,7 @@ def code_request():
                                      'Authorization': f'Basic {auth_header}'
                                 })
         
-        print('Requisição da análise realizada com sucesso!')
+        print('Requisição da análise realizada com sucesso!', e)
     except Exception as e:
         print('Erro na requisição:', e)
 
