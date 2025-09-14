@@ -3,6 +3,7 @@ import requests, os, base64
 # Configurações do SonarQube
 SONARQUBE_URL = os.getenv('SONAR_URL')
 TOKEN = os.getenv('SONAR_AUTH_TOKEN')
+TOKEN_CODE = os.getenv('SONAR_AUTH_CODE')
 PROJECT_KEY = os.getenv('SONAR_PROJECT_KEY')
 FILE_PATH = 'teste_script/script_hosts.java'
 

@@ -3,6 +3,7 @@ pipeline {
 
     environment {
         API_KEY = credentials('API-KEY') // ID da credencial
+        SONAR_AUTH_CODE = credentials('SONAR_AUTH_CODE')
     }
 
     stages {
