@@ -10,7 +10,7 @@ def create_app(test_config=None):
     @app.route('/')
     def index():
         """Retorna a página HTML que o usuário verá."""
-        return render_template('erro.html')
+        return render_template('index.html')
 
     #  Rota para receber a ação do botão (POST)
     @app.route('/receber_escolha', methods=['POST'])
