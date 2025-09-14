@@ -75,3 +75,94 @@ pre {
     overflow-x: auto; /* Garante rolagem horizontal caso necessário */
     white-space: pre-wrap; /* Mantém a quebra de linha correta */   
 }
+
+.erros_select {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    border-radius: 5px;
+    width: 100%;
+    align-items: start;
+}
+
+label {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    border-radius: 5px;
+    width: 94%;
+    margin: 0 4%;
+    border: 1px solid #ccc;
+    padding: 5px;
+    margin-top: 5px;
+    cursor: pointer;
+}
+
+label:hover {
+    background-color: #bdc8f8;
+    transition: transform 0.2s;
+    transform: scale(1.01);
+
+}
+
+#selectAllButton {
+    margin-left: 4%;
+    background: linear-gradient(to right, rgb(5, 138, 226), rgb(24, 113, 196));
+    cursor: pointer;
+}
+#selectAllButton:hover {
+    background: linear-gradient(to right, rgb(1, 54, 124), rgb(22, 43, 75));
+    transform: scale(1.01);
+    transition: transform 0.5s;
+}
+
+.fileName {
+    text-align: start;
+    border-radius: 10px;
+    border: 1px solid #3c82df;
+    color: rgb(0, 0, 0);
+    margin-top: 10px;
+    padding: 10px;
+    width: 100%;
+    font: 1em sans-serif;
+    background: white;
+    cursor: pointer;
+}
+
+.fileName:hover {
+    border-radius: 10px;
+    color: rgb(0, 0, 0);
+    margin-top: 10px;
+    padding: 10px;
+    background: rgb(185, 198, 240);
+    transition: transform 0.2s;
+    transform: scale(1.02);
+}
+.solutions {
+    width: 95%;
+    text-align: center;
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+#header {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: start;
+    width: 95%;
+}
+h2 {
+    text-align: center;
+    width: 100%;
+}
+
+pre {
+    text-align: start;
+    justify-content: center;
+    width: 80%;
+    margin-left: 4%;
+    margin-right: 4%;
+    padding-left: 10%;
+}

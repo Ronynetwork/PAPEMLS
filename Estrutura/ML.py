@@ -1,141 +1,155 @@
 from openai import OpenAI
 import os, ast
 
-def type_erro(erro, motivo_html, exemplo_parts, cont):
-    if cont == 0:
-        type_erro = '''
-            if (errorType === "{}") {{
-                solutionText = `
-                    <h3> {} </h3>
-                    <p>Exemplo de Correção: </p>
-                    <pre>
-        {}
-                    </pre>
-                `
-            }}
-        '''.format(erro, motivo_html, exemplo_parts)
-    else:
-        type_erro = '''
-            else if (errorType === "{}") {{
-                solutionText = `
-                    <h3> {} </h3>
-                    <p>Exemplo de Correção: </p>
-                    <pre>
-        {}
-                    </pre>
-                `
-            }}
-        '''.format(erro, motivo_html, exemplo_parts)
+def type_erro(erro, motivo, exemplo_parts):
+    type_erro = '''
+        case "{}":
+        return `
+            <div class="solution-block">
+                <h3>{}</h3>
+                <pre>
+                    {}
+                </pre>
+    '''.format(erro, erro, exemplo_parts)
     return type_erro
 
 def option(erro) :
     option = '''
-                <option value="{}">Erro: {} </option>
+                <label><input type="checkbox" value="{}" onchange="updateSolutions()">Erro: {}</label>
             '''.format(erro, erro)
     return option
 
+def div_erro(arq_name_split, options):
+
+    div_erros = f'''
+            <div class="erros_select" id="erros_{arq_name_split}" style="display: none;">
+{options}
+                <button id="selectAllButton" onclick="selectAll()">Selecionar todos</button>
+                <div class="solutions">
+                    <h3>Soluções:</h3>
+                    <div id="solution" style="margin-top: 20px;"></div>
+                </div>
+            </div>
+        </div>
+        '''
+
+    return div_erros 
+
 try:        
-    html = os.getenv("ERROR_POINT")
-    if html:
+    ERROR_POINT = os.getenv("ERROR_POINT")
+    if ERROR_POINT:
         # Buscando a API key do OpenRouter via Jenkins
         API_KEY = os.getenv("API_KEY")
-        print('API_KEY: ', API_KEY)
-
-        erro_dict = ast.literal_eval(html)
-        print('Erro dict: ', erro_dict)
+        erros = ast.literal_eval(ERROR_POINT)
+        print('Print dados no arq de ML: ', erros)
         options = ''
         types = ''
-        cont = 0
+        buttons = ''
+        div_erros = ''
+
         print(10*'-')
         API_KEY = os.getenv("API_KEY")
         print(API_KEY)
-        for dic in erro_dict:
-            for erro, code in dic.items():
-                print(f"Erro: {erro}, Código: {code}")
-                erro = erro.replace('"', '')
-                code = code
-                try:
-                    client = OpenAI(
-                    base_url="https://openrouter.ai/api/v1",
-                    api_key=API_KEY,
-                    )
+        for arquivo, dados in erros.items():
+    
+            # Dados do nome do arquivo e formatação de botão de seleção
+            print(f'Analisando o arquivo: {arq_path}')
+            arq_path = arquivo.replace(f'{os.getenv("PROJECT_KEY")}:','')
+            arq_name_brute = arq_path.split('/')[1]
+            arq_name_split = arq_name_brute.split('.')[0]
+            button = f'''
+            <button class="fileName" id="{arq_name_brute}" onclick="toggleShowErros('{arq_name_split}')"><strong>{arq_path}</strong></button>
+            '''
+            buttons += button
+            # --------------------------------------------------------------------------------------------------------------------------            
+            
 
-                    completion = client.chat.completions.create(
-                        #   extra_headers={
-                        #     "HTTP-Referer": "<YOUR_SITE_URL>", # Optional. Site URL for rankings on openrouter.ai.
-                        #     "X-Title": "<YOUR_SITE_NAME>", # Optional. Site title for rankings on openrouter.ai.
-                        #   },
-                        model="meta-llama/llama-3.3-8b-instruct:free",
-                        messages=[
-                            {
-                                "role": "user",
-                                "content": f"""
-                                Você é um agente de correção de código.  
-                                Corrija o trecho abaixo conforme o erro informado.
+            line, erro, code = dados
+            print(f"Erro: {erro}, Código: {code}, linha: {line}")
+            try:
+                client = OpenAI(
+                base_url="https://openrouter.ai/api/v1",
+                api_key=API_KEY,
+                )
 
-                                Erro: {erro}
-                                Código: {code}
+                completion = client.chat.completions.create(
+                    #   extra_headers={
+                    #     "HTTP-Referer": "<YOUR_SITE_URL>", # Optional. Site URL for rankings on openrouter.ai.
+                    #     "X-Title": "<YOUR_SITE_NAME>", # Optional. Site title for rankings on openrouter.ai.
+                    #   },
+                    model="meta-llama/llama-3.3-8b-instruct:free",
+                    messages=[
+                        {
+                            "role": "user",
+                            "content": f"""
+                            Você é um agente de correção de código.  
+                            Corrija o trecho abaixo conforme o erro informado.
 
-                                Responda SEMPRE usando o seguinte formato, sem textos extras:
-                                Provide ONLY the fixed code. Do NOT include explanations, comments, or any additional text.
-                                NEVER use (``) to delimit code and citations.
+                            Erro: {erro}
+                            Código: {code}
 
-                                Explication: (Explique brevemente a correção realizada, em uma linha)
-                                Correction:
-                                <coloque aqui o código corrigido>
+                            Responda SEMPRE usando o seguinte formato, sem textos extras:
+                            Provide ONLY the fixed code. Do NOT include explanations, comments, or any additional text.
+                            NEVER use (``) to delimit code and citations.
+                            PRESERVE THE ORIGINAL CODE STRUCTURE AND FORMATTING.
 
-                                Exemplo:
-                                Explication: O construtor BigDecimal(double) foi substituído por BigDecimal.valueOf(double) para evitar imprecisão.
-                                Correction:
-                                BigDecimal bd1 = BigDecimal.valueOf(d);
+                            Explication: (Explique brevemente a correção realizada, em uma linha)
+                            Correction:
+                            <coloque aqui o código corrigido>
 
-                                Agora, gere sua resposta:
-                                Erro: {erro}
-                                Código: {code}
-                                """
-                                # ...existing code...
-                            }
-                        ]
-                    )
-                except Exception as e:
-                    print("Erro ao chamar a API do OpenAI: ", e)
-                    continue
-                
-                response = completion.choices[0].message.content # Retorna os dados em string
-                print('Response: \n', response)
-                # print("Conteúdo da resposta:", response.text)
-                if response: 
-                    data = response
-                else:
-                    print("reponse inexistente")
-                # Agora, 'lines' é uma lista com cada linha do texto como um item. sem espaços vazios
-                lines = data.splitlines()
-                # Usando list compreenshion para retornar os valores necessários
-                lines_filtered = [line for line in lines if line]
-                lines_filte_len = len(lines_filtered)
-                if 'Correction:' in data:
-                    exemplo_parts = data.split("Correction:")[1].replace('```', '').strip()
-                else:
-                    exemplo_parts = ''
+                            Exemplo:
+                            Explication: O construtor BigDecimal(double) foi substituído por BigDecimal.valueOf(double) para evitar imprecisão.
+                            Correction:
+                            BigDecimal bd1 = BigDecimal.valueOf(d);
 
-                # Para a explicação final:
-                if 'Explication:' in data:
-                    explicationBrute= data.split("Explication:")[1].strip()
-                    motivo_html = explicationBrute.split("Correction:")[0].strip()
+                            Agora, gere sua resposta:
+                            Erro: {erro}
+                            Código: {code}
+                            """
+                            # ...existing code...
+                        }
+                    ]
+                )
+            except Exception as e:
+                print("Erro ao chamar a API do OpenAI: ", e)
+                continue
+            
+            response = completion.choices[0].message.content # Retorna os dados em string
+            print('Response: \n', response)
+            # print("Conteúdo da resposta:", response.text)
+            if response: 
+                data = response
+            else:
+                print("reponse inexistente")
+            # Agora, 'lines' é uma lista com cada linha do texto como um item. sem espaços vazios
+            lines = data.splitlines()
+            # Usando list compreenshion para retornar os valores necessários
+            lines_filtered = [line for line in lines if line]
+            lines_filte_len = len(lines_filtered)
+            if 'Correction:' in data:
+                exemplo_parts = data.split("Correction:")[1].replace('```', '').strip() # Pega tudo que vem depois de Correction:
+            else:
+                exemplo_parts = ''
 
-                print('='*20, 'Motivo HTML: ', motivo_html, '\nExemplo parts: ', exemplo_parts, '='*20)
-                options += option(erro)
-                types += type_erro(erro, motivo_html, exemplo_parts, cont)
-                cont += 1
+            # Para a explicação final:
+            if 'Explication:' in data:
+                explicationBrute= data.split("Explication:")[1].strip()
+                motivo = explicationBrute.split("Correction:")[0].strip()
 
-        else:
-            print("Nenhum erro encontrado no dicionário.")
-    else:   
-        print("Variável ERROR_POINT não encontrada ou vazia")
+            print('='*20, 'Motivo: ', motivo, '\nExemplo parts: ', exemplo_parts, '='*20)
+            options += option(erro) # Adicionando os erros à variável do html
+            types += type_erro(erro, motivo, exemplo_parts) # Adicionando os erros à variável do JS
+            
+            # Formando div que informa o arquivo e erros
+            div_erros += div_erro(arq_name_split,options)
+            # --------------------------------------------
+    else:
+        print("Nenhum erro encontrado no dicionário.")
 except Exception as e:
-    print("Errp indicado: ", e)
+    print("Erro indicado: ", e)
 
 
+# Criando o arquivo html com os erros e soluções
 head = '''<!DOCTYPE html>
 <html lang="pt">
 <head>
@@ -146,44 +160,81 @@ head = '''<!DOCTYPE html>
 </head>
 <body>
     <div class="container">
-        <h2>Selecione um erro para ver a solução</h2>
-        <select id="errorSelect">
-            <option value="">-- Escolha um erro --</option>
+        <div id="header">
+            <h2>Selecione o arquivo para ver seus erros</h2>
 '''
 
 body = '''
-            </select> 
-            <button onclick="showSolution()">Mostrar Solução</button>
-            <div id="solution" style="margin-top: 20px;"></div>
-    </div>
-    <script src="{{url_for('static', filename='script.js')}}"></script>
+    <script src="../static/script.js"></script>
 </body>
 </html>
     '''
 
     
-script ='''
-let errors = []
-function showSolution() {
-    const errorType = document.getElementById("errorSelect").value;
-    const solutionDiv = document.getElementById("solution");
+script = '''
+let expanded = false;
+const errorSelect = document.getElementById("errorSelect");
+const solutionDiv = document.getElementById("solution");
 
-    let solutionText = "";'''
+function toggleDropdown() {
+    const checkboxes = document.getElementById("checkboxes");
+    checkboxes.style.display = checkboxes.style.display === expanded ? "none" : "block";
+}
+
+// ADICIONADO FUNÇÃO PARA ESCONDER OU MOSTRAR OS ERROS DE CADA ARQUIVO
+function toggleShowErros(id) {
+    const div = document.getElementById(`erros_${id}`);
+    console.log(div);
+    
+    if (div.style.display === "none" || div.style.display === "") {
+        div.style.display = "flex";
+    } else {
+        div.style.display = "none";
+    }
+}
+
+
+function selectAll() {
+    const checkboxes = document.querySelectorAll("input[type='checkbox']");
+    const allSelected = Array.from(checkboxes).every(checkbox => checkbox.checked);
+
+    checkboxes.forEach(checkbox => {
+        checkbox.checked = !allSelected;
+    });
+
+    updateSolutions();
+}
+
+function updateSolutions() {
+    const checkboxes = document.querySelectorAll("input[type='checkbox']");
+    const solutionDiv = document.getElementById("solution");
+    let selectedErrors = [];
+
+    checkboxes.forEach(error => {
+        if (error.checked) {
+            selectedErrors.push(error.value);
+            console.log(selectedErrors);
+        }
+        
+    });
+
+    let output = "";
+    selectedErrors.forEach(error => {
+        output += getSolutionHTML(error);
+    });
+
+    solutionDiv.innerHTML = output || "<p>Nenhuma solução disponível.</p>";
+}
+function getSolutionHTML(errorType) {
+    switch (errorType) {
+'''
     
 
 end_script = '''
-    else {
-        solutionText = "<p>Selecione um erro para ver a solução.</p>";
+        default:
+            return "";
     }
-    h2 = `
-        <h2>Escolha uma ação:</h2>
-        <button onclick="enviarAcao('corrigir')">Corrigir</button>
-        <button onclick="enviarAcao('ignorar')">Ignorar</button>`
-    
-    solutionDiv.innerHTML = solutionText + h2;
-    errors.push(errorType);
 }
-
 function enviarAcao(acao) {
     fetch("/receber_escolha", {
         method: "POST",
@@ -198,9 +249,12 @@ function enviarAcao(acao) {
 }
 '''
 
+buttons += '''
+    </div>
+'''
 
-html_complete = head + options + body
-script  = script + types + end_script
+html_complete = head + buttons + div_erros + body #Formatando o html completo
+script = script + types + end_script # Formatando o JS completo
 
 # Cria o diretório se ele não existir
 try:
@@ -210,7 +264,7 @@ try:
     with open(os.path.join('./Estrutura/notification/static', "script.js"), 'w') as static:
         static.write(script)
 
-    with open(os.path.join('./Estrutura/notification/templates', "erro.html"), 'w') as arquivo:
+    with open(os.path.join('./Estrutura/notification/templates', "index.html"), 'w') as arquivo:
         arquivo.write(html_complete)
 
 except Exception as e:
