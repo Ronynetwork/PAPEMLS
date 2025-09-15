@@ -3,7 +3,7 @@ import os, ast
 
 def type_erro(erro, motivo, exemplo_parts):
     type_erro = '''
-        case "{}":
+        case `{}`:
             return `
                 <div class="solution-block">
                     <h3>{}</h3>
