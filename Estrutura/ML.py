@@ -82,32 +82,24 @@ try:
                             {
                                 "role": "user",
                                 "content": f"""
-                                Você é um agente de correção de código.  
-                                Corrija o trecho abaixo conforme o erro informado.
+                            Por favor, corrija o código abaixo com base no erro fornecido.  
+                            Mantenha a estrutura e formatação original do código.
 
-                                Erro: {erro}
-                                Código: {code}
+                            Erro: {erro}  
+                            Código: {code}
 
-                                Responda SEMPRE usando o seguinte formato, sem textos extras:
-                                Provide ONLY the fixed code. Do NOT include explanations, comments, or any additional text.
-                                NEVER use (``) to delimit code and citations.
-                                PRESERVE THE ORIGINAL CODE STRUCTURE AND FORMATTING.
+                            Formato da resposta:
+                            Explication: <explique brevemente a correção em uma linha>  
+                            Correction:  
+                            <coloque aqui o código corrigido>
 
-                                Explication: (Explique brevemente a correção realizada, em uma linha)
-                                Correction:
-                                <coloque aqui o código corrigido>
-
-                                Exemplo:
-                                Explication: O construtor BigDecimal(double) foi substituído por BigDecimal.valueOf(double) para evitar imprecisão.
-                                Correction:
-                                BigDecimal bd1 = BigDecimal.valueOf(d);
-
-                                Agora, gere sua resposta:
-                                Erro: {erro}
-                                Código: {code}
-                                """
-                                # ...existing code...
+                            Exemplo:
+                            Explication: O construtor BigDecimal(double) foi substituído por BigDecimal.valueOf(double) para evitar imprecisão.  
+                            Correction:  
+                            BigDecimal bd1 = BigDecimal.valueOf(d);
+                            """
                             }
+
                         ]
                     )
                 except Exception as e:
