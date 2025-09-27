@@ -1,6 +1,12 @@
 from openai import OpenAI
 import os, ast
 
+options = ''
+types = ''
+buttons = ''
+div_erros = ''
+
+
 def type_erro(erro, motivo, exemplo_parts):
     type_erro = '''
         case `{}`:
@@ -45,10 +51,6 @@ try:
         API_KEY = os.getenv("API_KEY")
         erros = ast.literal_eval(ERROR_POINT)
         print('Print dados no arq de ML: ', erros)
-        options = ''
-        types = ''
-        buttons = ''
-        div_erros = ''
         for arquivo, dados in erros.items():
     
             # Dados do nome do arquivo e formatação de botão de seleção
