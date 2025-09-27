@@ -244,6 +244,8 @@ function enviarAcao(acao) {
 }
 '''
 
+print('Types:', types)
+
 html_complete = head + buttons + div_erros + body #Formatando o html completo
 script = script + types + end_script # Formatando o JS completo
 
