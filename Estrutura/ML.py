@@ -134,9 +134,9 @@ try:
                 options += option(erro) # Adicionando os erros à variável do html
                 types += type_erro(erro, motivo, exemplo_parts) # Adicionando os erros à variável do JS
                 
-                # Formando div que informa o arquivo e erros
-                div_erros += div_erro(arq_name_split,options)
-                # --------------------------------------------
+            # Formando div que informa o arquivo e erros
+            div_erros += div_erro(arq_name_split, options)
+            # --------------------------------------------
             buttons += '''
         </div>
     '''
