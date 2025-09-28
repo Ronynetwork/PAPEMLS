@@ -66,7 +66,7 @@ try:
             
 
             for line, erro, code in dados:
-
+                erro_alt = erro.replace('"', "'")
                 print(f"Erro: {erro}, Código: {code}, linha: {line}")
                 try:
                     client = OpenAI(
