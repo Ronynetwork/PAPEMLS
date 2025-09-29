@@ -38,6 +38,10 @@ def div_erro(arq_name_split, options):
                     <div id="solution" style="margin-top: 20px;"></div>
                 </div>
             </div>
+            <div>
+                <button value="corrigir" id="actionButton" onclick="actionButton()">Corrigir</button>
+                <button value="ignorar" id="actionButton" onclick="actionButton()">ignorar</button>
+            </div>
         </div>
         '''
 
@@ -172,10 +176,17 @@ script = '''
 let expanded = false;
 const errorSelect = document.getElementById("errorSelect");
 const solutionDiv = document.getElementById("solution");
+let selectedErrors = [];
 
 function toggleDropdown() {
     const checkboxes = document.getElementById("checkboxes");
     checkboxes.style.display = checkboxes.style.display === expanded ? "none" : "block";
+}
+
+// Função chamada ao clicar nos botões "Corrigir" ou "Ignorar"
+function actionButton() {
+    const acao = document.getElementById("actionButton").value // Obtém o valor do botão clicado
+    enviarAcao(acao, selectedErrors); // Chama a função para enviar a ação ao servidor
 }
 
 // ADICIONADO FUNÇÃO PARA ESCONDER OU MOSTRAR OS ERROS DE CADA ARQUIVO
@@ -205,7 +216,6 @@ function selectAll() {
 function updateSolutions() {
     const checkboxes = document.querySelectorAll("input[type='checkbox']");
     const solutionDiv = document.getElementById("solution");
-    let selectedErrors = [];
 
     checkboxes.forEach(error => {
         if (error.checked) {
@@ -232,7 +242,7 @@ end_script = '''
             return "";
     }
 }
-function enviarAcao(acao) {
+function enviarAcao(acao, errors) {
     fetch("/receber_escolha", {
         method: "POST",
         headers: {
