@@ -130,8 +130,8 @@ pipeline {
                             if (resjson.resposta == "corrigir") {
                                 env.ERROS = resjson.erros  
                                 sh '''
-                                    chmod +x Estrutura/ML_autocorrigir.py Estrutura/git_branch.sh
-                                    python3 Estrutura/ML_autocorrigir.py
+                                    chmod +x Estrutura/autocorrect.py Estrutura/git_branch.sh
+                                    python3 Estrutura/autocorrect.py
                                     ./Estrutura/git_branch.sh
                                 '''
                                 break
