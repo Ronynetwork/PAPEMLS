@@ -21,9 +21,9 @@ def type_erro(erro, motivo, exemplo_parts):
     '''.format(erro, erro, exemplo_parts)
     return type_erro
 
-def option(erro) :
+def option(erro, line) :
     option = '''
-                <label><input type="checkbox" value="{}" onchange="updateSolutions()">Erro: {}</label>
+                <label><input type="checkbox" value="{}" line="" onchange="updateSolutions()">Erro: {}</label>
             '''.format(erro, erro)
     return option
 
@@ -60,11 +60,11 @@ try:
             # Dados do nome do arquivo e formatação de botão de seleção
             arq_path = arquivo.replace(f'{os.getenv("PROJECT_KEY")}:','')
             print(f'Analisando o arquivo: {arq_path}')
-            arq_name_brute = arq_path.split('/')[1]
-            arq_name_split = arq_name_brute.split('.')[0]
-            button = f'''
-            <button class="fileName" id="{arq_name_brute}" onclick="toggleShowErros('{arq_name_split}')"><strong>{arq_path}</strong></button>
-            '''
+            arq_name_brute = arq_path.split('/')[1] # Pega o nome do arquivo sem o caminho 
+            arq_name_split = arq_name_brute.split('.')[0] # Pega o nome do arquivo sem a extensão
+            button = f''' 
+            <button class="fileName" id="{arq_name_brute}" value="{arq_name_brute}" onclick="toggleShowErros('{arq_name_split}')"><strong>{arq_path}</strong></button>
+            ''' # Botão que exibe o nome do arquivo
             buttons += button
             # --------------------------------------------------------------------------------------------------------------------------            
             
@@ -135,7 +135,7 @@ try:
                     motivo = explicationBrute.split("Correction:")[0].strip()
 
                 print('='*20, 'Motivo: ', motivo, '\nExemplo parts: ', exemplo_parts, '='*20)
-                options += option(erro) # Adicionando os erros à variável do html
+                options += option(erro, line) # Adicionando os erros à variável do html
                 types += type_erro(erro, motivo, exemplo_parts) # Adicionando os erros à variável do JS
                 
             # Formando div que informa o arquivo e erros
@@ -174,9 +174,18 @@ body = '''
     
 script = '''
 let expanded = false;
+let arqPath = ''
 const errorSelect = document.getElementById("errorSelect");
 const solutionDiv = document.getElementById("solution");
-let selectedErrors = [];
+
+// lista para armazenar os erros selecionados
+const selectedErrors = []; 
+
+// Função chamada ao clicar nos botões "Corrigir" ou "Ignorar"
+function actionButton() {
+    const acao = document.getElementById("actionButton").value // Obtém o valor do botão clicado
+    enviarAcao(acao, selectedErrors); // Chama a função para enviar a ação ao servidor
+}
 
 function toggleDropdown() {
     const checkboxes = document.getElementById("checkboxes");
@@ -191,8 +200,13 @@ function actionButton() {
 
 // ADICIONADO FUNÇÃO PARA ESCONDER OU MOSTRAR OS ERROS DE CADA ARQUIVO
 function toggleShowErros(id) {
-    const div = document.getElementById(`erros_${id}`);
-    console.log(div);
+    const idSpit = id.split('/')[1].split('.')[0]
+    const div = document.getElementById(`erros_${idSpit}`);
+    arqPath = {path: id};
+    console.log(arqPath);
+    
+    selectedErrors.push(arqPath)
+    console.log(selectedErrors);
     
     if (div.style.display === "none" || div.style.display === "") {
         div.style.display = "flex";
@@ -217,19 +231,27 @@ function updateSolutions() {
     const checkboxes = document.querySelectorAll("input[type='checkbox']");
     const solutionDiv = document.getElementById("solution");
 
-    checkboxes.forEach(error => {
+    checkboxes.forEach(error => { // Itera sobre todos os checkboxes
         if (error.checked) {
-            selectedErrors.push(error.value);
+            selectedErrors.forEach(err => { // Itera sobre os erros selecionados
+                if (err.path === arqPath.path) { // Verifica se o caminho do arquivo corresponde
+                    err.errors = { // Adiciona ou atualiza o erro selecionado
+                        line: Number(error.getAttribute('line')),
+                        message: error.value,
+                        correction: getSolutionHTML(error.value).split('<pre>')[1].split('</pre>')[0].replace("java","").trim()
+                    };
+                    
+                }
+            })
             console.log(selectedErrors);
         }
         
     });
 
     let output = "";
-    selectedErrors.forEach(error => {
-        output += getSolutionHTML(error);
+    selectedErrors.forEach(error => { // Itera sobre os erros selecionados
+        output += getSolutionHTML(error.errors.message); // Chama a função para obter o HTML da solução
     });
-
     solutionDiv.innerHTML = output || "<p>Nenhuma solução disponível.</p>";
 }
 function getSolutionHTML(errorType) {
