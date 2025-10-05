@@ -179,7 +179,7 @@ const errorSelect = document.getElementById("errorSelect");
 const solutionDiv = document.getElementById("solution");
 
 // lista para armazenar os erros selecionados
-const selectedErrors = []; 
+let selectedErrors = []; 
 
 // Função chamada ao clicar nos botões "Corrigir" ou "Ignorar"
 function actionButton() {
