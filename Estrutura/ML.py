@@ -231,32 +231,49 @@ function selectAll() {
 function updateSolutions() {
     const checkboxes = document.querySelectorAll("input[type='checkbox']");
     const solutionDiv = document.getElementById("solution");
-    selectedErrors=[]; // Limpa a lista de erros selecionados
+    const selectedErrors = []; // Cria nova lista de erros selecionados
 
-    checkboxes.forEach(error => { // Itera sobre todos os checkboxes
-        if (error.checked) {
-            selectedErrors.forEach(err => { // Itera sobre os erros selecionados
-                if (err.path === arqPath.path) { // Verifica se o caminho do arquivo corresponde
-                    if (!Array.isArray(err.errors)) {
-                        err.errors = [];
-                    }
-                    err.erros.push({ // Adiciona ou atualiza o erro selecionado
-                        line: Number(error.getAttribute('line')),
-                        message: error.value,
-                        correction: getSolutionHTML(error.value).split('<pre>')[1].split('</pre>')[0].replace("java","").trim()
-                    });
-                }
-            })
-            console.log(selectedErrors);
-        } 
+    checkboxes.forEach(checkbox => {
+        if (checkbox.checked) {
+            const path = arqPath.path; // Supondo que arqPath.path está definido
+            const line = Number(checkbox.getAttribute('line'));
+            const message = checkbox.value;
+            const correction = getSolutionHTML(message)
+                .split('<pre>')[1]
+                .split('</pre>')[0]
+                .replace("java", "")
+                .trim();
+
+            // Verifica se já existe um item com esse path
+            let fileError = selectedErrors.find(err => err.path === path);
+            if (!fileError) {
+                fileError = {
+                    path: path,
+                    errors: []
+                };
+                selectedErrors.push(fileError);
+            }
+
+            // Adiciona o erro à lista do arquivo correspondente
+            fileError.errors.push({
+                line,
+                message,
+                correction
+            });
+        }
     });
 
+    // Renderiza as soluções no HTML
     let output = "";
-    selectedErrors.forEach(error => { // Itera sobre os erros selecionados
-        output += getSolutionHTML(error.errors.message); // Chama a função para obter o HTML da solução
+    selectedErrors.forEach(fileError => {
+        fileError.errors.forEach(err => {
+            output += getSolutionHTML(err.message);
+        });
     });
+
     solutionDiv.innerHTML = output || "<p>Nenhuma solução disponível.</p>";
 }
+
 function getSolutionHTML(errorType) {
     switch (errorType) {
 '''
