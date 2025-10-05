@@ -175,6 +175,7 @@ body = '''
 script = '''
 let expanded = false;
 let arqPath = ''
+let errosToCorrect = null // Lista para armazenar os erros a serem corrigidos
 const errorSelect = document.getElementById("errorSelect");
 const solutionDiv = document.getElementById("solution");
 
@@ -184,7 +185,7 @@ let selectedErrors = [];
 // Função chamada ao clicar nos botões "Corrigir" ou "Ignorar"
 function actionButton() {
     const acao = document.getElementById("actionButton").value // Obtém o valor do botão clicado
-    enviarAcao(acao, selectedErrors); // Chama a função para enviar a ação ao servidor
+    enviarAcao(acao, errosToCorrect); // Chama a função para enviar a ação ao servidor
 }
 
 function toggleDropdown() {
@@ -225,10 +226,11 @@ function selectAll() {
         checkbox.checked = !allSelected;
     });
 
-    updateSolutions(checkboxes);
+    updateSolutions();
 }
 
-function updateSolutions(checkboxes) {
+function updateSolutions() {
+    const checkboxes = document.querySelectorAll("input[type='checkbox']");
     console.log(checkboxes)
     const solutionDiv = document.getElementById("solution");
     const selectedErrors = []; // Cria nova lista de erros selecionados
@@ -267,8 +269,10 @@ function updateSolutions(checkboxes) {
     // Renderiza as soluções no HTML
     let output = "";
     selectedErrors.forEach(fileError => {
+        console.log("err list: ", fileError.errors);
+        errosToCorrect = fileError.errors
         fileError.errors.forEach(err => {
-            output += getSolutionHTML(err.message);
+            output += getSolutionHTML(err.message); // Chama a função para obter o HTML da mensagem de erro identificada
         });
     });
 
