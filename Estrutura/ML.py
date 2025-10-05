@@ -63,7 +63,7 @@ try:
             arq_name_brute = arq_path.split('/')[1] # Pega o nome do arquivo sem o caminho 
             arq_name_split = arq_name_brute.split('.')[0] # Pega o nome do arquivo sem a extensão
             button = f''' 
-            <button class="fileName" id="{arq_name_brute}" value="{arq_name_brute}" onclick="toggleShowErros('{arq_name_split}')"><strong>{arq_path}</strong></button>
+            <button class="fileName" id="{arq_name_brute}" value="{arq_name_brute}" onclick="toggleShowErros('{arq_name_brute}')"><strong>{arq_path}</strong></button>
             ''' # Botão que exibe o nome do arquivo
             buttons += button
             # --------------------------------------------------------------------------------------------------------------------------            
