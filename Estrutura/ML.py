@@ -193,12 +193,6 @@ function toggleDropdown() {
     checkboxes.style.display = checkboxes.style.display === expanded ? "none" : "block";
 }
 
-// Função chamada ao clicar nos botões "Corrigir" ou "Ignorar"
-function actionButton() {
-    const acao = document.getElementById("actionButton").value // Obtém o valor do botão clicado
-    enviarAcao(acao, selectedErrors); // Chama a função para enviar a ação ao servidor
-}
-
 // ADICIONADO FUNÇÃO PARA ESCONDER OU MOSTRAR OS ERROS DE CADA ARQUIVO
 function toggleShowErros(id) {
     console.log('ID do arquivo clicado: ', id);
