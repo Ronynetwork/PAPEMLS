@@ -225,11 +225,11 @@ function selectAll() {
         checkbox.checked = !allSelected;
     });
 
-    updateSolutions();
+    updateSolutions(checkboxes);
 }
 
-function updateSolutions() {
-    const checkboxes = document.querySelectorAll("input[type='checkbox']");
+function updateSolutions(checkboxes) {
+    console.log(checkboxes)
     const solutionDiv = document.getElementById("solution");
     const selectedErrors = []; // Cria nova lista de erros selecionados
 
@@ -256,6 +256,7 @@ function updateSolutions() {
 
             // Adiciona o erro à lista do arquivo correspondente
             fileError.errors.push({
+
                 line,
                 message,
                 correction
