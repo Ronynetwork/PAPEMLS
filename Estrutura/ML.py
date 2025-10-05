@@ -201,7 +201,7 @@ function actionButton() {
 // ADICIONADO FUNÇÃO PARA ESCONDER OU MOSTRAR OS ERROS DE CADA ARQUIVO
 function toggleShowErros(id) {
     console.log('ID do arquivo clicado: ', id);
-    const idSpit = id.split('/')[1].split('.')[0]
+    const idSpit = id.split('.')[0]
     const div = document.getElementById(`erros_${idSpit}`);
     arqPath = {path: id};
     console.log(arqPath);
