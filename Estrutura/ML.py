@@ -231,22 +231,24 @@ function selectAll() {
 function updateSolutions() {
     const checkboxes = document.querySelectorAll("input[type='checkbox']");
     const solutionDiv = document.getElementById("solution");
+    selectedErrors=[]; // Limpa a lista de erros selecionados
 
     checkboxes.forEach(error => { // Itera sobre todos os checkboxes
         if (error.checked) {
             selectedErrors.forEach(err => { // Itera sobre os erros selecionados
                 if (err.path === arqPath.path) { // Verifica se o caminho do arquivo corresponde
-                    err.errors = { // Adiciona ou atualiza o erro selecionado
+                    if (!Array.isArray(err.errors)) {
+                        err.errors = [];
+                    }
+                    err.erros.push({ // Adiciona ou atualiza o erro selecionado
                         line: Number(error.getAttribute('line')),
                         message: error.value,
                         correction: getSolutionHTML(error.value).split('<pre>')[1].split('</pre>')[0].replace("java","").trim()
-                    };
-                    
+                    });
                 }
             })
             console.log(selectedErrors);
-        }
-        
+        } 
     });
 
     let output = "";
