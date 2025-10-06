@@ -7,11 +7,11 @@ pipeline {
     }
 
     stages {
-        stage('Realizando a autentiação no Git') {
+        stage('Realizando a autenticação no Git') {
             steps {
                 script {
                     def destinationDir= 'PAPEMLS'
-                    git credentialsId: 'log-token-git',
+                    git credentialsId: 'jenkins-git',
                         url: 'https://github.com/Ronynetwork/PAPEMLS.git',
                         branch: 'dev'
                         directory: destinationDir
@@ -86,7 +86,6 @@ pipeline {
                     env.SONAR_AUTH_TOKEN = "${SONAR_AUTH_TOKEN}"
                     def output = sh(script: 'python3 Estrutura/source.py', returnStdout: true).trim()
                     env.ERROR_POINT=output
-                    echo "Erro retornado ${ERROR_POINT}"
                 }
             }
             script{
