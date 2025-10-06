@@ -134,7 +134,6 @@ try:
                     explicationBrute= data.split("Explication:")[1].strip()
                     motivo = explicationBrute.split("Correction:")[0].strip()
 
-                print('='*20, 'Motivo: ', motivo, '\nExemplo parts: ', exemplo_parts, '='*20)
                 options += option(erro, line) # Adicionando os erros à variável do html
                 types += type_erro(erro, motivo, exemplo_parts) # Adicionando os erros à variável do JS
                 
@@ -297,13 +296,13 @@ function enviarAcao(acao, errors) {
 }
 '''
 
-print('Types:', types)
-print('Div erros:', div_erros)
+# print('Types:', types)
+# print('Div erros:', div_erros)
 
 html_complete = head + buttons + div_erros + body #Formatando o html completo
 script = script + types + end_script # Formatando o JS completo
 
-print("Arquivo JS: ", script)
+# print("Arquivo JS: ", script)
 # Cria o diretório se ele não existir
 try:
     os.makedirs('./Estrutura/notification/templates', exist_ok=True)
