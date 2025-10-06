@@ -49,12 +49,10 @@ def div_erro(arq_name_split, options):
 
 try:        
     ERROR_POINT = os.getenv("ERROR_POINT")
-    print("error_point: ", ERROR_POINT)
     if ERROR_POINT:
         # Buscando a API key do OpenRouter via Jenkins
         API_KEY = os.getenv("API_KEY")
         erros = ast.literal_eval(ERROR_POINT)
-        print('Print dados no arq de ML: ', erros)
         for arquivo, dados in erros.items():
     
             # Dados do nome do arquivo e formatação de botão de seleção
@@ -71,7 +69,8 @@ try:
 
             for line, erroPure, code in dados:
                 erro = erroPure.replace('"', "'")
-                print(f"Erro: {erro}, Código: {code}, linha: {line}")
+                print("="*100, f"Erro: {erro}, Código: {code}, linha: {line}", "="*100)
+
                 try:
                     client = OpenAI(
                     base_url="https://openrouter.ai/api/v1",
