@@ -113,9 +113,8 @@ pipeline {
             }
             script {
                 echo 'Aguardando resposta do usuário... visite http://127.0.0.1:5000/'
-
                 def startTime = System.currentTimeMillis()
-                def duration = 300000  // 5 minutos
+                def duration = 60 * 1000  // 60 segundos
 
                 while ((System.currentTimeMillis() - startTime) < duration) {
                     try {
@@ -131,13 +130,15 @@ pipeline {
                                 env.ERROS = resjson.erros  
                                 sh '''
                                     chmod +x Estrutura/autocorrect.py Estrutura/git_branch.sh
-                                    python3 Estrutura/autocorrect.py
-                                    ./Estrutura/git_branch.sh
+                                    python3 Estrutura/autocorrect.py || echo "Erro no autocorrect"
+                                    ./Estrutura/git_branch.sh || echo "Erro no git_branch"
                                 '''
                                 break
                             } else if (resjson.resposta == 'ignorar') {
                                 echo 'Foi solicitada a ação de ignorar!'
                                 break
+                            } else {
+                                echo "Resposta recebida mas com valor inesperado: ${resjson.resposta}"
                             }
                         } else {
                             echo "Resposta vazia do servidor Flask. Tentando novamente..."
@@ -149,8 +150,8 @@ pipeline {
 
                     sleep 5
                 }
+                echo "Loop finalizado."
             }
-
         }
     }
 }
