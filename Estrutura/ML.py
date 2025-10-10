@@ -199,9 +199,6 @@ function toggleShowErros(id) {
     arqPath = {path: id};
     console.log(arqPath);
     
-    selectedErrors.push(arqPath)
-    console.log(selectedErrors);
-    
     if (div.style.display === "none" || div.style.display === "") {
         div.style.display = "flex";
     } else {
