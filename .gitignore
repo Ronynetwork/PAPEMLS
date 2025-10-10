@@ -2,8 +2,9 @@ token*
 papemls
 __pycache__
 erro*
-static
+script.js
 teste*.py
 test*/
 docker-compose-ML
 .env*
+index.html

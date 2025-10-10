@@ -51,12 +51,13 @@ try:
     ERROR_POINT = os.getenv("ERROR_POINT")
     if ERROR_POINT:
         # Buscando a API key do OpenRouter via Jenkins
+        PROJECT_KEY = os.getenv("PROJECT_KEY")
         API_KEY = os.getenv("API_KEY")
         erros = ast.literal_eval(ERROR_POINT)
         for arquivo, dados in erros.items():
     
             # Dados do nome do arquivo e formatação de botão de seleção
-            arq_path = arquivo.replace(f'{os.getenv("PROJECT_KEY")}:','')
+            arq_path = arquivo.replace(f'{PROJECT_KEY}:','')
             print(f'Analisando o arquivo: {arq_path}')
             arq_name_brute = arq_path.split('/')[1] # Pega o nome do arquivo sem o caminho 
             arq_name_split = arq_name_brute.split('.')[0] # Pega o nome do arquivo sem a extensão
@@ -173,7 +174,6 @@ body = '''
 script = '''
 let expanded = false;
 let arqPath = ''
-let errosToCorrect = null // Lista para armazenar os erros a serem corrigidos
 const errorSelect = document.getElementById("errorSelect");
 const solutionDiv = document.getElementById("solution");
 
@@ -183,7 +183,7 @@ let selectedErrors = [];
 // Função chamada ao clicar nos botões "Corrigir" ou "Ignorar"
 function actionButton() {
     const acao = document.getElementById("actionButton").value // Obtém o valor do botão clicado
-    enviarAcao(acao, errosToCorrect); // Chama a função para enviar a ação ao servidor
+    enviarAcao(acao, selectedErrors); // Chama a função para enviar a ação ao servidor
 }
 
 function toggleDropdown() {
@@ -250,7 +250,6 @@ function updateSolutions() {
 
             // Adiciona o erro à lista do arquivo correspondente
             fileError.errors.push({
-
                 line,
                 message,
                 correction
@@ -262,7 +261,6 @@ function updateSolutions() {
     let output = "";
     selectedErrors.forEach(fileError => {
         console.log("err list: ", fileError.errors);
-        errosToCorrect = fileError.errors
         fileError.errors.forEach(err => {
             output += getSolutionHTML(err.message); // Chama a função para obter o HTML da mensagem de erro identificada
         });
