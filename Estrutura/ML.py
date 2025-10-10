@@ -23,8 +23,8 @@ def type_erro(erro, motivo, exemplo_parts):
 
 def option(erro, line) :
     option = '''
-                <label><input type="checkbox" value="{}" line="" onchange="updateSolutions()">Erro: {}</label>
-            '''.format(erro, erro)
+                <label><input type="checkbox" value="{}" line="{}" onchange="updateSolutions()">Erro: {}</label>
+            '''.format(erro, line, erro)
     return option
 
 def div_erro(arq_name_split, options):
