@@ -1,16 +1,18 @@
 # Importando Bibliotecas
-import os
+import os, json
 
 # Receber os dados do Jenkins com os erros e arquivos a serem corrigidos
-pathList = os.getenv("ERROS")
+pathList_raw = os.getenv("ERROS")  # isso é uma string
+pathList = json.loads(pathList_raw)  # agora é uma lista de dicionários
 atualPath = os.path.abspath(os.getcwd()) # Pega o caminho atual
 print("Caminho Atual: ", atualPath)
 print("Caminho do arquivo: ")
 print("Path list: ", pathList)
 
+# Exibir os dados recebidos para verificação
 try:
     for obj in pathList:
-        path = obj['paht']
+        path = obj['path']
         print("Path atual: ", path)
 
         for erro in obj['erros']:
