@@ -15,7 +15,7 @@ try:
         path = obj['path']
         print("Path atual: ", path)
 
-        for erro in obj['erros']:
+        for erro in obj['errors']:
             print("Erro: ", erro)
             message = erro['message']
             line = erro['line']
