@@ -244,7 +244,8 @@ function updateSolutions() {
                 };
                 selectedErrors.push(fileError);
             }
-
+            console.log("fileError: ", fileError);
+            console.log("selectedErrors: ", selectedErrors);
             // Adiciona o erro à lista do arquivo correspondente
             fileError.errors.push({
                 line,
