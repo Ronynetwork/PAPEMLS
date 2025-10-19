@@ -22,7 +22,7 @@ try:
             corrections = erro['correction']
             print(f"Mensagem: {message}, Linha: {line}, Correções: {corrections}")
 
-            with open(path, 'w') as file: # Abre o arquivo para escrita e itera sobre as linhas para aplicar as correções
+            with open(path, 'wr') as file: # Abre o arquivo para escrita e itera sobre as linhas para aplicar as correções
                 file_lines = file.readlines()
                 for l in file_lines:
                     if l == line:
