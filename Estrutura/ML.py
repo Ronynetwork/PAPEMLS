@@ -70,7 +70,7 @@ try:
 
             for line, erroPure, code in dados:
                 erro = erroPure.replace('"', "'")
-                print("="*100, f"Erro: {erro}, Código: {code}, linha: {line}", "="*100)
+                # print("="*100, f"Erro: {erro}, Código: {code}, linha: {line}", "="*100)
 
                 try:
                     client = OpenAI(
@@ -292,7 +292,7 @@ function enviarAcao(acao, errors) {
 '''
 
 # print('Types:', types)
-# print('Div erros:', div_erros)
+print('Div erros:', div_erros)
 
 html_complete = head + buttons + div_erros + body #Formatando o html completo
 script = script + types + end_script # Formatando o JS completo
