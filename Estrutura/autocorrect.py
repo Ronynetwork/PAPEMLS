@@ -24,10 +24,12 @@ try:
 
             with open(path, 'r+') as file: # Abre o arquivo para escrita e itera sobre as linhas para aplicar as correções
                 file_lines = file.readlines()
+                print("Linhas do arquivo antes da correção: ", file_lines)
                 for l in file_lines:
                     if l == line:
                         for correction in corrections: # Aplica cada correção na linha específica
                             file_lines[l] = correction # Substitui a linha com a correção
+                print("Linhas do arquivo após a correção: ", file_lines)
                 file.writelines(file_lines) # Escreve as linhas corrigidas de volta ao arquivo
                 print(f"Arquivo {path} corrigido com sucesso.")
 except Exception as e:
