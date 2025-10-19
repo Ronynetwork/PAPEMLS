@@ -28,6 +28,7 @@ try:
                 for l in file_lines:
                     if l == line:
                         for correction in corrections: # Aplica cada correção na linha específica
+                            print(f"Aplicando correção na linha {line}: {correction}")
                             file_lines[l] = correction # Substitui a linha com a correção
                 print("Linhas do arquivo após a correção: ", file_lines)
                 file.writelines(file_lines) # Escreve as linhas corrigidas de volta ao arquivo
