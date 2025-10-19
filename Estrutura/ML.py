@@ -136,8 +136,8 @@ try:
 
                 options += option(erro, line) # Adicionando os erros à variável do html
                 types += type_erro(erro, exemplo_parts) # Adicionando os erros à variável do JS
-                print('opções: ', options)
-                print('types: ', types)
+                # print('opções: ', options)
+                # print('types: ', types)
             # --------------------------------------------  
 
             # Formando div que informa o arquivo e erros
@@ -295,7 +295,7 @@ function enviarAcao(acao, errors) {
 '''
 
 # print('Types:', types)
-print('Div erros:', div_erros)
+# print('Div erros:', div_erros)
 
 html_complete = head + buttons + div_erros + body #Formatando o html completo
 script = script + types + end_script # Formatando o JS completo
