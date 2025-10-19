@@ -6,6 +6,7 @@ git remote set-url origin git@github.com:Ronynetwork/PAPEMLS.git
 git checkout dev || exit 1
 
 # Atualiza a branch local com a versão remota usando rebase
+git reset --hard
 git pull origin dev --rebase || {
   echo "Erro ao fazer rebase. Corrija os conflitos e tente novamente."
   exit 1
