@@ -135,7 +135,7 @@ try:
                     motivo = explicationBrute.split("Correction:")[0].strip()
 
                 options += option(erro, line) # Adicionando os erros à variável do html
-                types += type_erro(erro, motivo, exemplo_parts) # Adicionando os erros à variável do JS
+                types += type_erro(erro, exemplo_parts) # Adicionando os erros à variável do JS
                 print('opções: ', options)
                 print('types: ', types)
             # --------------------------------------------  
