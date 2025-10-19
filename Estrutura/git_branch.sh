@@ -4,7 +4,7 @@ git remote set-url origin git@github.com:Ronynetwork/PAPEMLS.git
 
 # Conferindo se a branch main existe, se não, cria
 git checkout dev
-git pull origin dev
+git pull origin dev --rebase
 
 # Adicionar apenas o arquivo desejado
 git add ./teste_script/
