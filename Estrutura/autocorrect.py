@@ -16,16 +16,17 @@ try:
         print("Path atual: ", path)
 
         for erro in obj['errors']: # Percorre a lista de erros e define as correções
-            print("Erro: ", erro)
+            # print("Erro: ", erro)
             message = erro['message']
             line = erro['line']
             corrections = erro['correction']
-            print(f"Mensagem: {message}, Linha: {line}, Correções: {corrections}")
+            # print(f"Mensagem: {message}, Linha: {line}, Correções: {corrections}")
 
             with open(path, 'r+') as file: # Abre o arquivo para escrita e itera sobre as linhas para aplicar as correções
                 file_lines = file.readlines()
                 print("Linhas do arquivo antes da correção: ", file_lines)
                 for l in file_lines:
+                    print("Linha atual do arquivo: ", l, " Linha do erro: ", line)
                     if l == line:
                         for correction in corrections: # Aplica cada correção na linha específica
                             print(f"Aplicando correção na linha {line}: {correction}")
