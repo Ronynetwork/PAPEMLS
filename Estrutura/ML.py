@@ -136,7 +136,10 @@ try:
 
                 options += option(erro, line) # Adicionando os erros à variável do html
                 types += type_erro(erro, motivo, exemplo_parts) # Adicionando os erros à variável do JS
-                
+                print('opções: ', options)
+                print('types: ', types)
+            # --------------------------------------------  
+
             # Formando div que informa o arquivo e erros
             div_erros += div_erro(arq_name_split, options)
             # --------------------------------------------
