@@ -7,7 +7,7 @@ buttons = ''
 div_erros = ''
 
 
-def type_erro(erro, motivo, exemplo_parts):
+def type_erro(erro, exemplo_parts):
     type_erro = '''
         case `{}`:
             return `
@@ -62,7 +62,7 @@ try:
             arq_name_brute = arq_path.split('/')[1] # Pega o nome do arquivo sem o caminho 
             arq_name_split = arq_name_brute.split('.')[0] # Pega o nome do arquivo sem a extensão
             button = f''' 
-            <button class="fileName" id="{arq_name_brute}" value="{arq_name_brute}" onclick="toggleShowErros('{arq_name_brute}')"><strong>{arq_path}</strong></button>
+            <button class="fileName" id="{arq_name_brute}" value="{arq_path}" onclick="toggleShowErros('{arq_path}')"><strong>{arq_path}</strong></button>
             ''' # Botão que exibe o nome do arquivo
             buttons += button
             # --------------------------------------------------------------------------------------------------------------------------            
@@ -194,7 +194,7 @@ function toggleDropdown() {
 // ADICIONADO FUNÇÃO PARA ESCONDER OU MOSTRAR OS ERROS DE CADA ARQUIVO
 function toggleShowErros(id) {
     console.log('ID do arquivo clicado: ', id);
-    const idSpit = id.split('.')[0]
+    const idSpit = id.split('.')[0].split('/')[1];
     const div = document.getElementById(`erros_${idSpit}`);
     arqPath = {path: id};
     console.log(arqPath);
