@@ -15,19 +15,21 @@ try:
         path = obj['path']
         print("Path atual: ", path)
 
-        for erro in obj['errors']:
+        for erro in obj['errors']: # Percorre a lista de erros e define as correções
             print("Erro: ", erro)
             message = erro['message']
             line = erro['line']
             corrections = erro['correction']
             print(f"Mensagem: {message}, Linha: {line}, Correções: {corrections}")
 
-            with open(path, 'w') as file:
-                file_lines = file.splitlines()
+            with open(path, 'w') as file: # Abre o arquivo para escrita e itera sobre as linhas para aplicar as correções
+                file_lines = file.readlines()
                 for l in file_lines:
                     if l == line:
-                        file.writelines(corrections)
+                        for correction in corrections: # Aplica cada correção na linha específica
+                            file_lines[l] = correction # Substitui a linha com a correção
+                file.writelines(file_lines) # Escreve as linhas corrigidas de volta ao arquivo
                 print(f"Arquivo {path} corrigido com sucesso.")
 except Exception as e:
-    print("Erro ao processar a lista de erros: ", e)
+    print("Erro ao processar a lista de erros   : ", e)
 # Alteração de arquivos
