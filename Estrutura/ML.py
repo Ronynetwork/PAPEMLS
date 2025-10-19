@@ -194,9 +194,9 @@ function toggleDropdown() {
 // ADICIONADO FUNÇÃO PARA ESCONDER OU MOSTRAR OS ERROS DE CADA ARQUIVO
 function toggleShowErros(id) {
     const id2 = id.split('.')[0];
-    const idSpit = id2.split('/')[1];
+    const idSplit = id2.split('/')[1];
     console.log('ID do arquivo clicado: ', idSplit);
-    const div = document.getElementById(`erros_${idSpit}`);
+    const div = document.getElementById(`erros_${idSplit}`);
     arqPath = {path: id};
     console.log(arqPath);
     
