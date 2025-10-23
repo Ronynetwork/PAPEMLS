@@ -31,7 +31,9 @@ try:
                         print(f"Aplicando correção na linha {line}: {correction}")
                         file_lines[l] = correction # Substitui a linha com a correção
                 print("Linhas do arquivo após a correção: ", file_lines)
+                file.seek(0) # Move o cursor para o início do arquivo
                 file.writelines(file_lines) # Escreve as linhas corrigidas de volta ao arquivo
+                file.truncate() # Remove qualquer conteúdo restante após a escrita
                 print(f"Arquivo {path} corrigido com sucesso.")
 except Exception as e:
     print("Erro ao processar a lista de erros   : ", e)
