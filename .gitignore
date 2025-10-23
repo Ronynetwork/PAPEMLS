@@ -6,5 +6,6 @@ script.js
 teste*.py
 test*/
 docker-compose-ML
-.env*
+.*
 index.html
+/Estrutura/*

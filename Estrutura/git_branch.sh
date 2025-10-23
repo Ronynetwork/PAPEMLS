@@ -13,7 +13,7 @@ git pull origin dev --rebase || {
 }
 
 # Adiciona arquivos modificados no diretório teste_script/
-git add -f ./teste_script/
+git add ./teste_script/
 
 # Verifica se há mudanças para commitar
 if git diff --cached --quiet; then
