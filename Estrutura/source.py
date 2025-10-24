@@ -5,7 +5,7 @@ SONARQUBE_URL = os.getenv('SONAR_URL')
 TOKEN = os.getenv('SONAR_AUTH_TOKEN')
 TOKEN_CODE = os.getenv('SONAR_AUTH_CODE')
 PROJECT_KEY = os.getenv('SONAR_PROJECT_KEY')
-FILE_PATH = 'teste_script/script_hosts.java'
+FILE_PATH = 'scripts/script_hosts.java'
 
 auth_header = base64.b64encode(f"{TOKEN}:".encode()).decode()
 auth_header_code = base64.b64encode(f"{TOKEN_CODE}:".encode()).decode()
