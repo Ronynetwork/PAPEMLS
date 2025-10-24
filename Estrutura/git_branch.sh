@@ -13,7 +13,10 @@ git pull origin dev --rebase || {
 }
 
 # Adiciona arquivos modificados no diretório teste_script/
-git add ./scripts/
+git add scripts/ || {
+  echo "Erro ao adicionar arquivos. Verifique o diretório."
+  exit 1
+}
 
 # Verifica se há mudanças para commitar
 if git diff --cached --quiet; then
