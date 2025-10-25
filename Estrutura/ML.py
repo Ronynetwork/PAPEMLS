@@ -84,29 +84,31 @@ try:
                         #     "X-Title": "<YOUR_SITE_NAME>", # Optional. Site title for rankings on openrouter.ai.
                         #   },
                         model="meta-llama/llama-3.3-8b-instruct:free",
-                        messages=[
+                        messages = [
                             {
                                 "role": "user",
                                 "content": f"""
-                            Você é um auxiliar de correção, sua única função é corrigir o código fornecido com base no erro indicado.
+                                Você é um auxiliar de correção. Sua única função é corrigir o código fornecido com base no erro indicado.
 
-                            Mantenha a estrutura e identação original.
+                                Regras:
+                                - Mantenha exatamente a estrutura e a identação original do código.
+                                - Não adicione comentários, explicações ou qualquer outro texto na área de correção.
+                                - A explicação deve ser breve e aparecer apenas no campo 'Explication'.
 
-                            Erro: {erro}  
-                            Código: {code}
+                                Erro: {erro}  
+                                Código: {code}
 
-                            Formato da resposta:
-                            Explication: <explique brevemente a correção em uma linha>
-                            Correction: 
-                            <coloque aqui o código corrigido>
+                                Formato da resposta:
+                                Explication: <explique brevemente a correção em uma linha>
+                                Correction:
+                                <coloque aqui apenas o código corrigido, sem comentários ou explicações>
 
-                            ** Exemplo:
-                            Explication: O construtor BigDecimal(double) foi substituído por BigDecimal.valueOf(double) para evitar imprecisão.  
-                            Correction:  
-                            BigDecimal bd1 = BigDecimal.valueOf(d);
-                            """
+                                ** Exemplo:
+                                Explication: O construtor BigDecimal(double) foi substituído por BigDecimal.valueOf(double) para evitar imprecisão.  
+                                Correction:
+                                BigDecimal bd1 = BigDecimal.valueOf(d);
+                                """
                             }
-
                         ]
                     )
                 except Exception as e:
