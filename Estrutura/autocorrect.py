@@ -25,7 +25,7 @@ try:
             with open(path, 'r+') as file: # Abre o arquivo para escrita e itera sobre as linhas para aplicar as correções
                 file_lines = file.readlines()
                 print("Linhas do arquivo antes da correção: ", file_lines)
-                for l, content in enumerate(file_lines, start=0): # Percorre cada linha do arquivo
+                for l, content in enumerate(file_lines, start=1): # Percorre cada linha do arquivo
                     print("Linha atual do arquivo: ", content, " Linha do erro: ", l, " Linha para correção: ", line)
                     if l == line:
                         print(f"Aplicando correção na linha {line}: {correction}")
