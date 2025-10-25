@@ -29,7 +29,7 @@ try:
                     print("Linha atual do arquivo: ", content, " Linha do erro: ", l, " Linha para correção: ", line)
                     if l == line:
                         print(f"Aplicando correção na linha {line}: {correction}")
-                        file_lines[l] = correction # Substitui a linha com a correção
+                        file_lines[l-1] = correction # Substitui a linha com a correção
                 print("Linhas do arquivo após a correção: ", file_lines)
                 file.seek(0) # Move o cursor para o início do arquivo
                 file.writelines(file_lines) # Escreve as linhas corrigidas de volta ao arquivo
