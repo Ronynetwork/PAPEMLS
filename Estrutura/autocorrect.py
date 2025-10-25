@@ -11,7 +11,7 @@ print("Path list: ", pathList)
 
 # Exibir os dados recebidos para verificação
 try:
-    for obj in pathList:
+    for obj in pathList:    
         path = obj['path']
         print("Path atual: ", path)
 

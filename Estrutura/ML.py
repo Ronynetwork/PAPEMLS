@@ -88,18 +88,19 @@ try:
                             {
                                 "role": "user",
                                 "content": f"""
-                            Por favor, corrija o código abaixo com base no erro fornecido.  
-                            Mantenha a estrutura e formatação original do código.
+                            Você é um auxiliar de correção, sua única função é corrigir o código fornecido com base no erro indicado.
+
+                            Mantenha a estrutura e identação original.
 
                             Erro: {erro}  
                             Código: {code}
 
                             Formato da resposta:
-                            Explication: <explique brevemente a correção em uma linha>  
-                            Correction:  
+                            Explication: <explique brevemente a correção em uma linha>
+                            Correction: 
                             <coloque aqui o código corrigido>
 
-                            Exemplo:
+                            ** Exemplo:
                             Explication: O construtor BigDecimal(double) foi substituído por BigDecimal.valueOf(double) para evitar imprecisão.  
                             Correction:  
                             BigDecimal bd1 = BigDecimal.valueOf(d);
@@ -125,14 +126,14 @@ try:
                 lines_filtered = [line for line in lines if line]
                 lines_filte_len = len(lines_filtered)
                 if 'Correction:' in data:
-                    exemplo_parts = data.split("Correction:")[1].replace('```', '').strip() # Pega tudo que vem depois de Correction:
+                    exemplo_parts = data.split("Correction:")[1].replace('```', '') # Pega tudo que vem depois de Correction:
                 else:
                     exemplo_parts = ''
 
                 # Para a explicação final:
                 if 'Explication:' in data:
                     explicationBrute= data.split("Explication:")[1].strip()
-                    motivo = explicationBrute.split("Correction:")[0].strip()
+                    motivo = explicationBrute.split("Correction:")[0]
 
                 options += option(erro, line) # Adicionando os erros à variável do html
                 types += type_erro(erro, exemplo_parts) # Adicionando os erros à variável do JS
