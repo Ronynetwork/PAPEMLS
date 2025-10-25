@@ -229,6 +229,7 @@ function updateSolutions() {
     const checkboxes = document.querySelectorAll("input[type='checkbox']");
     console.log(checkboxes)
     const solutionDiv = document.getElementById("solution");
+    selectedErrors = []; // Limpa a lista de erros selecionados
 
     checkboxes.forEach(checkbox => {
         if (checkbox.checked) {
