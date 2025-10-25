@@ -9,4 +9,5 @@ public class XXEVuln {
         DocumentBuilder db = dbf.newDocumentBuilder();
         String xml = "<!DOCTYPE foo [ <!ELEMENT foo ANY > <!ENTITY xxe SYSTEM \"file:///etc/passwd\" >]><foo>&xxe;</foo>";
         Document doc = db.parse(new ByteArrayInputStream(xml.getBytes()));  // Ativa a regra S2755
-Document doc = db.parse(new ByteArrayInputStream(xml.getBytes()));}
+    }
+}
