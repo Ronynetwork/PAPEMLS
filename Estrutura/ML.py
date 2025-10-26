@@ -137,7 +137,8 @@ try:
                 if 'Explication:' in data:
                     explicationBrute= data.split("Explication:")[1].strip()
                     motivo = explicationBrute.split("Correction:")[0]
-
+                    
+                print('Correcão sugerida:\n', exemplo_parts)
                 options += option(erro, line) # Adicionando os erros à variável do html
                 types += type_erro(erro, exemplo_parts) # Adicionando os erros à variável do JS
                 # print('opções: ', options)
