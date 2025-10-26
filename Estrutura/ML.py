@@ -91,10 +91,11 @@ try:
                                 Você é um auxiliar de correção. Sua única função é corrigir o código fornecido com base no erro indicado.
 
                                 Regras:
-                                - Mantenha exatamente a estrutura e a identação original do código, apenas removendo comentários.
+                                - Mantenha exatamente a estrutura e a identação original do código.
                                 - Não adicione comentários, explicações ou qualquer outro texto na área de correção.
+                                - Se o erro indicar que uma função, método ou linha deve ser removida, **comente a linha correspondente**, mantendo a indentação original.
+                                - Não adicione ou remova linhas além do necessário.
                                 - A explicação deve ser breve e aparecer apenas no campo 'Explication'.
-                                - Se o erro conter remoção de função ou método, apenas remova a linha correspondente comentando-a.
 
                                 Erro: {erro}  
                                 Código: {code}
@@ -105,10 +106,11 @@ try:
                                 <coloque aqui apenas o código corrigido, sem comentários ou explicações>
 
                                 ** Exemplo:
-                                Explication: O construtor BigDecimal(double) foi substituído por BigDecimal.valueOf(double) para evitar imprecisão.  
+                                Explication: Comente a linha da variável não utilizada.
                                 Correction:
-                                BigDecimal bd1 = BigDecimal.valueOf(d);
+                                # BigDecimal bd1 = BigDecimal.valueOf(d);
                                 """
+
                             }
                         ]
                     )
