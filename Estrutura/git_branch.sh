@@ -1,5 +1,7 @@
 # Configura o Git para usar SSH em vez de HTTPS 
 git remote set-url origin git@github.com:Ronynetwork/PAPEMLS.git
+git config user.name "Jenkins"
+git config user.email "jenkins@correction"
 
 # Muda para a branch dev
 git branch dev
