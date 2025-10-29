@@ -1,5 +1,5 @@
 # Importando Bibliotecas
-import os, json
+import os, json, re
 
 # Receber os dados do Jenkins com os erros e arquivos a serem corrigidos
 pathList_raw = os.getenv("ERROS")  # isso é uma string
@@ -28,8 +28,12 @@ try:
                 for l, content in enumerate(file_lines, start=1): # Percorre cada linha do arquivo
                     print("Linha atual do arquivo: ", content, " Linha do erro: ", l, " Linha para correção: ", line)
                     if l == line:
+
+                        # Corrigindo identação antes de alterar
                         print(f"Aplicando correção na linha {line}: {correction}")
-                        file_lines[l-1] = correction # Substitui a linha com a correção
+                        indentacao = re.match(r'^\s*', file_lines[l-1]).group()  # captura os espaços/tabs iniciais
+                        correction_complete = indentacao + correction + '\n'
+                        file_lines[l-1] =  correction_complete # Substitui a linha com a correção e adiciona quebra de linha
                 print("Linhas do arquivo após a correção: ", file_lines)
                 file.seek(0) # Move o cursor para o início do arquivo
                 file.writelines(file_lines) # Escreve as linhas corrigidas de volta ao arquivo
