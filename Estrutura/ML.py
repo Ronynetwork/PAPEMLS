@@ -8,24 +8,24 @@ div_erros = ''
 
 
 def type_erro(erro, motivo, exemplo_parts):
-    type_erro = '''
-        case `{}`:
+    type_erro = f'''
+        case `{erro}`:
             return `
                 <div class="solution-block">
-                    <h2>{}</h2>
-                    <h3>{}</h3>
+                    <h2>{erro}</h2>
+                    <h3>{motivo}</h3>
                     <pre>
-                        {}
+                        {exemplo_parts}
                     </pre> 
                 </div>
             `
-    '''.format(erro, motivo, exemplo_parts)
+    '''
     return type_erro
 
 def option(erro, line) :
-    option = '''
-                <label><input type="checkbox" value="{}" line="{}" onchange="updateSolutions()">Erro: {}</label>
-            '''.format(erro, line, erro)
+    option = f'''
+                <label><input type="checkbox" value="{erro}" line="{line}" onchange="updateSolutions()">Erro: {erro}</label>
+            '''
     return option
 
 def div_erro(arq_name_split, options):
@@ -129,7 +129,6 @@ try:
                 lines = data.splitlines()
                 # Usando list compreenshion para retornar os valores necessários
                 lines_filtered = [line for line in lines if line]
-                lines_filte_len = len(lines_filtered)
                 if 'Correction:' in data:
                     exemplo_parts = data.split("Correction:")[1].replace('```', '') # Pega tudo que vem depois de Correction:
                 else:
@@ -156,7 +155,7 @@ try:
     else:
         print("Nenhum erro encontrado no dicionário.")
 except Exception as e:
-    print("Erro indicado: ", e)
+    print("Erro ao processar erros do SonarQube: ", e)
 
 
 # Criando o arquivo html com os erros e soluções
