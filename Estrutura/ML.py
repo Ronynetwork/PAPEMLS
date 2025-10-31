@@ -95,8 +95,7 @@ try:
                                 Regras:
                                 - Mantenha exatamente a estrutura e a identação original do código.
                                 - Não adicione comentários, explicações ou qualquer outro texto na área de correção.
-                                - Se o erro indicar que uma função, método, variável, instrução ou linha deve ser removida, **comente SEMPRE a linha correspondente** usando o padrão de comentário da linguagem, mantendo a identação original.
-                                - Nunca apague linhas, mesmo quando o erro disser para remover algo — apenas altere para uma linha comentada.
+                                - Se o erro indicar que uma função, método, variável, instrução ou linha deve ser removida, **adicione espaço vazio a linha**.
                                 - A explicação deve ser breve e aparecer apenas no campo 'Explication'.
 
                                 Erro: {erro}  
@@ -109,9 +108,9 @@ try:
                                 <coloque aqui apenas o código corrigido, sem comentários, explicações ou identificação de linguagem>
 
                                 ** Exemplo:
-                                Explication: Comente a linha da variável não utilizada do código {extension}.
+                                Explication: Remova a linha da variável não utilizada do código {extension}.
                                 Correction:
-                                // BigDecimal bd1 = BigDecimal.valueOf(d);
+                                <Espaço vazio>
                                 """
                             }
                         ]
