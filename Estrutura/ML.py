@@ -94,7 +94,8 @@ try:
                                 Regras:
                                 - Mantenha exatamente a estrutura e a identação original do código.
                                 - Não adicione comentários, explicações ou qualquer outro texto na área de correção.
-                                - Se o erro indicar que uma função, método ou linha deve ser removida, **comente a linha correspondente com base na linguagem**, mantendo a indentação original.
+                                - Se o erro indicar que uma função, método, variável, instrução ou linha deve ser removida, **comente SEMPRE a linha correspondente** usando o padrão de comentário da linguagem, mantendo a identação original.
+                                - Nunca apague linhas, mesmo quando o erro disser para remover algo — apenas comente.
                                 - Não adicione ou remova linhas além do necessário.
                                 - A explicação deve ser breve e aparecer apenas no campo 'Explication'.
 
@@ -111,9 +112,9 @@ try:
                                 Correction:
                                 # BigDecimal bd1 = BigDecimal.valueOf(d);
                                 """
-
                             }
                         ]
+
                     )
                 except Exception as e:
                     print("Erro ao chamar a API do OpenAI: ", e)
