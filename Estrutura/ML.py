@@ -95,7 +95,7 @@ try:
                                 Regras:
                                 - Mantenha exatamente a estrutura e a identação original do código.
                                 - Não adicione comentários, explicações ou qualquer outro texto na área de correção.
-                                - Se o erro indicar que uma função, método, variável, instrução ou linha deve ser removida, **adicione espaço vazio a linha**.
+                                - Se o erro indicar que uma função, método, variável, instrução ou linha deve ser removida, remova o conteúdo.
                                 - A explicação deve ser breve e aparecer apenas no campo 'Explication'.
 
                                 Erro: {erro}  
