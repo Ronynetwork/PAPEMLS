@@ -7,18 +7,19 @@ buttons = ''
 div_erros = ''
 
 
-def type_erro(erro, exemplo_parts):
+def type_erro(erro, motivo, exemplo_parts):
     type_erro = '''
         case `{}`:
             return `
                 <div class="solution-block">
+                    <h2>{}</h2>
                     <h3>{}</h3>
                     <pre>
                         {}
                     </pre> 
                 </div>
             `
-    '''.format(erro, erro, exemplo_parts)
+    '''.format(erro, motivo, exemplo_parts)
     return type_erro
 
 def option(erro, line) :
@@ -141,7 +142,7 @@ try:
 
                 print('Correcão sugerida:\n', exemplo_parts)
                 options += option(erro, line) # Adicionando os erros à variável do html
-                types += type_erro(erro, exemplo_parts) # Adicionando os erros à variável do JS
+                types += type_erro(erro, motivo, exemplo_parts) # Adicionando os erros à variável do JS
                 # print('opções: ', options)
                 # print('types: ', types)
             # --------------------------------------------  
