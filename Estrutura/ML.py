@@ -110,7 +110,7 @@ try:
                                 ** Exemplo:
                                 Explication: Remova a linha da variável não utilizada do código {extension}.
                                 Correction:
-                                <Espaço vazio>
+                                <Espaço vazio, NUNCA insira identificação de linguagem>
                                 """
                             }
                         ]
