@@ -94,7 +94,7 @@ try:
                                 Regras:
                                 - Mantenha exatamente a estrutura e a identação original do código.
                                 - Não adicione comentários, explicações ou qualquer outro texto na área de correção.
-                                - Se o erro indicar que uma função, método ou linha deve ser removida, **comente a linha correspondente**, mantendo a indentação original.
+                                - Se o erro indicar que uma função, método ou linha deve ser removida, **comente a linha correspondente com base na linguagem**, mantendo a indentação original.
                                 - Não adicione ou remova linhas além do necessário.
                                 - A explicação deve ser breve e aparecer apenas no campo 'Explication'.
 
@@ -102,9 +102,9 @@ try:
                                 Código: {code}
 
                                 Formato da resposta:
-                                Explication: <explique brevemente a correção em uma linha>
+                                Explication: explique a correção de forma clara e rápida.
                                 Correction:
-                                <coloque aqui apenas o código corrigido, sem comentários ou explicações>
+                                <coloque aqui apenas o código corrigido, sem comentários, explicações ou identificação de linguagem>
 
                                 ** Exemplo:
                                 Explication: Comente a linha da variável não utilizada.
