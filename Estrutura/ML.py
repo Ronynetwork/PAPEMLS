@@ -62,6 +62,7 @@ try:
             print(f'Analisando o arquivo: {arq_path}')
             arq_name_brute = arq_path.split('/')[1] # Pega o nome do arquivo sem o caminho 
             arq_name_split = arq_name_brute.split('.')[0] # Pega o nome do arquivo sem a extensão
+            extension = arq_name_brute.split('.')[1]
             button = f''' 
             <button class="fileName" id="{arq_name_brute}" value="{arq_path}" onclick="toggleShowErros('{arq_path}')"><strong>{arq_path}</strong></button>
             ''' # Botão que exibe o nome do arquivo
@@ -101,6 +102,7 @@ try:
 
                                 Erro: {erro}  
                                 Código: {code}
+                                Linguagem: {extension}
 
                                 Formato da resposta:
                                 Explication: explique a correção de forma clara e rápida.
