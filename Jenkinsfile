@@ -2,6 +2,13 @@ pipeline {
     agent any
 
     stages {
+        stage('Node') {
+            steps {
+                sh 'hostname'
+                sh 'pwd'
+            }
+            }
+        }
         stage('Realizando a autentiação no Git') {
             steps {
                 script {
