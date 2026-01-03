@@ -61,7 +61,7 @@ pipeline {
                         sh """
                             ${scannerHome}/bin/sonar-scanner \
                             -Dsonar.projectKey=${SONAR_PROJECT_KEY} \
-                            -Dsonar.sources=teste_script \
+                            -Dsonar.sources=scripts \
                             -Dsonar.scm.exclusions.disabled=true \
                             -Dsonar.host.url=${SONAR_URL}
                         """
