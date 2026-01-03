@@ -1,18 +1,12 @@
 pipeline {
     agent any
 
-    environment {
-        API_KEY = credentials('API-KEY') // ID da credencial
-        SONAR_AUTH_CODE = credentials('SONAR_AUTH_CODE')
-        PROJECT_KEY = 'PAPEMLS'
-    }
-
     stages {
-        stage('Realizando a autenticação no Git') {
+        stage('Realizando a autentiação no Git') {
             steps {
                 script {
                     def destinationDir= 'PAPEMLS'
-                    git credentialsId: 'jenkins-git',
+                    git credentialsId: 'log-token-git',
                         url: 'https://github.com/Ronynetwork/PAPEMLS.git',
                         branch: 'dev'
                         directory: destinationDir
@@ -30,7 +24,7 @@ pipeline {
         stage('Configuração do SonarQube') {
             steps {
                 script {
-                    def sonarContainerExists = sh(script: 'docker ps --filter "name=sonarqube"', returnStatus: true)
+                    def sonarContainerExists = sh(script: 'docker ps --filter "names=sonarqube" --format "{{.Names}}"', returnStatus: true)
                     if (sonarContainerExists == 1) {
                         echo "O serviço SonarQube já está em execução, reiniciando o contêiner."
                         sh "docker restart sonarqube" // Reiniciar o contêiner se estiver em execução
@@ -61,10 +55,9 @@ pipeline {
                         sh """
                             ${scannerHome}/bin/sonar-scanner \
                             -Dsonar.projectKey=${SONAR_PROJECT_KEY} \
-                            -Dsonar.sources=scripts \
+                            -Dsonar.sources=teste_script \
                             -Dsonar.scm.exclusions.disabled=true \
-                            -Dsonar.host.url=${SONAR_URL} \
-                            -Dsonar.login=${SONAR_AUTH_TOKEN}
+                            -Dsonar.host.url=${SONAR_URL}
                         """
                     }
                 }
@@ -85,72 +78,69 @@ pipeline {
 
                 withSonarQubeEnv('PAPEMLS') {
                     env.SONAR_AUTH_TOKEN = "${SONAR_AUTH_TOKEN}"
+                    echo "${SONAR_AUTH_TOKEN}"
                     def output = sh(script: 'python3 Estrutura/source.py', returnStdout: true).trim()
                     env.ERROR_POINT=output
+                    echo "Erro retornado ${ERROR_POINT}"
                 }
             }
-            script{
-                withCredentials([string(credentialsId: 'API-KEY', variable: 'API_KEY')]) {
-                    echo 'Executando arquivo de ML'
-                    sh """
-                        . papemls/bin/activate
-                        chmod +x Estrutura/ML.py
-                        API_KEY=${API_KEY} python3 Estrutura/ML.py
-                    """
-                }
+            script {
+                echo 'Criando ambiente virtual e instalando dependências...'
+                sh '''
+                    docker compose -f Estrutura/docker-compose-ML.yml up -d
+                    echo "Aguardando ollama-ml ficar pronto..."
+                    if [ "$(curl -s -o /dev/null -w "%{http_code}" http://localhost:10012/)" = "200" ]; then echo "ok"; else  sleep 2; fi
+                    docker exec ollama-ml ollama run llama3.2:1b
+                '''
+            }
 
+            script{
+                echo 'Executando arquivo de ML'
+                sh '''
+                    . papemls/bin/activate
+                    chmod +x Estrutura/ML.py
+                    python3 Estrutura/ML.py
+                '''
             }
             script {
                 echo 'Subindo flask em background'
                 sh '''
                     . papemls/bin/activate
                     pwd
-                    ls Estrutura/notification
+                    tree Estrutura/notification
                     chmod +x Estrutura/notification/main.py
                     python3 Estrutura/notification/main.py &
                     sleep 5
                 '''
             }
             script {
+                // Aguardar que o Flask capture a resposta do usuário
                 echo 'Aguardando resposta do usuário... visite http://127.0.0.1:5000/'
-                def startTime = System.currentTimeMillis()
-                def duration = 60 * 1000  // 60 segundos
+                // Aqui você pode fazer uma requisição para o Flask ou esperar até que ele termine
+                    def startTime = System.currentTimeMillis()
+                    def duration = 300000  // 5 minutos em milissegundos
 
-                while ((System.currentTimeMillis() - startTime) < duration) {
-                    try {
+                    while ((System.currentTimeMillis() - startTime) < duration) {
                         def resposta = sh(script: 'curl -s -X GET http://127.0.0.1:5000/capturar_resposta', returnStdout: true).trim()
+                        def json = readJSON text: resposta
 
-                        if (resposta) {
-                            def resjson = readJSON text: resposta
-
-                            echo "Resposta recebida do Flask: ${resjson.resposta}"
-                            echo "Erros recebidos do Flask: ${resjson.erros}"
-
-                            if (resjson.resposta == "corrigir") {
-                                env.ERROS = resjson.erros  
-                                sh '''
-                                    chmod +x Estrutura/autocorrect.py Estrutura/git_branch.sh
-                                    python3 Estrutura/autocorrect.py || echo "Erro no autocorrect"
-                                    ./Estrutura/git_branch.sh || echo "Erro no git_branch"
-                                '''
-                                break
-                            } else if (resjson.resposta == 'ignorar') {
-                                echo 'Foi solicitada a ação de ignorar!'
-                                break
-                            } else {
-                                echo "Resposta recebida mas com valor inesperado: ${resjson.resposta}"
-                            }
-                        } else {
-                            echo "Resposta vazia do servidor Flask. Tentando novamente..."
-                        }
-
-                    } catch (err) {
-                        echo "Erro ao tentar capturar ou processar resposta: ${err}"
+                    if (json.resposta == "corrigir") {
+                        echo "Resposta recebida: ${resposta}"
+                        env.ERROS = json.erros  
+                        sh '''
+                            chmod +x Estrutura/ML_autocorrigir.py Estrutura/git_branch.sh
+                            python3 Estrutura/ML_autocorrigir.py
+                            ./Estrutura/git_branch.sh
+                        '''
+                        break  // Sai do loop ao corrigir
+                    } else if (json.resposta == 'ignorar') {
+                        echo 'Foi solicitada a ação de ignorar!'
+                        break  // Sai do loop se a ação for ignorar
+                    } else {
+                        sleep 5  // Espera 5 segundos antes da próxima requisição
                     }
-
-                    sleep 5
                 }
-                echo "Loop finalizado."
+                
             }
         }
     }
