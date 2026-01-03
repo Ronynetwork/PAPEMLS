@@ -54,7 +54,7 @@ pipeline {
             steps {
                 script {
                     def scannerHome = tool 'sonar-scanner';
-                    echo ${scannerHome}
+                    echo $scannerHome
                     withSonarQubeEnv('PAPEMLS') {
                         env.SONAR_PROJECT_KEY = "${SONAR_CONFIG_NAME}"
                         env.SONAR_URL = "${SONAR_HOST_URL}"
