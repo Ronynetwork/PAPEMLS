@@ -7,7 +7,6 @@ pipeline {
                 sh 'hostname'
                 sh 'pwd'
             }
-            }
         }
         stage('Realizando a autentiação no Git') {
             steps {
