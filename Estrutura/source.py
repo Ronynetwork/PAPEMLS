@@ -71,7 +71,7 @@ def code_request():
                 else:
                     dict_error[component].append((line, message, linha_com_erro))
         if list(dict_error.keys())[0] == f'{PROJECT_KEY}:{FILE_PATH}': # Executando e enviando todo o dicionário de dados
-            msg = json.dumps(msg)
+            msg = json.dumps(dict_error)
             print("msg: ", msg)
         else:
             msg = f'O projeto <{PROJECT_KEY}> não possui issues abertas!'
