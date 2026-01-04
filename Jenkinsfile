@@ -88,7 +88,6 @@ pipeline {
                     env.ERROR_POINT=output
                 
                 }
-                echo "${ERROR_POINT}"
             }
             script{
                 withCredentials([string(credentialsId: 'API-KEY', variable: 'API_KEY')]) {

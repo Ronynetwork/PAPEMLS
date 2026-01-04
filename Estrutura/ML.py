@@ -1,5 +1,5 @@
 from openai import OpenAI
-import os, ast
+import os, ast, json
 
 options = ''
 types = ''
@@ -49,7 +49,7 @@ def div_erro(arq_name_split, options):
     return div_erros
 
 try:        
-    ERROR_POINT = os.getenv("ERROR_POINT")
+    ERROR_POINT = json.dumps(os.environ["ERROR_POINT"])
     print("Erros chegando no ML: ", ERROR_POINT)
     if ERROR_POINT:
         # Buscando a API key do OpenRouter via Jenkins
