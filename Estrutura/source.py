@@ -3,12 +3,10 @@ import requests, os, base64
 # Configurações do SonarQube
 SONARQUBE_URL = os.getenv('SONAR_URL')
 TOKEN = os.getenv('SONAR_AUTH_TOKEN')
-TOKEN_CODE = os.getenv('SONAR_AUTH_CODE')
 PROJECT_KEY = os.getenv('SONAR_PROJECT_KEY')
 FILE_PATH = 'scripts/script_hosts.java'
 
 auth_header = base64.b64encode(f"{TOKEN}:".encode()).decode()
-auth_header_code = base64.b64encode(f"{TOKEN_CODE}:".encode()).decode()
 params = {
     "project": PROJECT_KEY,
     "sort": "date",  # Ordena pela data da análise mais recente
@@ -23,7 +21,7 @@ def code_source(line):
         params={
             'key': f'{PROJECT_KEY}:{FILE_PATH}'  # Aqui é necessário usar o 'key' com o formato correto
         },
-        headers = {'Authorization': f'Basic {auth_header_code}'}
+        headers = {'Authorization': f'Basic {auth_header}'}
     )
 
     code = response.text
@@ -73,7 +71,6 @@ def code_request():
                     dict_error[component] = []
                 else:
                     dict_error[component].append((line, message, linha_com_erro))
-
         if list(dict_error.keys())[0] == f'{PROJECT_KEY}:{FILE_PATH}': # Executando e enviando todo o dicionário de dados
             msg = dict_error
         else:
