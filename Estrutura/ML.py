@@ -48,7 +48,8 @@ def div_erro(arq_name_split, options):
 
     return div_erros
 
-try:        
+try:
+    print("Buscando dados da análise")
     ERROR_POINT = json.loads(os.environ["ERROR_POINT"])
     print("Erros chegando no ML: ", ERROR_POINT)
     if ERROR_POINT:
