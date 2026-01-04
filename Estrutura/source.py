@@ -62,7 +62,6 @@ def code_request():
         if filtred_issues:
             # Itera sobre as issues filtradas
             for issue in filtred_issues:
-                print("Issue: ", issue)
                 message = issue['message']  # Mensagem de erro do SonarQube
                 line = issue.get('line') # Linha onde o problema foi identificado
                 component = issue['component']  # Componente (arquivo) onde o problema está localizado
@@ -73,6 +72,7 @@ def code_request():
                     dict_error[component].append((line, message, linha_com_erro))
         if list(dict_error.keys())[0] == f'{PROJECT_KEY}:{FILE_PATH}': # Executando e enviando todo o dicionário de dados
             msg = dict_error
+            print("msg: ", msg)
         else:
             msg = f'O projeto <{PROJECT_KEY}> não possui issues abertas!'
         return msg
