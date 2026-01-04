@@ -1,4 +1,4 @@
-import requests, os, base64
+import requests, os, base64, json
 
 # Configurações do SonarQube
 SONARQUBE_URL = os.getenv('SONAR_URL')
@@ -71,7 +71,7 @@ def code_request():
                 else:
                     dict_error[component].append((line, message, linha_com_erro))
         if list(dict_error.keys())[0] == f'{PROJECT_KEY}:{FILE_PATH}': # Executando e enviando todo o dicionário de dados
-            msg = dict_error
+            msg = json.dumps(msg)
             print("msg: ", msg)
         else:
             msg = f'O projeto <{PROJECT_KEY}> não possui issues abertas!'
