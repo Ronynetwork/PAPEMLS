@@ -50,7 +50,8 @@ def div_erro(arq_name_split, options):
 
 try:
     print("Buscando dados da análise")
-    ERROR_POINT = json.loads(os.environ["ERROR_POINT"])
+    ERROS_PURE = os.environ["ERROR_POINT"]
+    ERROR_POINT = json.loads(ERROS_PURE)
     print("Erros chegando no ML: ", ERROR_POINT)
     if ERROR_POINT:
         # Buscando a API key do OpenRouter via Jenkins
