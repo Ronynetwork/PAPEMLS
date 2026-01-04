@@ -57,8 +57,7 @@ try:
         # Buscando a API key do OpenRouter via Jenkins
         PROJECT_KEY = os.getenv("PROJECT_KEY")
         API_KEY = os.getenv("API_KEY")
-        erros = ast.literal_eval(ERROR_POINT)
-        for arquivo, dados in erros.items():
+        for arquivo, dados in ERROR_POINT.items():
     
             # Dados do nome do arquivo e formatação de botão de seleção
             arq_path = arquivo.replace(f'{PROJECT_KEY}:','')
