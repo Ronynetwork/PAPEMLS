@@ -50,6 +50,7 @@ def div_erro(arq_name_split, options):
 
 try:        
     ERROR_POINT = os.getenv("ERROR_POINT")
+    print("Erros chegando no ML: ", ERROR_POINT)
     if ERROR_POINT:
         # Buscando a API key do OpenRouter via Jenkins
         PROJECT_KEY = os.getenv("PROJECT_KEY")
