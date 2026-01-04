@@ -87,7 +87,7 @@ try:
                         #     "HTTP-Referer": "<YOUR_SITE_URL>", # Optional. Site URL for rankings on openrouter.ai.
                         #     "X-Title": "<YOUR_SITE_NAME>", # Optional. Site title for rankings on openrouter.ai.
                         #   },
-                        model="meta-llama/llama-3.3-8b-instruct:free",
+                        model="meta-llama/llama-3.3-70b-instruct:free",
                         messages = [
                             {
                                 "role": "user",
