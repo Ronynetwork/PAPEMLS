@@ -26,6 +26,7 @@ try:
             with open(pathFinal, 'r+') as file: # Abre o arquivo para escrita e itera sobre as linhas para aplicar as correções
                 file_lines = file.readlines()
 <<<<<<< HEAD
+<<<<<<< HEAD
                 logger.info("Linhas do arquivo antes da correção: ", file_lines)
                 for l, content in enumerate(file_lines, start=1): # Percorre cada linha do arquivo onde L vira a linha e content o conteudo
 =======
@@ -50,6 +51,18 @@ try:
                         indentacao = re.match(r'^\s*', file_lines[l-1]).group()  # captura os espaços/tabs iniciais
                         correction_complete = indentacao + correction + '\n'
                         file_lines[l-1] =  correction_complete # Substitui a linha com a correção e adiciona quebra de linha
+=======
+                print("Linhas do arquivo antes da correção: ", file_lines)
+                for l, content in enumerate(file_lines, start=1): # Percorre cada linha do arquivo
+                    print("Linha atual do arquivo: ", content, " Linha do erro: ", l, " Linha para correção: ", line)
+                    if l == line:
+
+                        # Corrigindo identação antes de alterar
+                        print(f"Aplicando correção na linha {line}: {correction}")
+                        indentacao = re.match(r'^\s*', file_lines[l-1]).group()  # captura os espaços/tabs iniciais
+                        correction_complete = indentacao + correction + '\n'
+                        file_lines[l-1] =  correction_complete # Substitui a linha com a correção e adiciona quebra de linha
+>>>>>>> parent of 2f01a6c (FIX: Ajustando tratamento de path do arquivo)
                 print("Linhas do arquivo após a correção: ", file_lines)
 >>>>>>> parent of 2f01a6c (FIX: Ajustando tratamento de path do arquivo)
                 file.seek(0) # Move o cursor para o início do arquivo
