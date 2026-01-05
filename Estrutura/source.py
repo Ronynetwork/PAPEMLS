@@ -1,5 +1,7 @@
-import requests, os, base64, json
+import requests, os, base64, json, logging
+logger = logging.getLogger(__name__)
 
+logger.info("Executando arquivo source.py...")
 # Configurações do SonarQube
 SONARQUBE_URL = os.getenv('SONAR_URL')
 TOKEN = os.getenv('SONAR_AUTH_TOKEN')
@@ -16,6 +18,7 @@ params = {
 
 def code_source(line):    
     # Requisição para pegar o código do arquivo
+    logger.info("Executando função code_source para get do código fonte...")
     response = requests.get(
         f'{SONARQUBE_URL}/api/sources/raw',  # Endpoint correto
         params={
@@ -39,6 +42,7 @@ def code_source(line):
 
 def code_request():
     # Função para fazer uma requisição à API do SonarQube e processar os problemas encontrados
+    logger.info("Executando função code_request para get da análise...")
     try:
         response = requests.get(f"{SONARQUBE_URL}/api/issues/search", 
                                 params=params, 
@@ -46,7 +50,7 @@ def code_request():
                                      'Authorization': f'Basic {auth_header}'
                                 })
     except Exception as e:
-        print('Erro na requisição:', e)
+        logger.error('Erro na requisição:', e)
 
     # Verifica se a requisição foi bem-sucedida
     if response.status_code == 200:
@@ -56,7 +60,7 @@ def code_request():
         try:
             filtred_issues = [issue for issue in arq.get('issues', []) if issue['project'] == PROJECT_KEY]
         except Exception as e:
-            print("Erro no filtro de issues", e)
+            logger.error("Erro no filtro de issues", e)
         dict_error = {}
 
         if filtred_issues:
@@ -83,6 +87,6 @@ def code_request():
 
 # Chama a função para iniciar o processo de requisição e resolução de erros
 try:
-    print(code_request())
+    logger.info(code_request())
 except Exception as e:
-    print("Erro ao buscar informações da análise:", e)
+    logger.error("Erro ao buscar informações da análise:", e)
