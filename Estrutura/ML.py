@@ -44,8 +44,8 @@ def div_erro(arq_name_split, options):
                 </div>
             </div>
             <div>
-                <button value="corrigir" id="actionButton" onclick="actionButton()">Corrigir</button>
-                <button value="ignorar" id="actionButton" onclick="actionButton()">Ignorar</button>
+                <button value="corrigir" id="actionButton" onclick="actionButton(this)">Corrigir</button>
+                <button value="ignorar" id="actionButton" onclick="actionButton(this)">Ignorar</button>
             </div>
         </div>
         '''
@@ -85,8 +85,8 @@ const solutionDiv = document.getElementById("solution");
 let selectedErrors = []; 
 
 // Função chamada ao clicar nos botões "Corrigir" ou "Ignorar"
-function actionButton() {
-    const acao = document.getElementById("actionButton").value // Obtém o valor do botão clicado
+function actionButton(element) {
+    const acao = element.value // Obtém o valor do botão clicado
     enviarAcao(acao, selectedErrors); // Chama a função para enviar a ação ao servidor
 }
 
