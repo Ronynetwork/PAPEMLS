@@ -28,7 +28,7 @@ try:
 
             with open(pathFinal, 'r+') as file: # Abre o arquivo para escrita e itera sobre as linhas para aplicar as correções
                 file_lines = file.readlines()
-                logger.info("Linhas do arquivo antes da correção: ", file_lines)
+                logger.info(f"Linhas do arquivo antes da correção: {file_lines}")
                 for l, content in enumerate(file_lines, start=1): # Percorre cada linha do arquivo onde L vira a linha e content o conteudo
                     if l == line:
                         # Corrigindo identação antes de alterar
@@ -39,7 +39,7 @@ try:
                         correction_complete = indentacao + correction + '\n'
                         file_lines[l-1] =  correction_complete # Substitui a linha com a correção e adiciona quebra de linha
 
-                logger.info("Linhas do arquivo após a correção: ", file_lines)
+                logger.info(f"Linhas do arquivo após a correção: {file_lines}")
                 file.seek(0) # Move o cursor para o início do arquivo
                 file.writelines(file_lines) # Escreve as linhas corrigidas de volta ao arquivo
                 file.truncate() # Remove qualquer conteúdo restante após a escrita
