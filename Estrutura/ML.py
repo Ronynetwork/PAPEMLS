@@ -45,7 +45,7 @@ def div_erro(arq_name_split, options):
             </div>
             <div>
                 <button value="corrigir" id="actionButton" onclick="actionButton()">Corrigir</button>
-                <button value="ignorar" id="actionButton" onclick="actionButton()">ignorar</button>
+                <button value="ignorar" id="actionButton" onclick="actionButton()">Ignorar</button>
             </div>
         </div>
         '''
