@@ -1,17 +1,21 @@
-#!/bin/bash
-# Configurar o Git para usar o token
+# Configura o Git para usar SSH em vez de HTTPS 
 git remote set-url origin git@github.com:Ronynetwork/PAPEMLS.git
+git config user.name "Jenkins"
+git config user.email "jenkins@correction"
 
-# Conferindo se a branch main existe, se não, cria
-git checkout main
-git pull origin main
+# Muda para a branch dev
+git branch dev
+git checkout dev
 
-# Adicionar apenas o arquivo desejado
-git add ./teste_script/
-git restore .
+# Restaura todos os arquivos exceto os da pasta scripts/
+git restore --source=HEAD --staged --worktree -- :!scripts/
 
-# Fazer o commit com uma mensagem
-git commit -m "Correction commit"
+# Adiciona e commita primeiro
+git add scripts/
+if ! git diff --cached --quiet; then
+  git commit -m "FIX: Correction commit"
+fi
 
-# Enviar as mudanças para o repositório remoto
-git push origin main
+# Depois atualiza a branch e faz push
+git push origin dev
+git pull origin dev --rebase

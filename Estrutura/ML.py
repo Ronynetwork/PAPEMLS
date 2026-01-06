@@ -1,99 +1,59 @@
-import requests, os, ast
+from openai import OpenAI
+import os, json, logging
 
-url = 'http://localhost:10012/api/generate'
+#Configurações de logging
+logger = logging.getLogger(__file__.split("/")[-1])
+logging.basicConfig(encoding="utf-8", level=logging.INFO)
 
-def type_erro(erro, motivo_html, exemplo_parts, cont):
-    if cont == 0:
-        type_erro = '''
-            if (errorType === "{}") {{
-                solutionText = `
-                    <h3> {} </h3>
-                    <p>Exemplo de Correção: </p>
+options = ''
+types = ''
+buttons = ''
+div_erros = ''
+
+
+def type_erro(erro, motivo, exemplo_parts):
+    type_erro = f'''
+        case `{erro}`:
+            return `
+                <div class="solution-block">
+                    <h2>{erro}</h2>
+                    <h3>{motivo}</h3>
                     <pre>
-        {}
-                    </pre>
-                `
-            }}
-        '''.format(erro, motivo_html, exemplo_parts)
-    else:
-        type_erro = '''
-            else if (errorType === "{}") {{
-                solutionText = `
-                    <h3> {} </h3>
-                    <p>Exemplo de Correção: </p>
-                    <pre>
-        {}
-                    </pre>
-                `
-            }}
-        '''.format(erro, motivo_html, exemplo_parts)
+                        {exemplo_parts}
+                    </pre> 
+                </div>
+            `
+    '''
     return type_erro
 
-def option(erro) :
-    option = '''
-                <option value="{}">Erro: {} </option>
-            '''.format(erro, erro)
+def option(erro, line) :
+    option = f'''
+                <label><input type="checkbox" value="{erro}" line="{line}" onchange="updateSolutions()">Erro: {erro}</label>
+            '''
     return option
 
-try:        
-    html = os.getenv("ERROR_POINT")
-    erro_dict = ast.literal_eval(html)
-    print('Erro dict: ', erro_dict)
-    options = ''
-    types = ''
-    cont = 0
-    for dic in erro_dict:
-        for erro, code in dic.items():
-            print(f"Erro: {erro}, Código: {code}")
-            erro = erro.replace('"', '')
-            code = code
-            data = {
-                "model": "llama3.2:1b", 
-                "prompt": '''
-                Codigo com erro: {}\nErro: {}\nExplique o motivo do erro e dê UM exemplo corrigido. explicando por que o erro '{}' ocorre.
-                '''.format(code, erro, erro),
-                "temperature": 0.2,
-                "num_predict": 50,
-                "stream": False
-            }
+def div_erro(arq_name_split, options):
 
-            headers = {
-                "Content-Type": "application/json"
-            }
+    div_erros = f'''
+            <div class="erros_select" id="erros_{arq_name_split}" style="display: none;">
+{options}
+                <button id="selectAllButton" onclick="selectAll()">Selecionar todos</button>
+                <div class="solutions">
+                    <h3>Soluções:</h3>
+                    <div id="solution" style="margin-top: 20px;"></div>
+                </div>
+            </div>
+            <div>
+                <button value="corrigir" id="actionButton" onclick="actionButton(this)">Corrigir</button>
+                <button value="ignorar" id="actionButton" onclick="actionButton(this)">Ignorar</button>
+            </div>
+        </div>
+        '''
 
-            response = requests.post(url, json=data, headers=headers)
-
-            # print("Conteúdo da resposta:", response.text)
-            if response: 
-                data = response.json()['response'] # Retorna os dados em string
-            else:
-                print("reponse inexistente")
-            # Agora, 'lines' é uma lista com cada linha do texto como um item. sem espaços vazios
-            lines = data.splitlines()
-            # Usando list compreenshion para retornar os valores necessários
-            lines_filtered = [line for line in lines if line]
-            lines_filte_len = len(lines_filtered)
-            if '```' in data:
-                exemplo_parts = data.split("```")[1]
-            else:
-                exemplo_parts = ''
-
-            # Para a explicação final:
-            motivo_html = ''
-            for line in reversed(lines_filtered):
-                if 'exemplo' not in line.lower() and line.strip():
-                    motivo_html = line.replace('`', '')
-                    break
-
-            options += option(erro)
-            types += type_erro(erro, motivo_html, exemplo_parts, cont)
-            cont += 1
-    else:   
-        print("Variável ERROR_POINT não encontrada ou vazia")
-except Exception as e:
-    print("Projeto nao possue issues abertas!")
+    return div_erros
 
 
+# Criando o arquivo html com os erros e soluções
 head = '''<!DOCTYPE html>
 <html lang="pt">
 <head>
@@ -104,45 +64,125 @@ head = '''<!DOCTYPE html>
 </head>
 <body>
     <div class="container">
-        <h2>Selecione um erro para ver a solução</h2>
-        <select id="errorSelect">
-            <option value="">-- Escolha um erro --</option>
+        <div id="header">
+            <h2>Selecione o arquivo para ver seus erros</h2>
 '''
 
 body = '''
-            </select> 
-            <button onclick="showSolution()">Mostrar Solução</button>
-            <div id="solution" style="margin-top: 20px;"></div>
-    </div>
-    <script src="{{url_for('static', filename='script.js')}}"></script>
+    <script src="../static/script.js"></script>
 </body>
 </html>
     '''
 
     
-script ='''
-let errors = []
-function showSolution() {
-    const errorType = document.getElementById("errorSelect").value;
-    const solutionDiv = document.getElementById("solution");
+script = '''
+let expanded = false;
+let arqPath = ''
+const errorSelect = document.getElementById("errorSelect");
+const solutionDiv = document.getElementById("solution");
 
-    let solutionText = "";'''
+// lista para armazenar os erros selecionados
+let selectedErrors = []; 
+
+// Função chamada ao clicar nos botões "Corrigir" ou "Ignorar"
+function actionButton(element) {
+    const acao = element.value // Obtém o valor do botão clicado
+    enviarAcao(acao, selectedErrors); // Chama a função para enviar a ação ao servidor
+}
+
+function toggleDropdown() {
+    const checkboxes = document.getElementById("checkboxes");
+    checkboxes.style.display = checkboxes.style.display === expanded ? "none" : "block";
+}
+
+// ADICIONADO FUNÇÃO PARA ESCONDER OU MOSTRAR OS ERROS DE CADA ARQUIVO
+function toggleShowErros(id) {
+    const id2 = id.split('.')[0];
+    const idSplit = id2.split('/')[1];
+    console.log('ID do arquivo clicado: ', idSplit);
+    const div = document.getElementById(`erros_${idSplit}`);
+    arqPath = {path: id};
+    console.log(arqPath);
+    
+    if (div.style.display === "none" || div.style.display === "") {
+        div.style.display = "flex";
+    } else {
+        div.style.display = "none";
+    }
+}
+
+
+function selectAll() {
+    const checkboxes = document.querySelectorAll("input[type='checkbox']");
+    const allSelected = Array.from(checkboxes).every(checkbox => checkbox.checked);
+
+    checkboxes.forEach(checkbox => {
+        checkbox.checked = !allSelected;
+    });
+
+    updateSolutions();
+}
+
+function updateSolutions() {
+    const checkboxes = document.querySelectorAll("input[type='checkbox']");
+    console.log(checkboxes)
+    const solutionDiv = document.getElementById("solution");
+    selectedErrors = []; // Limpa a lista de erros selecionados
+
+    checkboxes.forEach(checkbox => {
+        if (checkbox.checked) {
+            const path = arqPath.path; // Supondo que arqPath.path está definido
+            const line = Number(checkbox.getAttribute('line'));
+            const message = checkbox.value;
+            const correction = getSolutionHTML(message)
+                .split('<pre>')[1]
+                .split('</pre>')[0]
+                .replace("java", "")
+                .trim();
+
+            // Verifica se já existe um item com esse path
+            let fileError = selectedErrors.find(err => err.path === path);
+            if (!fileError) {
+                fileError = {
+                    path: path,
+                    errors: []
+                };
+                selectedErrors.push(fileError);
+            }
+            console.log("fileError: ", fileError);
+            console.log("selectedErrors: ", selectedErrors);
+            // Adiciona o erro à lista do arquivo correspondente
+            fileError.errors.push({
+                line,
+                message,
+                correction
+            });
+        }
+    });
+
+    // Renderiza as soluções no HTML
+    let output = "";
+    selectedErrors.forEach(fileError => {
+        console.log("err list: ", fileError.errors);
+        fileError.errors.forEach(err => {
+            output += getSolutionHTML(err.message); // Chama a função para obter o HTML da mensagem de erro identificada
+        });
+    });
+
+    solutionDiv.innerHTML = output || "<p>Nenhuma solução disponível.</p>";
+}
+
+function getSolutionHTML(errorType) {
+    switch (errorType) {
+'''
     
 
 end_script = '''
-    else {
-        solutionText = "<p>Selecione um erro para ver a solução.</p>";
+        default:
+            return "";
     }
-    h2 = `
-        <h2>Escolha uma ação:</h2>
-        <button onclick="enviarAcao('corrigir')">Corrigir</button>
-        <button onclick="enviarAcao('ignorar')">Ignorar</button>`
-    
-    solutionDiv.innerHTML = solutionText + h2;
-    errors.push(errorType);
 }
-
-function enviarAcao(acao) {
+function enviarAcao(acao, errors) {
     fetch("/receber_escolha", {
         method: "POST",
         headers: {
@@ -155,21 +195,148 @@ function enviarAcao(acao) {
     .catch(error => console.error("Erro:", error));
 }
 '''
+# -------------------------------------------------------------------------------------------------------------------- #
 
-
-html_complete = head + options + body
-script  = script + types + end_script
-
-# Cria o diretório se ele não existir
 try:
-    os.makedirs('./Estrutura/notification/templates', exist_ok=True)
-    os.makedirs('./Estrutura/notification/static', exist_ok=True)
+    logger.info("Buscando dados da análise...")
+    ERROS_PURE = os.environ["ERROR_POINT"]
+    ERROR_POINT = json.loads(ERROS_PURE)
+    # print("Erros chegando no ML: ", ERROR_POINT)
+    
+    if ERROR_POINT:
+        # Buscando a API key do OpenRouter via Jenkins
+        PROJECT_KEY = os.getenv("PROJECT_KEY")
+        API_KEY = os.getenv("API_KEY")
+        logger.info("Executando loop nos erros encontrados...")
+        for arquivo, dados in ERROR_POINT.items():
+    
+            # Dados do nome do arquivo e formatação de botão de seleção
+            arq_path = arquivo.replace(f'{PROJECT_KEY}:','')
+            logger.info(f'Analisando o arquivo: {arq_path}')
+            arq_name_brute = arq_path.split('/')[1] # Pega o nome do arquivo sem o caminho 
+            arq_name_split = arq_name_brute.split('.')[0] # Pega o nome do arquivo sem a extensão
+            extension = arq_name_brute.split('.')[1]
+            button = f''' 
+            <button class="fileName" id="{arq_name_brute}" value="{arq_path}" onclick="toggleShowErros('{arq_path}')"><strong>{arq_path}</strong></button>
+            ''' # Botão que exibe o nome do arquivo
+            buttons += button
+            # --------------------------------------------------------------------------------------------------------------------------            
+        
+            # Loop para definição das variáveis em cada erro encontrado
 
-    with open(os.path.join('./Estrutura/notification/static', "script.js"), 'w') as static:
-        static.write(script)
+            logger.info("Executando loop para armazenar as informações de erros")
+            for line, erroPure, code in dados:
+                erro = erroPure.replace('"', "'")
+                # print("="*100, f"Erro: {erro}, Código: {code}, linha: {line}", "="*100)
 
-    with open(os.path.join('./Estrutura/notification/templates', "erro.html"), 'w') as arquivo:
-        arquivo.write(html_complete)
+                # Execução do Openrouter.ai com o modelo meta-llama/llama-3.3-70b-instruct:free
+                try:
+                    client = OpenAI(
+                    base_url="https://openrouter.ai/api/v1",
+                    api_key=API_KEY,
+                    )
 
+                    # enviando prompt para IA
+                    logger.info("Enviando prompt para IA...")
+                    responseCompletion = client.chat.completions.create(
+                        #   extra_headers={
+                        #     "HTTP-Referer": "<YOUR_SITE_URL>", # Optional. Site URL for rankings on openrouter.ai.
+                        #     "X-Title": "<YOUR_SITE_NAME>", # Optional. Site title for rankings on openrouter.ai.
+                        #   },
+                        model="meta-llama/llama-3.3-70b-instruct:free",
+                        messages = [
+                            {
+                                "role": "user",
+                                "content": f"""
+                                Você é um auxiliar de correção. Sua única função é corrigir o código fornecido com base no erro indicado.
+
+                                Regras:
+                                - Mantenha exatamente a estrutura e a identação original do código.
+                                - Não adicione comentários, explicações ou qualquer outro texto na área de correção.
+                                - Se o erro indicar que uma função, método, variável, instrução ou linha deve ser removida, **adicione espaço vazio a linha** usando o padrão de comentário da linguagem, mantendo a identação original.
+                                - Nunca apague linhas, mesmo quando o erro disser para remover algo — apenas altere para uma linha comentada.
+                                - A explicação deve ser breve e aparecer apenas no campo 'Explication'.
+
+                                Erro: {erro}  
+                                Código: {code}
+                                Linguagem: {extension}
+
+                                Formato da resposta:
+                                Explication: explique a correção de forma clara e rápida.
+                                Correction:
+                                <coloque aqui apenas o código corrigido, sem comentários, explicações ou identificação de linguagem>
+
+                                ** Exemplo:
+                                Explication: Comente a linha da variável não utilizada do código {extension}.
+                                Correction:
+                                // BigDecimal bd1 = BigDecimal.valueOf(d);
+                                """
+                            }
+                        ]
+
+                    )
+                except Exception as e:
+                    logger.error("Erro ao chamar a API do OpenAI: ", e)
+                    continue
+                
+                # Retorna os dados em string do conteúdo de resposta
+                response = responseCompletion.choices[0].message.content 
+                # print("Conteúdo da resposta:", response.text)
+
+                if response:
+                    logger.info("Tratando dados da resposta...")
+                    data = response
+                    # Agora, 'lines' é uma lista com cada linha do texto como um item. sem espaços vazios
+                    lines = data.splitlines()
+                    # Usando list compreenshion para retornar os valores necessários
+                    lines_filtered = [line for line in lines if line]
+                    if 'Correction:' in data:
+                        exemplo_parts = data.split("Correction:")[1].replace('```', '') # Pega tudo que vem depois de Correction:
+                    else:
+                        exemplo_parts = ''
+
+                    # Para a explicação final:
+                    if 'Explication:' in data:
+                        explicationBrute= data.split("Explication:")[1].strip()
+                        motivo = explicationBrute.split("Correction:")[0]
+
+                    # print('Correcão sugerida:\n', exemplo_parts)
+                    logger.info("Formatando dados com as funções options e type_erro")
+                    options += option(erro, line) # Adicionando os erros à variável do html
+                    types += type_erro(erro, motivo, exemplo_parts) # Adicionando os erros à variável do JS
+                    # print('opções: ', options)
+                    # print('types: ', types)
+                # --------------------------------------------  
+                else:
+                    logger.error("reponse inexistente")
+            # Formando div que informa o arquivo e erros
+            div_erros += div_erro(arq_name_split, options)
+            # --------------------------------------------
+            buttons += '''
+        </div>
+    '''
+    else:
+        logger.info("Nenhum erro encontrado no dicionário.")
+    try:
+        html_complete = head + buttons + div_erros + body #Formatando o html completo
+        script = script + types + end_script # Formatando o JS completo
+        os.makedirs('./Estrutura/notification/templates', exist_ok=True)
+        os.makedirs('./Estrutura/notification/static', exist_ok=True)
+        # print('Types:', types)
+        # print('Div erros:', div_erros)
+
+
+        # print("Arquivo JS: ", script)
+        # Cria o diretório se ele não existir
+        logger.info("Criando diretórios e arquivos Web...")
+        with open(os.path.join('./Estrutura/notification/static', "script.js"), 'w') as static:
+            static.write(script)
+
+        with open(os.path.join('./Estrutura/notification/templates', "index.html"), 'w') as arquivo:
+            arquivo.write(html_complete)
+        logger.info("Diretórios e arquivos criados!")
+    except Exception as e:
+        logger.error('Erro ao criar arquivos ', e)
 except Exception as e:
-    print('Erro ao criar arquivos ', e)
+    logger.error("Erro ao processar erros do SonarQube: ", e)
+

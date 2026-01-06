@@ -1,10 +1,14 @@
-import requests, os, base64
+import requests, os, base64, json, logging
+
+#Configurações de logging
+logger = logging.getLogger(__file__.split("/")[-1])
+logging.basicConfig(encoding="utf-8", level=logging.INFO)
 
 # Configurações do SonarQube
 SONARQUBE_URL = os.getenv('SONAR_URL')
 TOKEN = os.getenv('SONAR_AUTH_TOKEN')
 PROJECT_KEY = os.getenv('SONAR_PROJECT_KEY')
-FILE_PATH = 'teste_script/script_hosts.java'
+FILE_PATH = 'scripts/script_hosts.java'
 
 auth_header = base64.b64encode(f"{TOKEN}:".encode()).decode()
 params = {
@@ -14,30 +18,9 @@ params = {
     "resolved": 'false'
 }
 
-def resolve_error(dict_error):
-    # Função para resolver um erro específico no código baseado na análise do SonarQube
-
-    # Abrir o arquivo de código e ler todas as linhas
-    component_path = list(dict_error.keys())[0].replace("PAPEMLS:", "./")
-    with open(component_path, 'r') as file:
-        lines = file.readlines()
-    messages = []
-    for erros in dict_error.values(): # Verifica os dicionarios presente no valor do dicionário principal
-        for line, message in erros:
-            try:
-                # Seleciona a linha específica onde o erro foi identificado e a divide em palavras
-                if line == None:
-                    messages.append({message:''})            
-                else:
-                    error_line = lines[line-1].strip()  # Use strip() sem argumentos
-                    messages.append({message: error_line})
-            except Exception as e:
-                print(f"Linha {line} não encontrada no arquivo.")
-    return messages
-
-
-def code_source():    
+def code_source(line):    
     # Requisição para pegar o código do arquivo
+    logger.info("Executando função code_source para get do código fonte...")
     response = requests.get(
         f'{SONARQUBE_URL}/api/sources/raw',  # Endpoint correto
         params={
@@ -48,14 +31,20 @@ def code_source():
 
     code = response.text
 
+    code_lines = code.splitlines()
+    if line:
+        line_with_error = code_lines[line-1]
+    else:
+        line_with_error = None
     if response.status_code == 200:
         # Se a resposta for bem-sucedida, imprime o conteúdo do arquivo
-        return code# Exibe o conteúdo do arquivo
+        return line_with_error# Exibe o conteúdo do arquivo
     else:
         return f"Erro {response.status_code}: {response.text}"
 
 def code_request():
     # Função para fazer uma requisição à API do SonarQube e processar os problemas encontrados
+    logger.info("Executando função code_request para get da análise...")
     try:
         response = requests.get(f"{SONARQUBE_URL}/api/issues/search", 
                                 params=params, 
@@ -63,27 +52,32 @@ def code_request():
                                      'Authorization': f'Basic {auth_header}'
                                 })
     except Exception as e:
-        print('Erro na requisição:', e)
+        logger.error('Erro na requisição:', e)
+
     # Verifica se a requisição foi bem-sucedida
     if response.status_code == 200:
         # Processa a resposta da API como um JSON
         arq = response.json()
         # Filtra as issues para garantir que apenas as do projeto atual sejam processadas
-        filtred_issues = [issue for issue in arq.get('issues', []) if issue['project'] == PROJECT_KEY] 
-        
+        try:
+            filtred_issues = [issue for issue in arq.get('issues', []) if issue['project'] == PROJECT_KEY]
+        except Exception as e:
+            logger.error("Erro no filtro de issues", e)
+        dict_error = {}
+
         if filtred_issues:
-            dict_error = {}
             # Itera sobre as issues filtradas
             for issue in filtred_issues:
                 message = issue['message']  # Mensagem de erro do SonarQube
-                line = issue.get('line')  # Linha onde o problema foi identificado
+                line = issue.get('line') # Linha onde o problema foi identificado
                 component = issue['component']  # Componente (arquivo) onde o problema está localizado
+                linha_com_erro = code_source(line)
                 if component not in dict_error:
                     dict_error[component] = []
-                dict_error[component].append((line, message))
-
+                else:
+                    dict_error[component].append((line, message, linha_com_erro))
         if list(dict_error.keys())[0] == f'{PROJECT_KEY}:{FILE_PATH}': # Executando e enviando todo o dicionário de dados
-            msg = resolve_error(dict_error)
+            msg = json.dumps(dict_error)
         else:
             msg = f'O projeto <{PROJECT_KEY}> não possui issues abertas!'
         return msg
@@ -95,11 +89,6 @@ def code_request():
 
 # Chama a função para iniciar o processo de requisição e resolução de erros
 try:
-    acao = os.getenv('ACTION') # Recebendo a acao guardada na env da Pipeline
-except:
-    acao = None # Caso nao encontre, seta como None
-
-if acao is not None:
-    print(code_source())
-else:
     print(code_request())
+except Exception as e:
+    logger.error("Erro ao buscar informações da análise:", e)
