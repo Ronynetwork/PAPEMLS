@@ -89,6 +89,6 @@ def code_request():
 
 # Chama a função para iniciar o processo de requisição e resolução de erros
 try:
-    logger.info(code_request())
+    print(code_request())
 except Exception as e:
     logger.error("Erro ao buscar informações da análise:", e)
