@@ -1,6 +1,9 @@
 # Importando Bibliotecas
 import os, json, re, logging
-logger = logging.getLogger()
+
+#Configurações de logging
+logger = logging.getLogger(__file__.split("/")[-1])
+logging.basicConfig(encoding="utf-8", level=logging.info)
 
 # Receber os dados do Jenkins com os erros e arquivos a serem corrigidos
 pathList_raw = os.getenv("ERROS")  # isso é uma string

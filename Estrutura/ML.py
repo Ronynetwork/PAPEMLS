@@ -1,7 +1,10 @@
 from openai import OpenAI
 import os, json, logging
 
-logger = logging.getLogger(__name__)
+#Configurações de logging
+logger = logging.getLogger(__file__.split("/")[-1])
+logging.basicConfig(encoding="utf-8", level=logging.INFO)
+
 options = ''
 types = ''
 buttons = ''

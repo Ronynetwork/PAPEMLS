@@ -1,7 +1,9 @@
 import requests, os, base64, json, logging
-logger = logging.getLogger(__name__)
 
-logger.info("Executando arquivo source.py...")
+#Configurações de logging
+logger = logging.getLogger(__file__.split("/")[-1])
+logging.basicConfig(encoding="utf-8", level=logging.INFO)
+
 # Configurações do SonarQube
 SONARQUBE_URL = os.getenv('SONAR_URL')
 TOKEN = os.getenv('SONAR_AUTH_TOKEN')
