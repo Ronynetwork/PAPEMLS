@@ -46,12 +46,8 @@ pipeline {
             steps {
                 withCredentials([string(credentialsId: 'sonar-token', variable: 'sonarToken')]) {
                     script {
-                        def tokenEncode = sonarToken.getBytes("UTF-8").encodeBase64().toString() // Codificando o token para base64 e transformando em string
-                        import java.util.Base64
-                        import java.nio.charset.StandardCharsets
-
-                        def tokenEncode = Base64.encoder.encodeToString(
-                            "${sonarToken}:".getBytes(StandardCharsets.UTF_8)
+                        def tokenEncode = java.util.Base64.encoder.encodeToString( // Codificando o token para base64 e transformando em string
+                            "${sonarToken}:".getBytes(java.nio.charset.StandardCharsets.UTF_8)
                         )
                         timeout(time: 1, unit: 'MINUTES'){
                             waitUntil{
