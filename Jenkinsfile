@@ -47,14 +47,11 @@ pipeline {
                 withCredentials([string(credentialsId: 'sonar-token', variable: 'sonarToken')]) {
                     script {
                         // Utilizando o caminho completo do móduilo java.util para não acarretar em problemas de import
-                        def tokenEncode = java.util.Base64.encoder.encodeToString( // Codificando o token para base64 e transformando em string
-                            "${sonarToken}:".getBytes(java.nio.charset.StandardCharsets.UTF_8) 
-                        )
                         timeout(time: 1, unit: 'MINUTES'){
                             waitUntil{
                                 def status = sh( // Fazendo a verificação do status do SonarQube
                                     script: """
-                                    curl -sf -H "Authorization: Basic ${tokenEncode}" \
+                                    curl -sf -u "${sonarToken}:" \
                                     http://localhost:9000/api/system/health \
                                     | grep "GREEN"
                                     """,
