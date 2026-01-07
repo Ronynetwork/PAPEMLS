@@ -49,11 +49,11 @@ pipeline {
                         timeout(time: 1, unit: 'MINUTES'){
                             waitUntil{
                                 def status = sh( // Fazendo a verificação do status do SonarQube
-                                    script: """
+                                    script: '''
                                     curl -sf -u "${sonarToken}:" \
                                     http://localhost:9000/api/system/health \
                                     | grep "GREEN"
-                                    """,
+                                    ''',
                                     returnStatus: true
                                 )
                                 if (status != 0) {
