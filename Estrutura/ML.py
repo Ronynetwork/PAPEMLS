@@ -254,7 +254,7 @@ try:
                                 - Mantenha exatamente a estrutura e a identação original do código.
                                 - Não adicione comentários, explicações ou qualquer outro texto na área de correção.
                                 - Se o erro indicar que uma função, método, variável, instrução ou linha deve ser removida, **adicione espaço vazio a linha** usando o padrão de comentário da linguagem, mantendo a identação original.
-                                - Nunca apague linhas, mesmo quando o erro disser para remover algo — apenas altere para uma linha comentada.
+                                - Se for requisitado a remoção da linha ou bloco, altere o código para um comentário com "Removido pela IA"
                                 - A explicação deve ser breve e aparecer apenas no campo 'Explication'.
 
                                 Erro: {erro}  
