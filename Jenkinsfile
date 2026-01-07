@@ -42,11 +42,19 @@ pipeline {
                 }
             }
         }
-        stage('Delay') {
+        stage('SonarQube Verification') {
             steps {
                 script {
-                    echo 'Aguardando 35 segundos para a inicialização completa do SonarQube...'
-                    sleep time:20, unit: 'SECONDS'
+                    def returnStatus = ""
+                    while (returnStatus != "running") {
+                        returnStatus = sh(
+                        script: "docker inspect --format='{{.State.Status}}' sonarqube",
+                        returnStdout: true).trim()
+                        
+                        echo "Aguardando container do SonarQube estar pronto..."
+                        sleep 5
+                    }
+                    echo "SonarQube em execução... Prosseguindo pipeline."
                 }
             }
         }
