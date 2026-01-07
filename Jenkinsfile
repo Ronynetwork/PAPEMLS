@@ -46,7 +46,6 @@ pipeline {
             steps {
                 withCredentials([string(credentialsId: 'sonar-token', variable: 'sonarToken')]) {
                     script {
-                        // Utilizando o caminho completo do móduilo java.util para não acarretar em problemas de import
                         timeout(time: 1, unit: 'MINUTES'){
                             waitUntil{
                                 def status = sh( // Fazendo a verificação do status do SonarQube
@@ -57,6 +56,10 @@ pipeline {
                                     """,
                                     returnStatus: true
                                 )
+                                if (status != 0) {
+                                    echo "Aguardando 10s para próxima tentativa..."
+                                    sleep 10
+                                }
                                 return status == 0
                             }
                         }
