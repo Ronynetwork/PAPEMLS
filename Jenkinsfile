@@ -46,13 +46,14 @@ pipeline {
             steps {
                 script {
                     withCredentials([string(credentialsId: 'sonar-token', variable: 'sonarToken')]) {
+                        def tokenEncode = sonarToken.getBytes("UTF-8").encodeBase64().toString() // Codificando o token para base64 e transformando em string
                         timeout(time: 1, unit: 'MINUTES'){
                             waitUntil{
-                                def status = sh(
+                                def status = sh( // Fazendo a verificação do status do SonarQube
                                     script: """
-                                    curl -sf -u ${SONAR_TOKEN}: \
+                                    curl -sf -H "Authorization: Basic ${tokenEncode}" \
                                     http://localhost:9000/api/system/health \
-                                    | grep -q '"status":"GREEN"'
+                                    | grep "GREEN"
                                     """,
                                     returnStatus: true
                                 )
