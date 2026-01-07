@@ -45,16 +45,21 @@ pipeline {
         stage('SonarQube Verification') {
             steps {
                 script {
-                    def returnStatus = ""
-                    while (returnStatus != "running") {
-                        returnStatus = sh(
-                        script: "docker inspect --format='{{.State.Status}}' sonarqube",
-                        returnStdout: true).trim()
-                        
-                        echo "Aguardando container do SonarQube estar pronto..."
-                        sleep 5
+                    withCredentials([string(credentialsId: 'sonar-token', variable: 'sonarToken')]) {
+                        timeout(time: 1, unit: 'MINUTES'){
+                            waitUntil{
+                                def status = sh(
+                                    script: """
+                                    curl -sf -u ${SONAR_TOKEN}: \
+                                    http://localhost:9000/api/system/health \
+                                    | grep -q '"status":"GREEN"'
+                                    """,
+                                    returnStatus: true
+                                )
+                                return status == 0
+                            }
+                        }
                     }
-                    echo "SonarQube em execução... Prosseguindo pipeline."
                 }
             }
         }
