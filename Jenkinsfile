@@ -112,7 +112,7 @@ pipeline {
                     sh """
                         . papemls/bin/activate
                         chmod +x Estrutura/ML.py
-                        API_KEY=${API_KEY} python3 Estrutura/ML.py
+                        python3 Estrutura/ML.py
                     """
                 }
 
