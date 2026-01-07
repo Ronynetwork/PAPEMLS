@@ -57,7 +57,7 @@ pipeline {
                                     returnStatus: true
                                 )
                                 if (status != 0) {
-                                    echo "Aguardando 10s para próxima tentativa..."
+                                    echo "Aguardando 5s para próxima tentativa..."
                                     sleep 5
                                 }
                                 return status == 0
