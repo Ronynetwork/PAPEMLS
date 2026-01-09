@@ -36,7 +36,14 @@ try:
 
             # captura os espaços/tabs iniciais com método GROUP e utiliza -1 nas linhas do arquivo indicando a linha exata de alteração
                         indentacao = re.match(r'^\s*', file_lines[l-1]).group()
-                        correction_complete = indentacao + correction + '\n'
+                        correction_complete = ''
+                        # Verificando se a correção necessita da alteração de mais de uma linha
+                        if len(correction.split("\n")) > 1:
+                            correctionList =  correction.split("\n")
+                            for correction in correctionList:
+                                correction_complete += indentacao + correction + '\n'
+                        else:
+                            correction_complete = indentacao + correction + '\n'
                         file_lines[l-1] =  correction_complete # Substitui a linha com a correção e adiciona quebra de linha
 
                 logger.info(f"Linhas do arquivo após a correção: {file_lines}")
