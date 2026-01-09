@@ -201,7 +201,7 @@ try:
     logger.info("Buscando dados da análise...")
     ERROS_PURE = os.environ["ERROR_POINT"]
     ERROR_POINT = json.loads(ERROS_PURE)
-    # print("Erros chegando no ML: ", ERROR_POINT)
+    print("Erros chegando no ML: ", ERROR_POINT)
     
     if ERROR_POINT:
         # Buscando a API key do OpenRouter via Jenkins
