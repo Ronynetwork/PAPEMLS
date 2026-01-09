@@ -73,7 +73,8 @@ def code_request():
                 component = issue['component']  # Componente (arquivo) onde o problema está localizado
                 linha_com_erro = code_source(line)
                 if component not in dict_error:
-                    dict_error[component] = []
+                    # Ajustando para também inserir a primeira ocorrência de erro no arquivo.
+                    dict_error[component] = [(line, message, linha_com_erro)] 
                 else:
                     dict_error[component].append((line, message, linha_com_erro))
         if list(dict_error.keys())[0] == f'{PROJECT_KEY}:{FILE_PATH}': # Executando e enviando todo o dicionário de dados
