@@ -1,13 +1,20 @@
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 import org.w3c.dom.Document;
-import java.io.ByteArrayInputStream;
 
-public class XXEVuln {
-    public static void main(String[] args) {
-        DocumentBuilder builder = DocumentBuilderFactory.newInstance().createDocumentBuilder();
-        DocumentBuilderFactory df = DocumentBuilderFactory.newInstance();
-        String xml = "<!DOCTYPE foo [ <!ELEMENT foo ANY > <!ENTITY xxe SYSTEM "file:///etc/passwd" >]><foo>&xxe;</foo>";
-        Document doc = db.parse(new ByteArrayInputStream(xml.getBytes()));
+import java.io.File;
+
+public class XXEVulnerable {
+
+    public static void main(String[] args) throws Exception {
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+
+        // ❌ Configuração insegura (XXE habilitado por padrão)
+        DocumentBuilder builder = factory.newDocumentBuilder();
+
+        Document document = builder.parse(new File("input.xml"));
+        document.getDocumentElement().normalize();
+
+        System.out.println("Root element: " + document.getDocumentElement().getNodeName());
     }
 }
