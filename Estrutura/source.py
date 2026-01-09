@@ -52,7 +52,7 @@ def code_request():
                                      'Authorization': f'Basic {auth_header}'
                                 })
     except Exception as e:
-        logger.error('Erro na requisição:', e)
+        logger.error('Erro na requisição: %s', e)
 
     # Verifica se a requisição foi bem-sucedida
     if response.status_code == 200:
@@ -62,7 +62,7 @@ def code_request():
         try:
             filtred_issues = [issue for issue in arq.get('issues', []) if issue['project'] == PROJECT_KEY]
         except Exception as e:
-            logger.error("Erro no filtro de issues", e)
+            logger.error("Erro no filtro de issues: %s", e)
         dict_error = {}
 
         if filtred_issues:
@@ -92,4 +92,4 @@ def code_request():
 try:
     print(code_request())
 except Exception as e:
-    logger.error("Erro ao buscar informações da análise:", e)
+    logger.error("Erro ao buscar informações da análise: %s", e)

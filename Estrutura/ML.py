@@ -212,7 +212,7 @@ try:
     
             # Dados do nome do arquivo e formatação de botão de seleção
             arq_path = arquivo.replace(f'{PROJECT_KEY}:','')
-            logger.info(f'Analisando o arquivo: {arq_path}')
+            logger.info('Analisando o arquivo: %s', arq_path)
             arq_name_brute = arq_path.split('/')[1] # Pega o nome do arquivo sem o caminho 
             arq_name_split = arq_name_brute.split('.')[0] # Pega o nome do arquivo sem a extensão
             extension = arq_name_brute.split('.')[1]
@@ -224,7 +224,7 @@ try:
         
             # Loop para definição das variáveis em cada erro encontrado
 
-            logger.info("Executando loop para armazenar as informações de erros")
+            logger.info("Executando loop para armazenar as informações de erros...")
             for line, erroPure, code in dados:
                 erro = erroPure.replace('"', "'")
                 # print("="*100, f"Erro: {erro}, Código: {code}, linha: {line}", "="*100)
@@ -276,7 +276,7 @@ try:
 
                     )
                 except Exception as e:
-                    logger.error("Erro ao chamar a API do OpenAI: ", e)
+                    logger.error("Erro ao chamar a API do OpenAI: %s", e)
                     continue
                 
                 # Retorna os dados em string do conteúdo de resposta
@@ -301,14 +301,14 @@ try:
                         motivo = explicationBrute.split("Correction:")[0]
 
                     # print('Correcão sugerida:\n', exemplo_parts)
-                    logger.info("Formatando dados com as funções options e type_erro")
+                    logger.info("Formatando dados com as funções options e type_erro...")
                     options += option(erro, line) # Adicionando os erros à variável do html
                     types += type_erro(erro, motivo, exemplo_parts) # Adicionando os erros à variável do JS
                     # print('opções: ', options)
                     # print('types: ', types)
                 # --------------------------------------------  
                 else:
-                    logger.error("reponse inexistente")
+                    logger.error("reponse inexistente!")
             # Formando div que informa o arquivo e erros
             div_erros += div_erro(arq_name_split, options)
             # --------------------------------------------
@@ -336,7 +336,7 @@ try:
             arquivo.write(html_complete)
         logger.info("Diretórios e arquivos criados!")
     except Exception as e:
-        logger.error('Erro ao criar arquivos ', e)
+        logger.error('Erro ao criar arquivos: %s', e)
 except Exception as e:
-    logger.error("Erro ao processar erros do SonarQube: ", e)
+    logger.error("Erro ao processar erros do SonarQube: %s", e)
 
