@@ -8,6 +8,13 @@ public class XXEVulnerable {
 
     public static void main(String[] args) throws Exception {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        factory.setValidating(false);
+        factory.setXIncludeAware(false);
+        factory.setExpandEntityReferences(false); 
+        factory.setFeature("http://xml.org/sax/features/external-general-entities", false);
+        factory.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
+        factory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+        factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
         // ❌ Configuração insegura (XXE habilitado por padrão)
         DocumentBuilder builder = factory.newDocumentBuilder();
 
