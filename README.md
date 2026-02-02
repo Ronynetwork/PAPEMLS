@@ -56,7 +56,7 @@ as tecnologias citadas acima necessitam ser instaladas antes da execução da pi
 
 # Teste Mínimo
 
- - Passo 1: Crie um Job em formmato de Pipeline dentro da interface do Jenkins e aponte para o repositório que apresenta o Jenkinsfile
+ - Passo 1: Crie um Job em formato de Pipeline dentro da interface do Jenkins e aponte para o repositório que apresenta o Jenkinsfile
  - Passo 2: Crie um repositório executando o compose do SonarQube para gerar o token de projeto que servirá como credencial
  - Passo 3: Configure uma chave SSH para o usuário Jenkins em seu sistema para que o mesmo possa se comunicar com o GitHub
  - Passo 4: Na aba de Credenciais do Jenkins, crie as credenciais de acesso sonar-scanner e git-token para conseguir rodar a Pipeline sem erros
